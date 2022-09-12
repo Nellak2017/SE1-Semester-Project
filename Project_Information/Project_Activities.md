@@ -94,7 +94,7 @@ The activity order is as follows:
 - [ ] Class Diagram Created
 - [ ] Activity Diagram Created
 
-## Activity 3: UI Design, Initial Tests, and RAD
+### Activity 3: UI Design, Initial Tests, and RAD
 
 1. _Meeting 3_: Assigning Tasks
 - [ ] __@Everyone__: Team meeting discussing tasks that will be done before the end of this sprint. Goal of this meeting is to get UI, initial Tests, 
@@ -215,6 +215,6 @@ responsibility for this project.
 to reflect on the lessons learned and how to do better next time, 
 and to discuss what should be done moving forward to be better professionals.
 
-## Activity 7: Assignment Submission
+### Activity 7: Assignment Submission
 - [ ] __@Team-Lead__: Team Lead will submit the assignment before the due date with all required materials, source code, assets, etc., 
 that are specified in the assignment submission specifications.
