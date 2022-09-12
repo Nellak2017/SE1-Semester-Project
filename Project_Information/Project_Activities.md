@@ -17,11 +17,11 @@ This is __not__ meant to be the source of truth for the Project Task tracking, i
     + [Activity Order of Completion](#activity-order-of-completion)
     + [Activity 1: Getting Everything Set up](#activity-1--getting-everything-set-up)
     + [Activity 2: Modelling the Problem using UML](#activity-2--modelling-the-problem-using-uml)
-  * [Activity 3: UI Design, Initial Tests, and RAD](#activity-3--ui-design--initial-tests--and-rad)
+  	+ [Activity 3: UI Design, Initial Tests, and RAD](#activity-3--ui-design--initial-tests--and-rad)
     + [Activity 4: Assets, API, and Databases](#activity-4--assets--api--and-databases)
     + [Activity 5: Final QA and Code Review](#activity-5--final-qa-and-code-review)
     + [Activity 6: Hosting](#activity-6--hosting)
-  * [Activity 7: Assignment Submission](#activity-7--assignment-submission)
+  	+ [Activity 7: Assignment Submission](#activity-7--assignment-submission)
 
 ---
 
