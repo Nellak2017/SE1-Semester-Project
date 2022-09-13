@@ -41,16 +41,16 @@ The activity order is as follows:
 ### Activity 1: Getting Everything Set up 
 
 1. Housekeeping
-- [ ] __@Team-Leader__: Get Everyone's Github Username
+- [x] __@Team-Leader__: Get Everyone's Github Username
 	- [x] Add Kelly to private repo
-	- [ ] Add Dylan to private repo
-	- [ ] Add Devyn to private repo
+	- [x] Add Dylan to private repo
+	- [x] Add Devyn to private repo
 - [ ] __@Everyone__: Set up MS Teams
 
 2. Team Meetings
 - [ ] __@Discord-Server-Admin__: Create Discord Channel dedicated to Team Meetings, have it scheduled in Discord
-	- [ ] Meetings Channel
-	- [ ] Q/A Channel
+	- [x] Meetings Channel
+	- [x] Q/A Channel
 	- [ ] Announcements Channel
 	- [ ] Bug Report Channel
 
@@ -62,7 +62,7 @@ The activity order is as follows:
 	- [ ] __@Team-Leader__: Set up Github Repo with all documentation _if you haven't already_
 		- [ ] Roles Documentation
 		- [ ] Todo Documentation
-		- [ ] Activities and Tasks
+		- [x] Activities and Tasks
 		- [ ] Sprints
 		- [ ] Coding Standards, Pull Request Procedures, and Other
 		- [ ] RAD Document (On Github and in Word Doc as well)
