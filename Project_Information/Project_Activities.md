@@ -48,7 +48,7 @@ The activity order is as follows:
 - [ ] __@Everyone__: Set up MS Project
 
 2. Team Meetings
-- [ ] __@Discord-Server-Admin__: Create Discord Channel dedicated to Team Meetings, have it scheduled in Discord
+- [x] __@Discord-Server-Admin__: Create Discord Channel dedicated to Team Meetings, have it scheduled in Discord
 	- [x] Meetings Channel
 	- [x] Q/A Channel
 	- [x] Announcements Channel
