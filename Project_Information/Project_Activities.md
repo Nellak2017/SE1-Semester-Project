@@ -45,14 +45,14 @@ The activity order is as follows:
 	- [x] Add Kelly to private repo
 	- [x] Add Dylan to private repo
 	- [x] Add Devyn to private repo
-- [ ] __@Everyone__: Set up MS Teams
+- [ ] __@Everyone__: Set up MS Project
 
 2. Team Meetings
 - [ ] __@Discord-Server-Admin__: Create Discord Channel dedicated to Team Meetings, have it scheduled in Discord
 	- [x] Meetings Channel
 	- [x] Q/A Channel
-	- [ ] Announcements Channel
-	- [ ] Bug Report Channel
+	- [x] Announcements Channel
+	- [x] Bug Report Channel
 
 3. Pre-Meeting Setup
 	- [ ] __@Team-Leader__: Provide documentation of _Roles and Responsibilities_ in the Github Repo for easy access
@@ -65,7 +65,7 @@ The activity order is as follows:
 		- [x] Activities and Tasks
 		- [ ] Sprints
 		- [ ] Coding Standards, Pull Request Procedures, and Other
-		- [ ] RAD Document (On Github and in Word Doc as well)
+		- [x] RAD Document (On Github and in Word Doc as well)
 		- [ ] Meeting Intervals, Meeting Agendas (In some calendar)
 	- [ ] __@Team-Leader__: Set up Task Management Software (Such as some Agile Software or Asana or whatever) 
 	       
