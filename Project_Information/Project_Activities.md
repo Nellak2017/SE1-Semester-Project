@@ -55,19 +55,17 @@ The activity order is as follows:
 	- [x] Bug Report Channel
 
 3. Pre-Meeting Setup
-	- [ ] __@Team-Leader__: Provide documentation of _Roles and Responsibilities_ in the Github Repo for easy access
-	- [ ] __@Team-Leader__: Figure out best Frameworks, Design Systems, and Technology Stacks to use and alternatives for teammates that don't have experiences
+	- [x] __@Team-Leader__: Figure out best Frameworks, Design Systems, and Technology Stacks to use and alternatives for teammates that don't have experiences
 	- [ ] __@Team-Leader__: Research Coding Standards and how to enforce it by studying other Github Repos that already have such standards.
 	- [ ] __@Team-Leader__: Research Agile so you may be informed and be able to tell team mates of it.
 	- [ ] __@Team-Leader__: Set up Github Repo with all documentation _if you haven't already_
-		- [ ] Roles Documentation
-		- [ ] Todo Documentation
+		- [x] Roles Documentation
 		- [x] Activities and Tasks
 		- [ ] Sprints
 		- [ ] Coding Standards, Pull Request Procedures, and Other
 		- [x] RAD Document (On Github and in Word Doc as well)
 		- [ ] Meeting Intervals, Meeting Agendas (In some calendar)
-	- [ ] __@Team-Leader__: Set up Task Management Software (Such as some Agile Software or Asana or whatever) 
+	- [x] __@Team-Leader__: Set up Task Management Software (Such as some Agile Software or Asana or whatever) 
 	       
 4. _Meeting 1_: Roles, Standards, Sprints, and Coding Tools / Frameworks
 - [ ] __@Everyone__: Initial Roles and Responsibilities Meeting.
@@ -108,8 +106,8 @@ and RAD completed by next sprint.
 		- [ ] Pages with Example Content Designed
 	- [ ] __@Designer, @Implementor__: Create Storybook from all components in design system
 		- [ ] _Designer and Implementor Communicate hand off_
-		- [ ] Implementor Writes User Stories using Storybook
-		- [ ] Implementor Hands off Stories to Tester
+		- [ ] Tester Writes Component Stories using Storybook
+		- [ ] Tester Hands off Stories to Implementor
 
 3. Stories and Tests
 	- [ ] __@Implementor, @Tester__: Write Tests from stories and create components that pass all tests. _Tester and Implementor communicate_.
@@ -188,7 +186,7 @@ Goal of this meeting is to assess performance bottle necks, clear up confusion, 
 
 ### Activity 5: Final QA and Code Review
 
-1. _Meeting 5_: Assigning Tasks
+1. _Meeting 7_: Assigning Tasks
 - [ ] __@Everyone__: Team meeting discussing tasks that will be done before the end of this sprint. Goal of this meeting is to do Final 
 QA and Code Review completed by next sprint.
 
@@ -210,7 +208,7 @@ responsibility for this project.
 			- [ ] __@Backend, Team-Lead__: Fix any discrepancies on Hosted Site before Submission
 		- [ ] __@Backend, Team-Lead__: Inform team of Project Completion
 
-2. _Meeting 6_: Final Meeting
+2. _Meeting 8_: Final Meeting
 - [ ] __@Everyone__: Team meeting discussing the project. The goal of this is to voice any concerns about assignment submission, 
 to reflect on the lessons learned and how to do better next time, 
 and to discuss what should be done moving forward to be better professionals.
