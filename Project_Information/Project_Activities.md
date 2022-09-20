@@ -56,16 +56,18 @@ The activity order is as follows:
 
 3. Pre-Meeting Setup
 	- [x] __@Team-Leader__: Figure out best Frameworks, Design Systems, and Technology Stacks to use and alternatives for teammates that don't have experiences
-	- [ ] __@Team-Leader__: Research Coding Standards and how to enforce it by studying other Github Repos that already have such standards.
+	- [x] __@Team-Leader__: Research Coding Standards and how to enforce it by studying other Github Repos that already have such standards.
 	- [ ] __@Team-Leader__: Research Agile so you may be informed and be able to tell team mates of it.
 	- [ ] __@Team-Leader__: Set up Github Repo with all documentation _if you haven't already_
 		- [x] Roles Documentation
 		- [x] Activities and Tasks
 		- [ ] Sprints
-		- [ ] Coding Standards, Pull Request Procedures, and Other
+		- [x] Coding Standards, Pull Request Procedures, and Other
 		- [x] RAD Document (On Github and in Word Doc as well)
 		- [ ] Meeting Intervals, Meeting Agendas (In some calendar)
+		- [ ] ReadMe
 	- [x] __@Team-Leader__: Set up Task Management Software (Such as some Agile Software or Asana or whatever) 
+	- [ ] __@Team-Leader__: Set up Github Badges for Readme
 	       
 4. _Meeting 1_: Roles, Standards, Sprints, and Coding Tools / Frameworks
 - [ ] __@Everyone__: Initial Roles and Responsibilities Meeting.
