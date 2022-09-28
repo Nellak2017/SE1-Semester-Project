@@ -45,7 +45,7 @@ The activity order is as follows:
 	- [x] Add Kelly to private repo
 	- [x] Add Dylan to private repo
 	- [x] Add Devyn to private repo
-- [ ] __@Everyone__: Set up MS Project
+- [X] __@Everyone__: Set up MS Project
 
 2. Team Meetings
 - [x] __@Discord-Server-Admin__: Create Discord Channel dedicated to Team Meetings, have it scheduled in Discord
@@ -70,12 +70,12 @@ The activity order is as follows:
 	- [ ] __@Team-Leader__: Set up Github Badges for Readme
 	       
 4. _Meeting 1_: Roles, Standards, Sprints, and Coding Tools / Frameworks
-- [ ] __@Everyone__: Initial Roles and Responsibilities Meeting.
-	- [ ] __@Everyone__: Assign _Team-Leader, Designer, Tester, Implementor Roles_
-	- [ ] __@Everyone__: Assign _Time-Keeper, Minute-Taker, and Facilitator Roles_
-- [ ] __@Everyone__: Team meeting discussing Coding Standards, Conventions, Languages used, etc.
-- [ ] __@Everyone__: Team meeting discussing Agile Sprints and General Project Schedule
-- [ ] __@Everyone__: Team meeting discussing what Frameworks, Tools, etc. we will be using, along with general plan of attack. 
+- [X] __@Everyone__: Initial Roles and Responsibilities Meeting.
+	- [X] __@Everyone__: Assign _Team-Leader, Designer, Tester, Implementor Roles_
+	- [X] __@Everyone__: Assign _Time-Keeper, Minute-Taker, and Facilitator Roles_
+- [X] __@Everyone__: Team meeting discussing Coding Standards, Conventions, Languages used, etc.
+- [X] __@Everyone__: Team meeting discussing Agile Sprints and General Project Schedule
+- [X] __@Everyone__: Team meeting discussing what Frameworks, Tools, etc. we will be using, along with general plan of attack. 
 
 ### Activity 2: Modelling the Problem using UML
 
