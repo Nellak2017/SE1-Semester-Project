@@ -64,7 +64,7 @@ The activity order is as follows:
 		- [ ] Sprints
 		- [x] Coding Standards, Pull Request Procedures, and Other
 		- [x] RAD Document (On Github and in Word Doc as well)
-		- [ ] Meeting Intervals, Meeting Agendas (In some calendar)
+		- [x] Meeting Intervals, Meeting Agendas (In some calendar)
 		- [ ] ReadMe
 	- [x] __@Team-Leader__: Set up Task Management Software (Such as some Agile Software or Asana or whatever) 
 	- [ ] __@Team-Leader__: Set up Github Badges for Readme
@@ -80,15 +80,15 @@ The activity order is as follows:
 ### Activity 2: Modelling the Problem using UML
 
 1. _Meeting 2_: Project Specs and UML Modeling Division of Labor
-- [ ] __@Everyone__: Team meeting discussing the project requirements. Everyone must know what we are building. _It must include a Discussion about Smile_.
-- [ ] __@Everyone__: Divide up Making the UML Model into different Tasks. Assign each task to specific people and give deadlines. 
+- [x] __@Everyone__: Team meeting discussing the project requirements. Everyone must know what we are building. _It must include a Discussion about Smile_.
+- [x] __@Everyone__: Divide up Making the UML Model into different Tasks. Assign each task to specific people and give deadlines. 
 
 2. Requirements Elicitation
-	- [ ] Non Functional Requirements
-	- [ ] Functional Requirements
+	- [x] Non Functional Requirements
+	- [x] Functional Requirements
 
 3. UML Modelling
-- [ ] Use Case Diagram Created
+- [x] Use Case Diagram Created
 	- [ ] Scenarios made
 - [ ] Component Diagram Created
 - [ ] Class Diagram Created
