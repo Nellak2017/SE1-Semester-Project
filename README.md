@@ -33,6 +33,9 @@ To contribute, please visit SE1-Semester-Project/Project_Information/CONTRIBUTIO
 3. Before Submitting a Pull Request, run ```npm run lint``` and ```npm run test```so that the code conforms to StandardJS coding standards and passes all tests/
 4. To run code, run ```npm run dev``` and see your code be hosted locally at ```localhost:3000```.
 
+Before writing any code, always do a ```git checkout dev``` and ```git pull origin dev```. That way you will only make changes to the Dev branch that is up-to-date.
+Please only make changes to dev branches, if you want main to change submit a pull request. 
+
 # Showcase
 
 (Show examples of the project)
