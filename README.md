@@ -30,7 +30,7 @@ To contribute, please visit SE1-Semester-Project/Project_Information/CONTRIBUTIO
 
 1. Clone this Repo.
 2. Run ```npm i``` to install all dependencies.
-3. Before Submitting a Pull Request, run ```npm run lint`` and ```npm run test```so that the code conforms to StandardJS coding standards and passes all tests/
+3. Before Submitting a Pull Request, run ```npm run lint``` and ```npm run test```so that the code conforms to StandardJS coding standards and passes all tests/
 4. To run code, run ```npm run dev``` and see your code be hosted locally at ```localhost:3000```.
 
 # Showcase
