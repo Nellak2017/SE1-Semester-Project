@@ -2,12 +2,13 @@
   "name": "se1-semester-project",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "standard \"pages/**/*.js\" --fix",
-    "test": "standard \"pages/**/*.js\""
+    "lint": "standard --fix",
+    "test": "jest"
   },
   "dependencies": {
     "next": "12.3.1",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
+    "jest": "^29.1.2",
     "standard": "^17.0.0"
   }
 }
