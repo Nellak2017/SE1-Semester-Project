@@ -58,11 +58,55 @@ export const buttonPreSets = {
       }
     `,
     save: css`
-      // --- Set a Default Size for save. Override with size prop ---
+      // overrides size
       padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium}; // default size
       font-size: ${props => props.theme.fontSizes.smaller}; // default size
-      // ------
       &:active { // guessed value
+        box-shadow: ${props => props.theme.insets.normal};
+      }
+    `,
+    exit: css`
+      // Size has no effect on exit.
+      // Assuming there is just 1 exit size. 
+      // If there is more than 1 size, you must extract exit out to it's own component
+      // overrides color, padding (padding not compatible with size prop)
+      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+      color: ${props => props.theme.colors.dangerLight};
+      background-color: ${props => props.theme.colors.danger};
+      &:hover {
+        background-color: ${props => props.theme.colors.dangerHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.dangerActive};
+        box-shadow: ${props => props.theme.insets.normal};
+      }
+    `,
+    chatroomOptions: css`
+      // This component expects React Components as Children
+      // overrides background color and padding-top, padding-bottom
+      display: flex;
+      flex-direction: column;
+      padding-top: ${props => props.theme.spaces.small}; // padding override
+      padding-bottom: ${props => props.theme.spaces.small}; // padding override
+      background-color: ${props => props.theme.colors.lightNeutral}; // background color override
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
+        box-shadow: ${props => props.theme.insets.normal};
+      }
+    `,
+    messageControl: css`
+      // overrides background color and size
+      background-color: ${props => props.theme.colors.lightNeutral}; // color override
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium}; // size override
+      font-size: ${props => props.theme.fontSizes.smaller}; // size override
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
         box-shadow: ${props => props.theme.insets.normal};
       }
     `
@@ -150,6 +194,88 @@ export const buttonPreSets = {
         background-color: ${props => props.theme.colors.warningActive};
       }
     `
+  }
+}
+
+export const exitButtonPreSets = {
+  size: {
+    xs: css`
+      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+    `,
+    s: css`
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+    `,
+    m: css`
+      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+    `,
+    l: css`
+      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+    `,
+    xl: css`
+      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+    `
+  },
+  color: {
+    primary: css`
+    color: ${props => props.theme.colors.primaryLight};
+    background-color: ${props => props.theme.colors.primary};
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.primaryActive};
+    }
+  `,
+    darkNeutral: css`
+    color: ${props => props.theme.colors.darkNeutralLight};
+    background-color: ${props => props.theme.colors.darkNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.darkNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.darkNeutralActive};
+    }
+  `,
+    lightNeutral: css`
+    color: ${props => props.theme.colors.lightNeutralLight};
+    background-color: ${props => props.theme.colors.lightNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.lightNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.lightNeutralActive};
+    }
+  `,
+    danger: css`
+    color: ${props => props.theme.colors.dangerLight};
+    background-color: ${props => props.theme.colors.danger};
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.dangerActive};
+    }
+  `,
+    success: css`
+    color: ${props => props.theme.colors.successLight};
+    background-color: ${props => props.theme.colors.success};
+    &:hover {
+      background-color: ${props => props.theme.colors.successHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.successActive};
+    }
+  `,
+    warning: css`
+    color: ${props => props.theme.colors.warningLight};
+    background-color: ${props => props.theme.colors.warning};
+    &:hover {
+      background-color: ${props => props.theme.colors.warningHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.warningActive};
+    }
+  `
   }
 }
 
