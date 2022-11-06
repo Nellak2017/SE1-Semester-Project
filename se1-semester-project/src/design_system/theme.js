@@ -4,17 +4,19 @@ import { css } from 'styled-components'
 //    based on the prop passed in
 
 // see also: https://vaadin.com/docs/latest/styling/lumo/design-tokens/elevation#:~:text=Elevation%20is%20used%20to%20indicate,are%20applied%20using%20box%2Dshadow.
+// see also: https://m3.material.io/styles/elevation/tokens
+// see also: https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-material-design-elevations
 const elevations = [
-  '0 1px 4px -1px hsla(214, 45%, 20%, 0.52)',
-  '0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)',
-  '0 2px 6px -1px hsla(214, 53%, 23%, 0.16), 0 8px 24px -4px hsla(214, 47%, 21%, 0.38)',
-  '0 3px 18px -2px hsla(214, 53%, 23%, 0.16), 0 12px 48px -6px hsla(214, 47%, 21%, 0.38)',
-  '0 4px 24px -3px hsla(214, 53%, 23%, 0.16), 0 18px 64px -8px hsla(214, 47%, 21%, 0.38)']
-elevations.extraSmall = elevations[0] // elements closest to application background, like cards
-elevations.small = elevations[1] // tooltips
-elevations.medium = elevations[2] // contextual overlays for components, like select and menu bar
-elevations.large = elevations[3] // element that rise above most, like dialouges
-elevations.extraLarge = elevations[4] // elements highest in stacking order, like notifications
+  '0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)',
+  '0px 1px 8px 0px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px -2px rgba(0, 0, 0, 0.12)',
+  '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)',
+  '0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)',
+  '0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12)']
+elevations.extraSmall = elevations[0] // 1dp : elements closest to application background, like cards
+elevations.small = elevations[1] // 3dp : tooltips, banners, elevated buttons, FAB
+elevations.medium = elevations[2] // 6dp : contextual overlays for components, Menu, Dropdown, Nav bar
+elevations.large = elevations[3] // 8dp : element that rise above most, like dialouges, time picker, search bar
+elevations.extraLarge = elevations[4] // 12dp : elements highest in stacking order, like notifications
 
 const insets = [
   '1px 1px 5px rgba(1, 1, 0, 0.7) inset'
@@ -49,21 +51,17 @@ spaces.extraLarge = spaces[5]
 
 export const buttonPreSets = {
   variant: {
-    pill: css`
-      outline: none;
-      border: 0px solid transparent;
-      border-radius: ${props => props.theme.spaces.large}; 
-      &:hover {
-        box-shadow: ${props => props.theme.elevations.extraSmall};
+    pill: css``,
+    newChat: css`
+      &:active { // guessed value
+        box-shadow: ${props => props.theme.insets.normal};
       }
     `,
-    newChat: css`
-      outline: none;
-      border: 0px solid transparent;
-      border-radius: ${props => props.theme.spaces.large};
-      &:hover {
-        box-shadow: ${props => props.theme.elevations.extraSmall}; // guessed value
-      }
+    save: css`
+      // --- Set a Default Size for save. Override with size prop ---
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium}; // default size
+      font-size: ${props => props.theme.fontSizes.smaller}; // default size
+      // ------
       &:active { // guessed value
         box-shadow: ${props => props.theme.insets.normal};
       }
@@ -72,18 +70,23 @@ export const buttonPreSets = {
   size: {
     xs: css`
       padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.small};
+      font-size: ${props => props.theme.fontSizes.extraSmall};
     `,
     s: css`
       padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium};
+      font-size: ${props => props.theme.fontSizes.smaller};
     `,
     m: css`
       padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.large};
+      font-size: ${props => props.theme.fontSizes.medium};
     `,
     l: css`
       padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.larger};
+      font-size: ${props => props.theme.fontSizes.large};
     `,
     xl: css`
       padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.extraLarge};
+      font-size: ${props => props.theme.fontSizes.larger};
     `
   },
   color: {

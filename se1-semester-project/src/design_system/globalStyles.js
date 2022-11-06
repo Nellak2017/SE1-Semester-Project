@@ -69,9 +69,9 @@ input:hover {
 }
 
 .icon:hover {
-        transition: 350ms;
-        color: ${props => props.theme.colors.primaryLightHover} !important;
-        cursor: pointer;
+    transition: 350ms;
+    color: ${props => props.theme.colors.primaryLightHover} !important;
+    cursor: pointer;
 }
 
 `
