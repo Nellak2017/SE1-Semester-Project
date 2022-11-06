@@ -12,8 +12,6 @@ export default function Home () {
     </ThemeProvider>
   )
 }
-
-// color: ${props => props.theme.colors.danger}
 const TestComponent = styled.div`
   ${space};
   ${color};
