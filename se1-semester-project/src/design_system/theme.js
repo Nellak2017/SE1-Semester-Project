@@ -1,3 +1,7 @@
+import { css } from 'styled-components'
+// TODO: use this: https://github.com/styled-system/styled-system/issues/1798
+// Add variants or size or kind pre-sets, then when you need to alter hover, get that css in the hover
+//    based on the prop passed in
 
 // see also: https://vaadin.com/docs/latest/styling/lumo/design-tokens/elevation#:~:text=Elevation%20is%20used%20to%20indicate,are%20applied%20using%20box%2Dshadow.
 const elevations = [
@@ -11,6 +15,11 @@ elevations.small = elevations[1] // tooltips
 elevations.medium = elevations[2] // contextual overlays for components, like select and menu bar
 elevations.large = elevations[3] // element that rise above most, like dialouges
 elevations.extraLarge = elevations[4] // elements highest in stacking order, like notifications
+
+const insets = [
+  '1px 1px 5px rgba(1, 1, 0, 0.7) inset'
+]
+insets.normal = insets[0] // completely guessed
 
 // see also: https://zaat.dev/blog/building-a-design-system-in-react-with-styled-components/
 const fontSizes = ['10px', '12px', '14px', '16px', '24px', '40px', '64px']
@@ -35,6 +44,118 @@ spaces.medium = spaces[2]
 spaces.large = spaces[3]
 spaces.larger = spaces[4]
 spaces.extraLarge = spaces[5]
+
+// Pre-sets for variants, colors, sizes, outlines, elevations, media queries of different components
+
+export const buttonPreSets = {
+  variant: {
+    pill: css`
+      outline: none;
+      border: 0px solid transparent;
+      border-radius: ${props => props.theme.spaces.large}; 
+      &:hover {
+        box-shadow: ${props => props.theme.elevations.extraSmall};
+      }
+    `,
+    newChat: css`
+      outline: none;
+      border: 0px solid transparent;
+      border-radius: ${props => props.theme.spaces.large};
+      &:hover {
+        box-shadow: ${props => props.theme.elevations.extraSmall}; // guessed value
+      }
+      &:active { // guessed value
+        box-shadow: ${props => props.theme.insets.normal};
+      }
+    `
+  },
+  size: {
+    xs: css`
+      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.small};
+    `,
+    s: css`
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium};
+    `,
+    m: css`
+      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.large};
+    `,
+    l: css`
+      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.larger};
+    `,
+    xl: css`
+      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.extraLarge};
+    `
+  },
+  color: {
+    primary: css`
+      color: ${props => props.theme.colors.primaryLight};
+      background-color: ${props => props.theme.colors.primary};
+      &:hover {
+        background-color: ${props => props.theme.colors.primaryHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.primaryActive};
+      }
+    `,
+    darkNeutral: css`
+      color: ${props => props.theme.colors.darkNeutralLight};
+      background-color: ${props => props.theme.colors.darkNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.darkNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.darkNeutralActive};
+      }
+    `,
+    lightNeutral: css`
+      color: ${props => props.theme.colors.lightNeutralLight};
+      background-color: ${props => props.theme.colors.lightNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
+      }
+    `,
+    danger: css`
+      color: ${props => props.theme.colors.dangerLight};
+      background-color: ${props => props.theme.colors.danger};
+      &:hover {
+        background-color: ${props => props.theme.colors.dangerHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.dangerActive};
+      }
+    `,
+    success: css`
+      color: ${props => props.theme.colors.successLight};
+      background-color: ${props => props.theme.colors.success};
+      &:hover {
+        background-color: ${props => props.theme.colors.successHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.successActive};
+      }
+    `,
+    warning: css`
+      color: ${props => props.theme.colors.warningLight};
+      background-color: ${props => props.theme.colors.warning};
+      &:hover {
+        background-color: ${props => props.theme.colors.warningHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.warningActive};
+      }
+    `
+  }
+}
+
+// Pre-set Getter function
+// see also: https://github.com/styled-system/styled-system/issues/1798
+// see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components
+export const getPresetCSS = (preSets, preSetProp) => (props) => {
+  return preSets[preSetProp][props[preSetProp]]
+}
 
 // body and defaultFontColor are redundant and only there for understandability
 export default {
@@ -105,5 +226,6 @@ export default {
   fontSizes,
   breakpoints,
   spaces,
-  elevations
+  elevations,
+  insets
 }
