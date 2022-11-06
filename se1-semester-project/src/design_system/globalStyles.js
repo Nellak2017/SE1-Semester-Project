@@ -9,7 +9,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-size: ${props => props.theme.fontSizes.medium};
     font-family: 'Poppins', 'Source Sans Pro', 'sans-serif';
-    // Will we use Poppins?
 }
 
 a {
@@ -32,15 +31,16 @@ p, input, li, a, span :hover{
     box-shadow: ${props => props.theme.elevations.extraSmall};
 }
 
-// appears like basic button by default
+// appears like a medium sized, primary, pill button by default
 button {
-    background-color: ${props => props.theme.colors.primary};
-    padding: ${props => props.theme.spaces.medium};
-    border-radius: ${props => props.theme.spaces.large};
+    background-color: ${props => props.theme.colors.primary}; // color
+    padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.large}; // size
+    border-radius: ${props => props.theme.spaces.large}; // pill 
     outline: none;
     border: 0px solid transparent;
 }
 
+// works for a primary, pill button by default
 button:hover {
     background-color: ${props => props.theme.colors.primaryHover};
     box-shadow: ${props => props.theme.elevations.extraSmall};
