@@ -1,8 +1,8 @@
 import Button from './Button'
 // See also, Decorators Tutorial: https://www.youtube.com/watch?v=djmAUrfMGQs
-// TODO: Extract or add options for [exit button?, icon button, drop down button (incompatible corners for different sizes)]
+// TODO: Extract or add options for [icon button, drop down button (incompatible corners for different sizes)]
 export default {
-  title: 'Atoms/Button',
+  title: 'Atoms/Buttons/Button',
   component: Button,
   argTypes: {
     variant: { control: 'text' },
@@ -32,14 +32,6 @@ SaveButton.args = {
   variant: 'save',
   children: 'Default'
 }
-
-// Not compatible with size prop. If another size needed, extract to new component
-/*
-export const ExitButton = Template.bind({})
-ExitButton.args = {
-  variant: 'exit'
-}
-*/
 
 // This component expects React Components as Children
 export const ChatRoomOptionsButton = Template.bind({})

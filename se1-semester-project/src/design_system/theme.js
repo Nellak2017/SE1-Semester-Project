@@ -279,6 +279,262 @@ export const exitButtonPreSets = {
   }
 }
 
+export const squareButtonPreSets = {
+  size: {
+    xs: css`
+      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+    `,
+    s: css`
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+    `,
+    m: css`
+      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+    `,
+    l: css`
+      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+    `,
+    xl: css`
+      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+    `
+  },
+  color: {
+    primary: css`
+    color: ${props => props.theme.colors.primaryLight};
+    background-color: ${props => props.theme.colors.primary};
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.primaryActive};
+    }
+  `,
+    darkNeutral: css`
+    color: ${props => props.theme.colors.darkNeutralLight};
+    background-color: ${props => props.theme.colors.darkNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.darkNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.darkNeutralActive};
+    }
+  `,
+    lightNeutral: css`
+    color: ${props => props.theme.colors.lightNeutralLight};
+    background-color: ${props => props.theme.colors.lightNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.lightNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.lightNeutralActive};
+    }
+  `,
+    danger: css`
+    color: ${props => props.theme.colors.dangerLight};
+    background-color: ${props => props.theme.colors.danger};
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.dangerActive};
+    }
+  `,
+    success: css`
+    color: ${props => props.theme.colors.successLight};
+    background-color: ${props => props.theme.colors.success};
+    &:hover {
+      background-color: ${props => props.theme.colors.successHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.successActive};
+    }
+  `,
+    warning: css`
+    color: ${props => props.theme.colors.warningLight};
+    background-color: ${props => props.theme.colors.warning};
+    &:hover {
+      background-color: ${props => props.theme.colors.warningHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.warningActive};
+    }
+  `
+  }
+}
+
+export const dropDownButtonPreSets = {
+  size: {
+    xs: css`
+      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+      border-radius: ${props => props.theme.spaces.small};
+    `,
+    s: css`
+      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+    `,
+    m: css`
+      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+    `,
+    l: css`
+      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+    `,
+    xl: css`
+      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+    `
+  },
+  color: {
+    primary: css`
+    color: ${props => props.theme.colors.primaryLight};
+    background-color: ${props => props.theme.colors.primary};
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.primaryActive};
+    }
+  `,
+    darkNeutral: css`
+    color: ${props => props.theme.colors.darkNeutralLight};
+    background-color: ${props => props.theme.colors.darkNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.darkNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.darkNeutralActive};
+    }
+  `,
+    lightNeutral: css`
+    color: ${props => props.theme.colors.lightNeutralLight};
+    background-color: ${props => props.theme.colors.lightNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.lightNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.lightNeutralActive};
+    }
+  `,
+    danger: css`
+    color: ${props => props.theme.colors.dangerLight};
+    background-color: ${props => props.theme.colors.danger};
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.dangerActive};
+    }
+  `,
+    success: css`
+    color: ${props => props.theme.colors.successLight};
+    background-color: ${props => props.theme.colors.success};
+    &:hover {
+      background-color: ${props => props.theme.colors.successHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.successActive};
+    }
+  `,
+    warning: css`
+    color: ${props => props.theme.colors.warningLight};
+    background-color: ${props => props.theme.colors.warning};
+    &:hover {
+      background-color: ${props => props.theme.colors.warningHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.warningActive};
+    }
+  `
+  },
+  borderSize: {
+    xs: css`
+      border-width: 1px;
+    `,
+    s: css`
+      border-width: 2px;
+    `,
+    m: css`
+      border-width: 4px;
+    `,
+    l: css`
+      border-width: 8px;
+    `,
+    xl: css`
+      border-width: 16px;
+    `
+  },
+  borderColor: {
+    primaryLight: css`
+      border-color: ${props => props.theme.colors.primaryLight};
+    `,
+    primary: css`
+      border-color: ${props => props.theme.colors.primary};
+    `,
+    primaryDark: css`
+      border-color: ${props => props.theme.colors.primaryDark};
+    `,
+    primaryDarker: css`
+      border-color: ${props => props.theme.colors.primaryDarker};
+    `,
+    darkNeutralLight: css`
+      border-color: ${props => props.theme.colors.darkNeutralLight};
+    `,
+    darkNeutral: css`
+      border-color: ${props => props.theme.colors.darkNeutral};
+    `,
+    darkNeutralDark: css`
+      border-color: ${props => props.theme.colors.darkNeutralDark};
+    `,
+    darkNeutralDarker: css`
+      border-color: ${props => props.theme.colors.darkNeutralDarker};
+    `,
+    lightNeutralLight: css`
+      border-color: ${props => props.theme.colors.lightNeutralLight};
+    `,
+    lightNeutral: css`
+      border-color: ${props => props.theme.colors.lightNeutral};
+    `,
+    lightNeutralDark: css`
+      border-color: ${props => props.theme.colors.lightNeutralDark};
+    `,
+    lightNeutralDarker: css`
+      border-color: ${props => props.theme.colors.lightNeutralDarker};
+    `,
+    dangerLight: css`
+      border-color: ${props => props.theme.colors.dangerLight};
+    `,
+    danger: css`
+      border-color: ${props => props.theme.colors.danger};
+    `,
+    dangerDark: css`
+      border-color: ${props => props.theme.colors.dangerDark};
+    `,
+    dangerDarker: css`
+      border-color: ${props => props.theme.colors.dangerDarker};
+    `,
+    successLight: css`
+      border-color: ${props => props.theme.colors.successLight};
+    `,
+    success: css`
+      border-color: ${props => props.theme.colors.success};
+    `,
+    successDark: css`
+      border-color: ${props => props.theme.colors.successDark};
+    `,
+    successDarker: css`
+      border-color: ${props => props.theme.colors.successDarker};
+    `,
+    warningLight: css`
+      border-color: ${props => props.theme.colors.warningLight};
+    `,
+    warning: css`
+      border-color: ${props => props.theme.colors.warning};
+    `,
+    warningDark: css`
+      border-color: ${props => props.theme.colors.warningDark};
+    `,
+    warningDarker: css`
+      border-color: ${props => props.theme.colors.warningDarker};
+    `
+  }
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components

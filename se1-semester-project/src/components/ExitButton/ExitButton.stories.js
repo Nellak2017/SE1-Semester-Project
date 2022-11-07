@@ -1,6 +1,6 @@
 import ExitButton from './ExitButton'
 export default {
-  title: 'Atoms/ExitButton',
+  title: 'Atoms/Buttons/ExitButton',
   component: ExitButton,
   argTypes: {
     size: { control: 'text' },
