@@ -4,7 +4,7 @@ import { getPresetCSS, squareButtonPreSets } from '../../design_system/theme'
 
 export const SquareButtonStyled = styled.button`
     outline: none;
-    border: 0px solid transparent;
+    outline: 0px solid transparent;
     border-radius: ${props => props.theme.spaces.small};
     &:hover {
         box-shadow: ${props => props.theme.elevations.small};
