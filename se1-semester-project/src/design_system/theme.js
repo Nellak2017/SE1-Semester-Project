@@ -763,6 +763,27 @@ export const containerPreSets = {
   outlineColor: outlineColorPreset
 }
 
+export const messagePreSets = {
+  variant: {
+    sent: css`
+      border-radius: ${props => props.theme.spaces.medium} 0 ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+    `,
+    received: css`
+      border-radius: 0 ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+      // pre-set color for this is Light Base Neutral
+      color: ${props => props.theme.colors.lightNeutralLight};
+      background-color: ${props => props.theme.colors.lightNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
+      }
+    `
+  },
+  color: colorPreset
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components
