@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, buttonPreSets } from '../../design_system/theme'
+import { getPresetCSS, buttonPreSets } from '../../../design_system/theme'
 
 // Note: The ordering of the 'getPresetCSS' determines the CSS Selector precedence
 export const ButtonStyled = styled.button`

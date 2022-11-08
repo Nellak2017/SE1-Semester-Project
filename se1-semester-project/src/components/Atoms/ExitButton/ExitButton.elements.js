@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, exitButtonPreSets } from '../../design_system/theme'
+import { getPresetCSS, exitButtonPreSets } from '../../../design_system/theme'
 
 export const ExitButtonStyled = styled.button`
     outline: none;

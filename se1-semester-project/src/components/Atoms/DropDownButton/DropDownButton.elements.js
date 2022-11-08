@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, dropDownButtonPreSets } from '../../design_system/theme'
+import { getPresetCSS, dropDownButtonPreSets } from '../../../design_system/theme'
 
 export const DropDownButtonStyled = styled.button`
     outline-style: solid;

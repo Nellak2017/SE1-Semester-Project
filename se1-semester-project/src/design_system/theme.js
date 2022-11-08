@@ -460,6 +460,48 @@ const iconSizePreset = {
   `
 }
 
+const squareSizePreset = {
+  xs: css`
+    padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+  `,
+  s: css`
+    padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+  `,
+  m: css`
+    padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+  `,
+  l: css`
+    padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+  `,
+  xl: css`
+    padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+  `,
+  xxl: css`
+    padding: ${props => props.theme.spaces.extraLarge} ${props => props.theme.spaces.extraLarge};
+  `
+}
+
+const containerSizePreset = {
+  xs: css`
+    padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+  `,
+  s: css`
+    padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+  `,
+  m: css`
+    padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+  `,
+  l: css`
+    padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+  `,
+  xl: css`
+    padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+  `,
+  xxl: css`
+    padding: ${props => props.theme.spaces.extraLarge} ${props => props.theme.spaces.extraLarge};
+  `
+}
+
 // 180 variations
 export const buttonPreSets = {
   variant: {
@@ -556,23 +598,7 @@ export const exitButtonPreSets = {
 
 // 30 variations
 export const squareButtonPreSets = {
-  size: {
-    xs: css`
-      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
-    `,
-    s: css`
-      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
-    `,
-    m: css`
-      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
-    `,
-    l: css`
-      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
-    `,
-    xl: css`
-      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
-    `
-  },
+  size: squareSizePreset,
   color: colorPreset
 }
 
@@ -715,6 +741,24 @@ export const iconButtonPreSets = {
   color: allColorsPreset,
   background: transparentColorPreset,
   size: iconSizePreset,
+  outlineSize: outlineSizePreset,
+  outlineColor: outlineColorPreset
+}
+
+export const containerPreSets = {
+  variant: {
+    normal: css`
+      outline-width: 0;
+    `,
+    outline: css`
+      // outline size is xs
+      outline-width: 1px;
+      // outline color is lightNeutralLight
+      outline-color: ${props => props.theme.colors.lightNeutralLight};
+    `
+  },
+  size: containerSizePreset,
+  color: colorPreset,
   outlineSize: outlineSizePreset,
   outlineColor: outlineColorPreset
 }

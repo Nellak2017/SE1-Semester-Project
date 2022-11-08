@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, iconButtonPreSets } from '../../design_system/theme'
+import { getPresetCSS, iconButtonPreSets } from '../../../design_system/theme'
 
 // NOTE: Responsive Size is in beta, use at your own risk
 // Note: make sure the icons are of sizes -> [12px, 14px, 16px, 24px, 40px, 64px]
