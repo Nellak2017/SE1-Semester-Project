@@ -6,8 +6,8 @@ export default {
   argTypes: {
     size: { control: 'text' },
     color: { control: 'text' },
-    borderSize: { control: 'text' },
-    borderColor: { control: 'text' }
+    outlineSize: { control: 'text' },
+    outlineColor: { control: 'text' }
   }
 }
 

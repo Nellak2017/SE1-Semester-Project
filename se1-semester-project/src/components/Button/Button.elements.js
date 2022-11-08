@@ -6,7 +6,7 @@ import { getPresetCSS, buttonPreSets } from '../../design_system/theme'
 export const ButtonStyled = styled.button`
     // --- Common styles of most button variants ---
     outline: none;
-    border: 0px solid transparent;
+    outline: 0px solid transparent;
     border-radius: ${props => props.theme.spaces.large};
     &:hover {
         box-shadow: ${props => props.theme.elevations.small};

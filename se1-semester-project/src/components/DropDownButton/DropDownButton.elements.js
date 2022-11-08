@@ -2,9 +2,8 @@ import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, dropDownButtonPreSets } from '../../design_system/theme'
 
-// Add more controls
 export const DropDownButtonStyled = styled.button`
-    border-style: solid;
+    outline-style: solid;
     border-radius: ${props => props.theme.spaces.medium};
     &:hover {
         box-shadow: ${props => props.theme.elevations.small};
@@ -17,6 +16,6 @@ export const DropDownButtonStyled = styled.button`
     ${typography}
     ${getPresetCSS(dropDownButtonPreSets, 'size')}
     ${getPresetCSS(dropDownButtonPreSets, 'color')} 
-    ${getPresetCSS(dropDownButtonPreSets, 'borderSize')}
-    ${getPresetCSS(dropDownButtonPreSets, 'borderColor')} 
+    ${getPresetCSS(dropDownButtonPreSets, 'outlineSize')}
+    ${getPresetCSS(dropDownButtonPreSets, 'outlineColor')} 
 `

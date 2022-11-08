@@ -4,7 +4,7 @@ import { getPresetCSS, exitButtonPreSets } from '../../design_system/theme'
 
 export const ExitButtonStyled = styled.button`
     outline: none;
-    border: 0px solid transparent;
+    outline: 0px solid transparent;
     border-radius: 100%;
     &:hover {
         box-shadow: ${props => props.theme.elevations.small};
