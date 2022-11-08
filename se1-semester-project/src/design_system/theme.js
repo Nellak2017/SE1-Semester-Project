@@ -1,5 +1,6 @@
 import { css } from 'styled-components'
-// TODO: use this: https://github.com/styled-system/styled-system/issues/1798
+// TODO: Factor out re-used attributes inside of the pre-sets so you can apply DRY principle. Ex: Color is re-used alot, so factor it out.
+
 // Add variants or size or kind pre-sets, then when you need to alter hover, get that css in the hover
 //    based on the prop passed in
 
@@ -49,6 +50,417 @@ spaces.extraLarge = spaces[5]
 
 // Pre-sets for variants, colors, sizes, outlines, elevations, media queries of different components
 
+const colorPreset = {
+  primary: css`
+    color: ${props => props.theme.colors.primaryLight};
+    background-color: ${props => props.theme.colors.primary};
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.primaryActive};
+    }
+  `,
+  darkNeutral: css`
+    color: ${props => props.theme.colors.darkNeutralLight};
+    background-color: ${props => props.theme.colors.darkNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.darkNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.darkNeutralActive};
+    }
+  `,
+  lightNeutral: css`
+    color: ${props => props.theme.colors.lightNeutralLight};
+    background-color: ${props => props.theme.colors.lightNeutral};
+    &:hover {
+      background-color: ${props => props.theme.colors.lightNeutralHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.lightNeutralActive};
+    }
+  `,
+  danger: css`
+    color: ${props => props.theme.colors.dangerLight};
+    background-color: ${props => props.theme.colors.danger};
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.dangerActive};
+    }
+  `,
+  success: css`
+    color: ${props => props.theme.colors.successLight};
+    background-color: ${props => props.theme.colors.success};
+    &:hover {
+      background-color: ${props => props.theme.colors.successHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.successActive};
+    }
+  `,
+  warning: css`
+    color: ${props => props.theme.colors.warningLight};
+    background-color: ${props => props.theme.colors.warning};
+    &:hover {
+      background-color: ${props => props.theme.colors.warningHover};
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.warningActive};
+    }
+  `
+}
+
+// see also: https://stackoverflow.com/questions/45852991/concat-prop-value-with-string-in-styled-component
+const transparentColorPreset = {
+  transparentPrimary: css`
+    background-color: ${props => props.theme.colors.primaryLight}00; // bg is initially transparent
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryHover}20; // then 20% on hover and active
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.primaryActive}20;
+    }
+  `,
+  transparentDarkNeutral: css`
+    background-color: ${props => props.theme.colors.darkNeutral}00;
+    &:hover {
+      background-color: ${props => props.theme.colors.darkNeutralHover}20;
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.darkNeutralActive}20;
+    }
+  `,
+  transparentLightNeutral: css`
+    background-color: ${props => props.theme.colors.lightNeutral}00;
+    &:hover {
+      background-color: ${props => props.theme.colors.lightNeutralHover}20;
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.lightNeutralActive}20;
+    }
+  `,
+  transparentDanger: css`
+    background-color: ${props => props.theme.colors.danger}00;
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerHover}20;
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.dangerActive}20;
+    }
+  `,
+  transparentSuccess: css`
+    background-color: ${props => props.theme.colors.success}00;
+    &:hover {
+      background-color: ${props => props.theme.colors.successHover}20;
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.successActive}20;
+    }
+  `,
+  transparentWarning: css`
+    background-color: ${props => props.theme.colors.warning}00;
+    &:hover {
+      background-color: ${props => props.theme.colors.warningHover}20;
+    }
+    &:active {
+      background-color: ${props => props.theme.colors.warningActive}20;
+    }
+  `,
+  primary: css`
+      background-color: ${props => props.theme.colors.primary};
+      &:hover {
+        background-color: ${props => props.theme.colors.primaryHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.primaryActive};
+      }
+    `,
+  darkNeutral: css`
+      background-color: ${props => props.theme.colors.darkNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.darkNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.darkNeutralActive};
+      }
+    `,
+  lightNeutral: css`
+      background-color: ${props => props.theme.colors.lightNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
+      }
+    `,
+  danger: css`
+      background-color: ${props => props.theme.colors.danger};
+      &:hover {
+        background-color: ${props => props.theme.colors.dangerHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.dangerActive};
+      }
+    `,
+  success: css`
+      background-color: ${props => props.theme.colors.success};
+      &:hover {
+        background-color: ${props => props.theme.colors.successHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.successActive};
+      }
+    `,
+  warning: css`
+      background-color: ${props => props.theme.colors.warning};
+      &:hover {
+        background-color: ${props => props.theme.colors.warningHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.warningActive};
+      }
+    `
+}
+
+const outlineSizePreset = {
+  xs: css`
+    outline-width: 1px;
+  `,
+  s: css`
+    outline-width: 2px;
+  `,
+  m: css`
+    outline-width: 4px;
+  `,
+  l: css`
+    outline-width: 8px;
+  `,
+  xl: css`
+    outline-width: 16px;
+  `
+}
+
+const outlineColorPreset = {
+  primaryLight: css`
+    outline-color: ${props => props.theme.colors.primaryLight};
+  `,
+  primary: css`
+    outline-color: ${props => props.theme.colors.primary};
+  `,
+  primaryDark: css`
+    outline-color: ${props => props.theme.colors.primaryDark};
+  `,
+  primaryDarker: css`
+    outline-color: ${props => props.theme.colors.primaryDarker};
+  `,
+  darkNeutralLight: css`
+    outline-color: ${props => props.theme.colors.darkNeutralLight};
+  `,
+  darkNeutral: css`
+    outline-color: ${props => props.theme.colors.darkNeutral};
+  `,
+  darkNeutralDark: css`
+    outline-color: ${props => props.theme.colors.darkNeutralDark};
+  `,
+  darkNeutralDarker: css`
+    outline-color: ${props => props.theme.colors.darkNeutralDarker};
+  `,
+  lightNeutralLight: css`
+    outline-color: ${props => props.theme.colors.lightNeutralLight};
+  `,
+  lightNeutral: css`
+    outline-color: ${props => props.theme.colors.lightNeutral};
+  `,
+  lightNeutralDark: css`
+    outline-color: ${props => props.theme.colors.lightNeutralDark};
+  `,
+  lightNeutralDarker: css`
+    outline-color: ${props => props.theme.colors.lightNeutralDarker};
+  `,
+  dangerLight: css`
+    outline-color: ${props => props.theme.colors.dangerLight};
+  `,
+  danger: css`
+    outline-color: ${props => props.theme.colors.danger};
+  `,
+  dangerDark: css`
+    outline-color: ${props => props.theme.colors.dangerDark};
+  `,
+  dangerDarker: css`
+    outline-color: ${props => props.theme.colors.dangerDarker};
+  `,
+  successLight: css`
+    outline-color: ${props => props.theme.colors.successLight};
+  `,
+  success: css`
+    outline-color: ${props => props.theme.colors.success};
+  `,
+  successDark: css`
+    outline-color: ${props => props.theme.colors.successDark};
+  `,
+  successDarker: css`
+    outline-color: ${props => props.theme.colors.successDarker};
+  `,
+  warningLight: css`
+    outline-color: ${props => props.theme.colors.warningLight};
+  `,
+  warning: css`
+    outline-color: ${props => props.theme.colors.warning};
+  `,
+  warningDark: css`
+    outline-color: ${props => props.theme.colors.warningDark};
+  `,
+  warningDarker: css`
+    outline-color: ${props => props.theme.colors.warningDarker};
+  `
+}
+
+// contains all the colors that outlineColor supports, but for font colors only
+const allColorsPreset = {
+  primaryLight: css`
+    color: ${props => props.theme.colors.primaryLight};
+  `,
+  primary: css`
+    color: ${props => props.theme.colors.primary};
+  `,
+  primaryDark: css`
+    color: ${props => props.theme.colors.primaryDark};
+  `,
+  primaryDarker: css`
+    color: ${props => props.theme.colors.primaryDarker};
+  `,
+  darkNeutralLight: css`
+    color: ${props => props.theme.colors.darkNeutralLight};
+  `,
+  darkNeutral: css`
+    color: ${props => props.theme.colors.darkNeutral};
+  `,
+  darkNeutralDark: css`
+    color: ${props => props.theme.colors.darkNeutralDark};
+  `,
+  darkNeutralDarker: css`
+    color: ${props => props.theme.colors.darkNeutralDarker};
+  `,
+  lightNeutralLight: css`
+    color: ${props => props.theme.colors.lightNeutralLight};
+  `,
+  lightNeutral: css`
+    color: ${props => props.theme.colors.lightNeutral};
+  `,
+  lightNeutralDark: css`
+    color: ${props => props.theme.colors.lightNeutralDark};
+  `,
+  lightNeutralDarker: css`
+    color: ${props => props.theme.colors.lightNeutralDarker};
+  `,
+  dangerLight: css`
+    color: ${props => props.theme.colors.dangerLight};
+  `,
+  danger: css`
+    color: ${props => props.theme.colors.danger};
+  `,
+  dangerDark: css`
+    color: ${props => props.theme.colors.dangerDark};
+  `,
+  dangerDarker: css`
+    color: ${props => props.theme.colors.dangerDarker};
+  `,
+  successLight: css`
+    color: ${props => props.theme.colors.successLight};
+  `,
+  success: css`
+    color: ${props => props.theme.colors.success};
+  `,
+  successDark: css`
+    color: ${props => props.theme.colors.successDark};
+  `,
+  successDarker: css`
+    color: ${props => props.theme.colors.successDarker};
+  `,
+  warningLight: css`
+    color: ${props => props.theme.colors.warningLight};
+  `,
+  warning: css`
+    color: ${props => props.theme.colors.warning};
+  `,
+  warningDark: css`
+    color: ${props => props.theme.colors.warningDark};
+  `,
+  warningDarker: css`
+    color: ${props => props.theme.colors.warningDarker};
+  `
+}
+
+const roundButtonSizePreset = {
+  xs: css`
+    padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+  `,
+  s: css`
+    padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+  `,
+  m: css`
+    padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+  `,
+  l: css`
+    padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+  `,
+  xl: css`
+    padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+  `
+}
+
+const iconSizePreset = {
+  xs: css`
+    height: ${props => props.theme.fontSizes.smaller};
+    width: ${props => props.theme.fontSizes.smaller};
+    padding: 1px;
+    font-size: ${props => props.theme.fontSizes.extraSmall};
+  `,
+  s: css`
+    height: ${props => props.theme.fontSizes.small};
+    width: ${props => props.theme.fontSizes.small};
+    padding: 2px;
+    font-size: ${props => props.theme.fontSizes.smaller};
+  `,
+  m: css`
+    height: ${props => props.theme.fontSizes.medium};
+    width: ${props => props.theme.fontSizes.medium};
+    padding: 2px;
+    font-size: ${props => props.theme.fontSizes.small};
+  `,
+  l: css`
+    height: ${props => props.theme.fontSizes.large};
+    width: ${props => props.theme.fontSizes.large};
+    padding: 4px;
+    font-size: ${props => props.theme.fontSizes.medium};
+  `,
+  xl: css`
+    height: ${props => props.theme.fontSizes.larger};
+    width: ${props => props.theme.fontSizes.larger};
+    padding: 8px;
+    font-size: ${props => props.theme.fontSizes.large};
+  `,
+  xxl: css`
+    height: ${props => props.theme.fontSizes.extraLarge};
+    width: ${props => props.theme.fontSizes.extraLarge};
+    padding: 10px;
+    font-size: ${props => props.theme.fontSizes.larger};
+  `,
+  responsive: css`
+    // figure this out later
+    /*
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    */
+  `
+}
+
+// 180 variations
 export const buttonPreSets = {
   variant: {
     pill: css``,
@@ -133,152 +545,16 @@ export const buttonPreSets = {
       font-size: ${props => props.theme.fontSizes.larger};
     `
   },
-  color: {
-    primary: css`
-      color: ${props => props.theme.colors.primaryLight};
-      background-color: ${props => props.theme.colors.primary};
-      &:hover {
-        background-color: ${props => props.theme.colors.primaryHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.primaryActive};
-      }
-    `,
-    darkNeutral: css`
-      color: ${props => props.theme.colors.darkNeutralLight};
-      background-color: ${props => props.theme.colors.darkNeutral};
-      &:hover {
-        background-color: ${props => props.theme.colors.darkNeutralHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.darkNeutralActive};
-      }
-    `,
-    lightNeutral: css`
-      color: ${props => props.theme.colors.lightNeutralLight};
-      background-color: ${props => props.theme.colors.lightNeutral};
-      &:hover {
-        background-color: ${props => props.theme.colors.lightNeutralHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.lightNeutralActive};
-      }
-    `,
-    danger: css`
-      color: ${props => props.theme.colors.dangerLight};
-      background-color: ${props => props.theme.colors.danger};
-      &:hover {
-        background-color: ${props => props.theme.colors.dangerHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.dangerActive};
-      }
-    `,
-    success: css`
-      color: ${props => props.theme.colors.successLight};
-      background-color: ${props => props.theme.colors.success};
-      &:hover {
-        background-color: ${props => props.theme.colors.successHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.successActive};
-      }
-    `,
-    warning: css`
-      color: ${props => props.theme.colors.warningLight};
-      background-color: ${props => props.theme.colors.warning};
-      &:hover {
-        background-color: ${props => props.theme.colors.warningHover};
-      }
-      &:active {
-        background-color: ${props => props.theme.colors.warningActive};
-      }
-    `
-  }
+  color: colorPreset
 }
 
+// 30 variations
 export const exitButtonPreSets = {
-  size: {
-    xs: css`
-      padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
-    `,
-    s: css`
-      padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
-    `,
-    m: css`
-      padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
-    `,
-    l: css`
-      padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
-    `,
-    xl: css`
-      padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
-    `
-  },
-  color: {
-    primary: css`
-    color: ${props => props.theme.colors.primaryLight};
-    background-color: ${props => props.theme.colors.primary};
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.primaryActive};
-    }
-  `,
-    darkNeutral: css`
-    color: ${props => props.theme.colors.darkNeutralLight};
-    background-color: ${props => props.theme.colors.darkNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.darkNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.darkNeutralActive};
-    }
-  `,
-    lightNeutral: css`
-    color: ${props => props.theme.colors.lightNeutralLight};
-    background-color: ${props => props.theme.colors.lightNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.lightNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.lightNeutralActive};
-    }
-  `,
-    danger: css`
-    color: ${props => props.theme.colors.dangerLight};
-    background-color: ${props => props.theme.colors.danger};
-    &:hover {
-      background-color: ${props => props.theme.colors.dangerHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.dangerActive};
-    }
-  `,
-    success: css`
-    color: ${props => props.theme.colors.successLight};
-    background-color: ${props => props.theme.colors.success};
-    &:hover {
-      background-color: ${props => props.theme.colors.successHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.successActive};
-    }
-  `,
-    warning: css`
-    color: ${props => props.theme.colors.warningLight};
-    background-color: ${props => props.theme.colors.warning};
-    &:hover {
-      background-color: ${props => props.theme.colors.warningHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.warningActive};
-    }
-  `
-  }
+  size: roundButtonSizePreset,
+  color: colorPreset
 }
 
+// 30 variations
 export const squareButtonPreSets = {
   size: {
     xs: css`
@@ -297,70 +573,10 @@ export const squareButtonPreSets = {
       padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
     `
   },
-  color: {
-    primary: css`
-    color: ${props => props.theme.colors.primaryLight};
-    background-color: ${props => props.theme.colors.primary};
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.primaryActive};
-    }
-  `,
-    darkNeutral: css`
-    color: ${props => props.theme.colors.darkNeutralLight};
-    background-color: ${props => props.theme.colors.darkNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.darkNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.darkNeutralActive};
-    }
-  `,
-    lightNeutral: css`
-    color: ${props => props.theme.colors.lightNeutralLight};
-    background-color: ${props => props.theme.colors.lightNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.lightNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.lightNeutralActive};
-    }
-  `,
-    danger: css`
-    color: ${props => props.theme.colors.dangerLight};
-    background-color: ${props => props.theme.colors.danger};
-    &:hover {
-      background-color: ${props => props.theme.colors.dangerHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.dangerActive};
-    }
-  `,
-    success: css`
-    color: ${props => props.theme.colors.successLight};
-    background-color: ${props => props.theme.colors.success};
-    &:hover {
-      background-color: ${props => props.theme.colors.successHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.successActive};
-    }
-  `,
-    warning: css`
-    color: ${props => props.theme.colors.warningLight};
-    background-color: ${props => props.theme.colors.warning};
-    &:hover {
-      background-color: ${props => props.theme.colors.warningHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.warningActive};
-    }
-  `
-  }
+  color: colorPreset
 }
 
+// 3,600 variations
 export const dropDownButtonPreSets = {
   size: {
     xs: css`
@@ -380,159 +596,127 @@ export const dropDownButtonPreSets = {
       padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
     `
   },
-  color: {
-    primary: css`
-    color: ${props => props.theme.colors.primaryLight};
-    background-color: ${props => props.theme.colors.primary};
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.primaryActive};
-    }
-  `,
-    darkNeutral: css`
-    color: ${props => props.theme.colors.darkNeutralLight};
-    background-color: ${props => props.theme.colors.darkNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.darkNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.darkNeutralActive};
-    }
-  `,
-    lightNeutral: css`
-    color: ${props => props.theme.colors.lightNeutralLight};
-    background-color: ${props => props.theme.colors.lightNeutral};
-    &:hover {
-      background-color: ${props => props.theme.colors.lightNeutralHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.lightNeutralActive};
-    }
-  `,
-    danger: css`
-    color: ${props => props.theme.colors.dangerLight};
-    background-color: ${props => props.theme.colors.danger};
-    &:hover {
-      background-color: ${props => props.theme.colors.dangerHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.dangerActive};
-    }
-  `,
-    success: css`
-    color: ${props => props.theme.colors.successLight};
-    background-color: ${props => props.theme.colors.success};
-    &:hover {
-      background-color: ${props => props.theme.colors.successHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.successActive};
-    }
-  `,
-    warning: css`
-    color: ${props => props.theme.colors.warningLight};
-    background-color: ${props => props.theme.colors.warning};
-    &:hover {
-      background-color: ${props => props.theme.colors.warningHover};
-    }
-    &:active {
-      background-color: ${props => props.theme.colors.warningActive};
-    }
-  `
-  },
-  borderSize: {
-    xs: css`
-      border-width: 1px;
+  color: colorPreset,
+  outlineSize: outlineSizePreset,
+  outlineColor: outlineColorPreset
+}
+
+// see also: https://stackoverflow.com/questions/38320878/circle-button-css
+// see also: https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio
+// 691,200 variations
+export const iconButtonPreSets = {
+  variant: {
+    confirmOutline: css`
+      // initially: 
+      
+      // success color
+      color: ${props => props.theme.colors.success};
+      
+      // l size
+      height: ${props => props.theme.fontSizes.large};
+      width: ${props => props.theme.fontSizes.large};
+      padding: 3px;
+      font-size: ${props => props.theme.fontSizes.medium};
+
+      // background transparentSuccess
+      background-color: ${props => props.theme.colors.success}00;
+      &:hover {
+        background-color: ${props => props.theme.colors.successHover}20;
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.successActive}20;
+      }
+      
+      // outlineColor success
+      outline-color: ${props => props.theme.colors.success};
+      
+      // outlineSize xs
+      outline-width: 1px;
     `,
-    s: css`
-      border-width: 2px;
+    declineOutline: css`
+      // initially: 
+      
+      // danger color
+      color: ${props => props.theme.colors.danger};
+      
+      // l size
+      height: ${props => props.theme.fontSizes.large};
+      width: ${props => props.theme.fontSizes.large};
+      padding: 3px;
+      font-size: ${props => props.theme.fontSizes.medium};
+
+      // background transparentDanger
+      background-color: ${props => props.theme.colors.danger}00;
+      &:hover {
+        background-color: ${props => props.theme.colors.dangerHover}20;
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.dangerActive}20;
+      }
+      
+      // outlineColor danger
+      outline-color: ${props => props.theme.colors.danger};
+      
+      // outlineSize xs
+      outline-width: 1px;
     `,
-    m: css`
-      border-width: 4px;
+    mediaControllerOutline: css`
+      // initially: 
+
+      // lightNeutral color
+      color: ${props => props.theme.colors.lightNeutralLight};
+
+      // background transparentLightNeutral
+      background-color: ${props => props.theme.colors.lightNeutral}00;
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover}20;
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive}20;
+      }
+
+      // outlineColor lightNeutralLight
+      outline-color: ${props => props.theme.colors.lightNeutralLight};
+
+      // outlineSize l
+      outline-width: 14px;
+
+      // initially xxl size
+      height: ${props => props.theme.fontSizes.extraLarge};
+      width: ${props => props.theme.fontSizes.extraLarge};
+      padding: 4px;
+      font-size: ${props => props.theme.fontSizes.larger};
     `,
-    l: css`
-      border-width: 8px;
-    `,
-    xl: css`
-      border-width: 16px;
+    icon: css`
+      // initially: 
+
+      // primary color
+      color: ${props => props.theme.colors.primary};
+
+      // background transparentPrimary
+      background-color: ${props => props.theme.colors.primary}00;
+      &:hover {
+        background-color: ${props => props.theme.colors.primaryHover}20;
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.primaryActive}20;
+      }
+
+      // outlineSize none
+      outline-width: 0;
+
+      // initially xl size
+      height: ${props => props.theme.fontSizes.larger};
+      width: ${props => props.theme.fontSizes.larger};
+      padding: 8px;
+      font-size: ${props => props.theme.fontSizes.large};
     `
   },
-  borderColor: {
-    primaryLight: css`
-      border-color: ${props => props.theme.colors.primaryLight};
-    `,
-    primary: css`
-      border-color: ${props => props.theme.colors.primary};
-    `,
-    primaryDark: css`
-      border-color: ${props => props.theme.colors.primaryDark};
-    `,
-    primaryDarker: css`
-      border-color: ${props => props.theme.colors.primaryDarker};
-    `,
-    darkNeutralLight: css`
-      border-color: ${props => props.theme.colors.darkNeutralLight};
-    `,
-    darkNeutral: css`
-      border-color: ${props => props.theme.colors.darkNeutral};
-    `,
-    darkNeutralDark: css`
-      border-color: ${props => props.theme.colors.darkNeutralDark};
-    `,
-    darkNeutralDarker: css`
-      border-color: ${props => props.theme.colors.darkNeutralDarker};
-    `,
-    lightNeutralLight: css`
-      border-color: ${props => props.theme.colors.lightNeutralLight};
-    `,
-    lightNeutral: css`
-      border-color: ${props => props.theme.colors.lightNeutral};
-    `,
-    lightNeutralDark: css`
-      border-color: ${props => props.theme.colors.lightNeutralDark};
-    `,
-    lightNeutralDarker: css`
-      border-color: ${props => props.theme.colors.lightNeutralDarker};
-    `,
-    dangerLight: css`
-      border-color: ${props => props.theme.colors.dangerLight};
-    `,
-    danger: css`
-      border-color: ${props => props.theme.colors.danger};
-    `,
-    dangerDark: css`
-      border-color: ${props => props.theme.colors.dangerDark};
-    `,
-    dangerDarker: css`
-      border-color: ${props => props.theme.colors.dangerDarker};
-    `,
-    successLight: css`
-      border-color: ${props => props.theme.colors.successLight};
-    `,
-    success: css`
-      border-color: ${props => props.theme.colors.success};
-    `,
-    successDark: css`
-      border-color: ${props => props.theme.colors.successDark};
-    `,
-    successDarker: css`
-      border-color: ${props => props.theme.colors.successDarker};
-    `,
-    warningLight: css`
-      border-color: ${props => props.theme.colors.warningLight};
-    `,
-    warning: css`
-      border-color: ${props => props.theme.colors.warning};
-    `,
-    warningDark: css`
-      border-color: ${props => props.theme.colors.warningDark};
-    `,
-    warningDarker: css`
-      border-color: ${props => props.theme.colors.warningDarker};
-    `
-  }
+  color: allColorsPreset,
+  background: transparentColorPreset,
+  size: iconSizePreset,
+  outlineSize: outlineSizePreset,
+  outlineColor: outlineColorPreset
 }
 
 // Pre-set Getter function
