@@ -1,7 +1,7 @@
 import Message from './Message'
 
 export default {
-  title: 'Atoms/Message/Message',
+  title: 'Atoms/Message',
   component: Message,
   argTypes: {
     color: { control: 'text' },

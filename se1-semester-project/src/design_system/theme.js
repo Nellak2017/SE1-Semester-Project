@@ -784,6 +784,97 @@ export const messagePreSets = {
   color: colorPreset
 }
 
+export const notificationPreSets = {
+  variant: {
+    read: css`
+      // color is sucess
+      color: ${props => props.theme.colors.successLight};
+      background-color: ${props => props.theme.colors.success};
+      &:hover {
+        background-color: ${props => props.theme.colors.successHover};
+      }
+    `,
+    unread: css`
+      // color is primary
+      color: ${props => props.theme.colors.primaryLight};
+      background-color: ${props => props.theme.colors.primary};
+      &:hover {
+        background-color: ${props => props.theme.colors.primaryHover};
+      }
+    `
+  },
+  color: {
+    primary: css`
+      color: ${props => props.theme.colors.primaryLight};
+      background-color: ${props => props.theme.colors.primary};
+      &:hover {
+        background-color: ${props => props.theme.colors.primaryHover};
+      }
+    `,
+    darkNeutral: css`
+      color: ${props => props.theme.colors.darkNeutralLight};
+      background-color: ${props => props.theme.colors.darkNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.darkNeutralHover};
+      }
+    `,
+    lightNeutral: css`
+      color: ${props => props.theme.colors.lightNeutralLight};
+      background-color: ${props => props.theme.colors.lightNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+    `,
+    danger: css`
+      color: ${props => props.theme.colors.dangerLight};
+      background-color: ${props => props.theme.colors.danger};
+      &:hover {
+        background-color: ${props => props.theme.colors.dangerHover};
+      }
+    `,
+    success: css`
+      color: ${props => props.theme.colors.successLight};
+      background-color: ${props => props.theme.colors.success};
+      &:hover {
+        background-color: ${props => props.theme.colors.successHover};
+      }
+    `,
+    warning: css`
+      color: ${props => props.theme.colors.warningLight};
+      background-color: ${props => props.theme.colors.warning};
+      &:hover {
+        background-color: ${props => props.theme.colors.warningHover};
+      }
+    `
+  },
+  size: {
+    xs: css`
+    height: ${props => props.theme.fontSizes.smaller};
+    width: ${props => props.theme.fontSizes.smaller};
+  `,
+    s: css`
+    height: ${props => props.theme.fontSizes.small};
+    width: ${props => props.theme.fontSizes.small};
+  `,
+    m: css`
+    height: ${props => props.theme.fontSizes.medium};
+    width: ${props => props.theme.fontSizes.medium};
+  `,
+    l: css`
+    height: ${props => props.theme.fontSizes.large};
+    width: ${props => props.theme.fontSizes.large};
+  `,
+    xl: css`
+    height: ${props => props.theme.fontSizes.larger};
+    width: ${props => props.theme.fontSizes.larger};
+  `,
+    xxl: css`
+    height: ${props => props.theme.fontSizes.extraLarge};
+    width: ${props => props.theme.fontSizes.extraLarge};
+  `
+  }
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components

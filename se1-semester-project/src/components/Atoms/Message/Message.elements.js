@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, messagePreSets } from '../../../design_system/theme'
 
-// Note: Message Component has a single div child
+// Note: Message Component has a single pre child
 export const MessageStyled = styled.div`
     outline: none;
 	display: inline-flex;
