@@ -787,11 +787,11 @@ export const messagePreSets = {
 export const notificationPreSets = {
   variant: {
     read: css`
-      // color is sucess
-      color: ${props => props.theme.colors.successLight};
-      background-color: ${props => props.theme.colors.success};
+      // color is transparent
+      color: transparent;
+      background-color: transparent;
       &:hover {
-        background-color: ${props => props.theme.colors.successHover};
+        background-color: transparent;
       }
     `,
     unread: css`
@@ -873,6 +873,14 @@ export const notificationPreSets = {
     width: ${props => props.theme.fontSizes.extraLarge};
   `
   }
+}
+
+export const chatInputPresets = {
+  variant: {
+    small: css``,
+    default: css``
+  },
+  color: colorPreset
 }
 
 // Pre-set Getter function
