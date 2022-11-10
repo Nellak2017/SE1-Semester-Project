@@ -2,33 +2,47 @@ import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, chatInputPresets } from '../../../design_system/theme'
 
-export const ChatInputStyled = styled.input`
-    outline: none;
-	/*
-	display: inline-flex; //possibly unnecessary
-	flex-direction: row; //possibly unnecessary
-	justify-content: flex-start; //possibly unnecessary
-	align-items: center; //possibly unnecessary
-	*/
-	word-wrap: break-word;
-	word-break: break-word;
-	scroll-behavior: auto;
-	max-width: ${props => props.theme.breakpoints.sm};
-	border-radius: ${props => props.theme.spaces.medium};
+// This should be a div with div children. The first child should have role='textbox'
+export const ChatInputParent = styled.div`
+    padding: ${props => props.theme.fontSizes.smaller}; 
 
-	// initially Light Neutral colored
-	color: ${props => props.theme.colors.lightNeutralLight};
+    outline: none;
+    display: inline-flex; 
+    flex-direction: row; 
+    justify-content: flex-start;
+    align-items: flex-start; 
+    //line-height: 1rem;
+    
+    width: 100%;
+    border-radius: ${props => props.theme.spaces.medium};
+
+    // initially Light Neutral colored
+    color: ${props => props.theme.colors.lightNeutralLight};
     background-color: ${props => props.theme.colors.lightNeutral};
     &:hover {
-      background-color: ${props => props.theme.colors.lightNeutralHover};
+        background-color: ${props => props.theme.colors.lightNeutralHover};
     }
     &:active {
-      background-color: ${props => props.theme.colors.lightNeutralActive};
+        background-color: ${props => props.theme.colors.lightNeutralActive};
     }
 
-	${getPresetCSS(chatInputPresets, 'variant')}
+    ${getPresetCSS(chatInputPresets, 'variant')}
     ${getPresetCSS(chatInputPresets, 'color')}
-	${space}
+    ${space}
     ${layout}
     ${typography}  
+`
+
+// This is the actual input element that is made from scratch using a div
+export const ChatInputChild = styled.div`
+    outline: none;
+    width: 100%;
+    forced-color-adjust: none;
+
+    line-height: 1.375rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: break-spaces;
+    caret-color: ${props => props.theme.colors.lightNeutralLight};
+    text-align: left;
 `

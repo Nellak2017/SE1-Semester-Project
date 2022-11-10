@@ -26,7 +26,7 @@ p, input, button, li, a, span {
     color: ${props => props.theme.colors.defaultFontColor};
 }
 
-p, input, li, a, span :hover{
+p, input, li, a :hover{ // span removed because it looks cringe
     color: ${props => props.theme.colors.defaultFontColor};
     box-shadow: ${props => props.theme.elevations.extraSmall};
 }

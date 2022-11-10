@@ -3,6 +3,10 @@ import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, squareButtonPreSets } from '../../../design_system/theme'
 
 export const SquareButtonStyled = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: ${props => props.theme.spaces.small};
     outline: none;
     outline: 0px solid transparent;
     border-radius: ${props => props.theme.spaces.small};
