@@ -875,6 +875,7 @@ export const notificationPreSets = {
   }
 }
 
+// chatInput Small variant overrides button size
 export const chatInputPresets = {
   variant: {
     small: css`
@@ -893,6 +894,15 @@ export const chatInputPresets = {
     `
   },
   color: colorPreset
+}
+
+export const searchInputPresets = {
+  variant: {
+    default: css`
+      padding: .5rem ${props => props.theme.fontSizes.smaller};
+    `
+  },
+  color: allColorsPreset
 }
 
 // Pre-set Getter function
