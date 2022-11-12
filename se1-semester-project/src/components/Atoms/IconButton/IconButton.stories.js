@@ -19,24 +19,24 @@ const Template = args => <IconButton {...args} />
 
 export const iconButton = Template.bind({})
 iconButton.args = {
-  	children: <IoIosSend />,
-  	variant: 'icon'
+  children: <IoIosSend />,
+  variant: 'icon'
 }
 
 export const declineButton = Template.bind({})
 declineButton.args = {
-  	children: <AiOutlineClose />,
-  	variant: 'declineOutline'
+  children: <AiOutlineClose />,
+  variant: 'declineOutline'
 }
 
 export const confirmButton = Template.bind({})
 confirmButton.args = {
-  	children: <AiOutlineCheck />,
-  	variant: 'confirmOutline'
+  children: <AiOutlineCheck />,
+  variant: 'confirmOutline'
 }
 
 export const mediaControllerButton = Template.bind({})
 mediaControllerButton.args = {
-  	children: <IoIosPlay />,
-  	variant: 'mediaControllerOutline'
+  children: <IoIosPlay />,
+  variant: 'mediaControllerOutline'
 }

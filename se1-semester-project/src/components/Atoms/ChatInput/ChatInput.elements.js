@@ -1,19 +1,20 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, chatInputPresets } from '../../../design_system/theme'
+import TextareaAutosize from 'react-textarea-autosize' // imported to save headache in getting resizable input
 
 // This should be a div with div children. The first child should have role='textbox'
 export const ChatInputParent = styled.div`
-    padding: ${props => props.theme.fontSizes.smaller}; 
-
+    padding: 0 ${props => props.theme.fontSizes.smaller}; 
     outline: none;
     display: inline-flex; 
     flex-direction: row; 
     justify-content: flex-start;
-    align-items: flex-start; 
-    //line-height: 1rem;
-    
+    align-items: flex-end;
+    column-gap: 1rem;
     width: 100%;
+    cursor: text; // This is for accessibility. If user clicks parent div, chatInput child is focused
+
     border-radius: ${props => props.theme.spaces.medium};
 
     // initially Light Neutral colored
@@ -33,16 +34,28 @@ export const ChatInputParent = styled.div`
     ${typography}  
 `
 
-// This is the actual input element that is made from scratch using a div
-export const ChatInputChild = styled.div`
-    outline: none;
-    width: 100%;
-    forced-color-adjust: none;
-
+// This is the actual input element that is made from TextareaAutosize component downloaded from npm
+export const ChatInputChild = styled(TextareaAutosize)`
+    padding: .5rem 0; // This is here so that no matter where a user presses it will focus
     line-height: 1.375rem;
+    min-height: 1.375rem;
+    max-height: 8.5rem; // max height is 6 lines, addressed here
+
+    width: 100%;
+    resize: none;
+    align-self: center; // if you have xl sized icon buttons, then it looks weird
+    outline: none;
+    background-color: transparent;
+    border: none;
     overflow-wrap: break-word;
     word-break: break-word;
     white-space: break-spaces;
-    caret-color: ${props => props.theme.colors.lightNeutralLight};
     text-align: left;
+    user-select: text;
+    scroll-behavior: auto;
+    cursor: text; // This is for accessibility.
+
+    color: ${props => props.theme.colors.lightNeutralLight};
+    caret-color: ${props => props.theme.colors.lightNeutralLight};
+    font-size: ${props => props.theme.fontSizes.medium};
 `

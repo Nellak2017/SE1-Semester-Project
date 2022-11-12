@@ -4,6 +4,7 @@ export default {
   title: 'Atoms/Input/ChatInput',
   component: ChatInput,
   argTypes: {
+    variant: { control: 'text' },
     color: { control: 'text' }
   }
 }

@@ -877,8 +877,20 @@ export const notificationPreSets = {
 
 export const chatInputPresets = {
   variant: {
-    small: css``,
-    default: css``
+    small: css`
+      & textarea {
+        padding: 0;
+      }
+      & button {
+        height: ${props => props.theme.fontSizes.large};
+        width: ${props => props.theme.fontSizes.large};
+        padding: 4px;
+        font-size: ${props => props.theme.fontSizes.medium};
+      }
+    `,
+    default: css`
+      padding: .5rem ${props => props.theme.fontSizes.smaller};
+    `
   },
   color: colorPreset
 }
