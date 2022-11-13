@@ -1003,6 +1003,17 @@ export const chatRoomCardPresets = {
   color: colorPreset
 }
 
+// No new styles for variants, only conditional rendering for components
+export const nestedButtonPresets = {
+  variant: {
+    savedMMS: css``,
+    eyeglass: css``,
+    save: css``,
+    newMedia: css``
+  },
+  color: colorPreset
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components
