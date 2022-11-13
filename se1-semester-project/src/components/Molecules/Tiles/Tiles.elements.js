@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, tilesPreset } from '../../../design_system/theme'
+import { getPresetCSS, tilesPresets } from '../../../design_system/theme'
 import SquareButton from '../../Atoms/SquareButton/SquareButton'
 
 export const TilesParent = styled(SquareButton)`
@@ -32,6 +32,6 @@ export const TilesParent = styled(SquareButton)`
     ${space}
     ${layout}
     ${typography}
-    ${getPresetCSS(tilesPreset, 'variant')}
-    ${getPresetCSS(tilesPreset, 'color')}  
+    ${getPresetCSS(tilesPresets, 'variant')}
+    ${getPresetCSS(tilesPresets, 'color')}  
 `

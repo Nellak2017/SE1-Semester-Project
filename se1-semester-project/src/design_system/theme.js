@@ -901,7 +901,8 @@ export const chatInputPresets = {
 export const searchInputPresets = {
   variant: {
     default: css`
-      padding: .5rem ${props => props.theme.fontSizes.smaller};
+      padding: .25rem ${props => props.theme.fontSizes.smaller};
+      border-radius: ${props => props.theme.spaces.larger};
     `
   },
   color: allColorsPreset
@@ -911,7 +912,7 @@ export const searchInputPresets = {
 // --- Molecules ---
 
 // Note: The variants will have custom css and also conditional rendering
-export const tilesPreset = {
+export const tilesPresets = {
   variant: {
     image: css``,
     link: css`
@@ -987,6 +988,10 @@ export const tilesPreset = {
     }
     `
   },
+  color: colorPreset
+}
+
+export const messageBarPresets = {
   color: colorPreset
 }
 

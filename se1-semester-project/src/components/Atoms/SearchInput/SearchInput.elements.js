@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
-import { getPresetCSS, chatInputPresets } from '../../../design_system/theme'
+import { getPresetCSS, searchInputPresets } from '../../../design_system/theme'
 
 // This should be a div with div children. The first child should have role='textbox'
 export const SearchInputParent = styled.div`
-    padding: .5rem ${props => props.theme.fontSizes.smaller}; 
     outline: none;
     display: inline-flex; 
     flex-direction: row; 
@@ -14,7 +13,8 @@ export const SearchInputParent = styled.div`
     width: 100%;
     cursor: text; // This is for accessibility. If user clicks parent div, chatInput child is focused
 
-    border-radius: ${props => props.theme.spaces.medium};
+    padding: .25rem ${props => props.theme.fontSizes.smaller}; 
+    border-radius: ${props => props.theme.spaces.larger};
 
     // initially Light Neutral colored
     color: ${props => props.theme.colors.lightNeutralLight};
@@ -40,16 +40,16 @@ export const SearchInputParent = styled.div`
         pointer-events: all;
     }
 
-    ${getPresetCSS(chatInputPresets, 'variant')}
-    ${getPresetCSS(chatInputPresets, 'color')}
     ${space}
     ${layout}
     ${typography}  
+    ${getPresetCSS(searchInputPresets, 'color')}
+    ${getPresetCSS(searchInputPresets, 'variant')}
 `
 
 export const SearchInputChild = styled.input`
     border-radius: 0; // for accesibility
-    padding: .5rem 0; // This is here so that no matter where a user presses it will focus
+    padding: .25rem 0; // This is here so that no matter where a user presses it will focus
     line-height: 1.375rem;
     min-height: 1.375rem;
     max-height: 8.5rem; // max height is 6 lines, addressed here
