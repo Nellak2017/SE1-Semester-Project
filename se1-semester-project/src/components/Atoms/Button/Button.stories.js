@@ -24,13 +24,13 @@ export const NewChatButton = Template.bind({})
 NewChatButton.args = {
   variant: 'newChat',
   size: 'm',
-  children: 'Default'
+  children: 'New Chat'
 }
 
 export const SaveButton = Template.bind({})
 SaveButton.args = {
   variant: 'save',
-  children: 'Default'
+  children: 'Save'
 }
 
 // This component expects React Components as Children

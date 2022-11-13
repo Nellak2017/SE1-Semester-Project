@@ -462,22 +462,22 @@ const iconSizePreset = {
 
 const squareSizePreset = {
   xs: css`
-    padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
+    padding: ${props => props.theme.fontSizes.smaller};
   `,
   s: css`
-    padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.small};
+    padding: ${props => props.theme.fontSizes.small};
   `,
   m: css`
-    padding: ${props => props.theme.spaces.medium} ${props => props.theme.spaces.medium};
+    padding: ${props => props.theme.fontSizes.medium};
   `,
   l: css`
-    padding: ${props => props.theme.spaces.large} ${props => props.theme.spaces.large};
+    padding: ${props => props.theme.fontSizes.large};
   `,
   xl: css`
-    padding: ${props => props.theme.spaces.larger} ${props => props.theme.spaces.larger};
+    padding: ${props => props.theme.fontSizes.larger};
   `,
   xxl: css`
-    padding: ${props => props.theme.spaces.extraLarge} ${props => props.theme.spaces.extraLarge};
+    padding: ${props => props.theme.fontSizes.extraLarge};
   `
 }
 
@@ -501,6 +501,8 @@ const containerSizePreset = {
     padding: ${props => props.theme.spaces.extraLarge} ${props => props.theme.spaces.extraLarge};
   `
 }
+
+// --- ATOMS ---
 
 // 180 variations
 export const buttonPreSets = {
@@ -903,6 +905,89 @@ export const searchInputPresets = {
     `
   },
   color: allColorsPreset
+}
+
+// ------
+// --- Molecules ---
+
+// Note: The variants will have custom css and also conditional rendering
+export const tilesPreset = {
+  variant: {
+    image: css``,
+    link: css`
+      & span {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 75%;
+        left: 0%;
+        width: 100%;
+        height: 25%;
+        background-color: gray;
+        
+    }
+    & span p{
+        font-size: ${props => props.theme.fontSizes.extraSmall};
+        animation: linkMarquee 10s infinite linear;
+        box-shadow: none;
+    }
+
+    @keyframes linkMarquee {
+        0% {
+            translate: 80%;
+        }
+        100% {
+            translate: -80%;
+        }
+    }
+    `,
+    video: css`
+      & span {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 0 ${props => props.theme.spaces.smaller};
+        bottom: 5%;
+        right: 5%;
+        height: 18%;
+        background-color: ${props => props.theme.colors.darkNeutral};
+      }
+      & span p{
+        font-size: 8px;
+        box-shadow: none;
+    }
+    `,
+    audio: css`
+      color: ${props => props.theme.colors.lightNeutralLight};
+      background-color: ${props => props.theme.colors.lightNeutral};
+      &:hover {
+        background-color: ${props => props.theme.colors.lightNeutralHover};
+      }
+      &:active {
+        background-color: ${props => props.theme.colors.lightNeutralActive};
+      }
+      & span {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 0 ${props => props.theme.spaces.smaller};
+        bottom: 5%;
+        right: 5%;
+        height: 18%;
+        background-color: ${props => props.theme.colors.darkNeutral};
+      }
+      & span p{
+        font-size: 8px;
+        box-shadow: none;
+    }
+    `
+  },
+  color: colorPreset
 }
 
 // Pre-set Getter function
