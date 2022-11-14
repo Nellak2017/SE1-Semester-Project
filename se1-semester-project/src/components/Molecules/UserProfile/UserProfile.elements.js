@@ -3,12 +3,18 @@ import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, chatRoomCardPresets } from '../../../design_system/theme'
 import Container from '../../Atoms/Container/Container'
 
-export const ChatRoomCardParent = styled(Container)`
+// This follows an extremely similar pattern to ChatRoom Card
+export const UserProfileParent = styled(Container)`
+    padding: 0;
     display: inline-flex;
     column-gap: 1rem;
     align-items: center;
     max-width: 346px;
-    border-radius: ${props => props.theme.fontSizes.large};
+    border-radius: 0;
+
+    &:hover{
+        box-shadow: none;
+    }
 
     ${space}
     ${layout}
@@ -19,41 +25,25 @@ export const ChatRoomCardParent = styled(Container)`
 
 export const CardDescription = styled.div`
     height: 100%;
-    & h1 {
-        max-width: 230px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 21px;
+    & h2 {
+        max-width: 235px; // easter egg. This is atomic number of Uranium and my apt#
+        font-size: 14px;
         font-weight: 500;
-    }
-    & p {
-        max-width: 230px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        line-height: 24px;
-        font-size: ${props => props.theme.fontSizes.medium};
-        font-weight: 100;
-        opacity: 50%;
     }
 `
 
 export const CardImageContainer = styled.div`
-    width: 72px;
-    height: 72px;
+    width: 44px;
+    height: 44px;
     position: relative;
-
-    & #notification {
-        position: absolute;
-        top: 0;
-        right: -10;
-    }
 `
 
 export const CardImage = styled.img`
-    width: 72px;
-    height: 72px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
 `

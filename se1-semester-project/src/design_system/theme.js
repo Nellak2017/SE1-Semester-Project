@@ -110,6 +110,16 @@ const colorPreset = {
     &:active {
       background-color: ${props => props.theme.colors.warningActive};
     }
+  `,
+  transparent: css`
+    color: #fff;
+    background-color: transparent;
+    &:hover {
+      background-color: transparent;
+    }
+    &:active {
+      background-color: transparent;
+    }
   `
 }
 
