@@ -1046,6 +1046,15 @@ export const leftComponentWrapperSideNavPresets = {
   }
 }
 
+export const nestedExitButtonPresets = {
+  variant: {
+    photoAttachment: css``,
+    emptyFrame: css``,
+    linkAttachment: css``
+  },
+  color: colorPreset
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components
