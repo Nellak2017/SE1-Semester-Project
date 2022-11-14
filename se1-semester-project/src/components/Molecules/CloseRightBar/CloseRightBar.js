@@ -11,8 +11,8 @@ function CloseRightBar (props) {
     <>
       <LeftComponentWrapper variant={open ? 'open' : 'closed'}>{leftComponent}</LeftComponentWrapper>
       <CloseRightBarParent onClick={clickHandler} variant={open ? 'open' : 'closed'} color={color} {...rest}>
-        {open && <GoChevronLeft />}
-        {!open && <GoChevronRight />}
+        {open && <GoChevronRight />}
+        {!open && <GoChevronLeft />}
         {rightComponent}
       </CloseRightBarParent>
     </>
