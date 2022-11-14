@@ -76,7 +76,7 @@ function Tiles (props) {
             <p>{calculateTimeString(hours, minutes, seconds)}</p>
           </span>
         </TilesParent>}
-      {['image', 'link', 'video', 'audio'].every(element => element !== variant) &&
+      {!(['image', 'link', 'video', 'audio'].includes(variant)) &&
         <TilesParent size={size} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
           <p style={{ boxShadow: 'none' }}>Invalid Variant Entered into Tiles Molecule</p>
         </TilesParent>}

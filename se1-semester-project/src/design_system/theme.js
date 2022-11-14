@@ -1014,6 +1014,38 @@ export const nestedButtonPresets = {
   color: colorPreset
 }
 
+export const closeRightBarPresets = {
+  variant: {
+    open: css`
+      right: 0;
+      transition: 350ms;
+    `,
+    closed: css`
+      right: -310px;
+    `
+  },
+  color: colorPreset
+}
+
+// All values found through experiment
+// This is the left container for the Right Navbar Molecule
+export const leftComponentWrapperSideNavPresets = {
+  variant: {
+    open: css`
+     &:first-child {
+      width: calc(100% - 345px);
+      transition: 350ms;
+     }
+    `,
+    closed: css`
+     &:first-child {
+      width: calc(100% - 35px);
+      transition: 850ms;
+     }
+    `
+  }
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components
