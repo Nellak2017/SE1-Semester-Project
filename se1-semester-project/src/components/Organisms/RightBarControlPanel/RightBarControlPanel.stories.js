@@ -34,18 +34,8 @@ export const mediaControlPanel = Template.bind({})
 mediaControlPanel.args = {
   variant: 'media',
   name: 'Media & Links',
-  components: [imgMedia, linkMedia, linkMedia, videoMedia, imgMedia, linkMedia, imgMedia, linkMedia, videoMedia],
-  listeners: [
-    () => { console.log('First Listener') },
-    () => { console.log('Second Listener') },
-    () => { console.log('Third Listener') },
-    () => { console.log('Fourth Listener') },
-    () => { console.log('Fifth Listener') },
-    () => { console.log('Sixth Listener') },
-    () => { console.log('Seventh Listener') },
-    () => { console.log('Eighth Listener') },
-    () => { console.log('Nineth Listener') }
-  ]
+  components: [imgMedia, linkMedia, linkMedia, videoMedia, imgMedia, linkMedia, imgMedia, linkMedia, videoMedia]
+
 }
 
 export const chatControlPanel = Template.bind({})

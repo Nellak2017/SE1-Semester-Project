@@ -39,7 +39,7 @@ function RightBarControlPanel (props) {
       {!['messageControl', 'chatroomOptions'].includes(variant) &&
         <RightBarControlPanelParent name={name} variant={variant} components={components} color={color} size='m' {...rest}>
           <h3>{name}</h3>
-          {components.map((component, index) => React.cloneElement(component, { onClick: listeners[index], key: `controlPanelBtn${index}` }))}
+          {components.map((component, index) => React.cloneElement(component, { onClick: listeners && listeners[index], key: `controlPanelBtn${index}` }))}
         </RightBarControlPanelParent>}
     </>
   )
