@@ -3,7 +3,7 @@ import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, tilesPresets } from '../../../design_system/theme'
 import SquareButton from '../../Atoms/SquareButton/SquareButton'
 
-export const TilesParent = styled(SquareButton)`
+export const TileParent = styled(SquareButton)`
     position: relative;
     overflow: hidden;
 

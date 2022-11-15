@@ -1,4 +1,4 @@
-import { TilesParent } from './Tiles.elements'
+import { TileParent } from './Tile.elements'
 import { BsCardImage, BsLink45Deg } from 'react-icons/bs'
 import { GrCirclePlay } from 'react-icons/gr'
 import { GiSoundWaves } from 'react-icons/gi'
@@ -42,7 +42,7 @@ const calculateTimeString = (hours, minutes, seconds) => {
   return returnStr
 }
 
-function Tiles (props) {
+function Tile (props) {
   const { size = 'm', color = 'lightNeutral', variant, backgroundImage, linkText, hours, minutes, seconds, ...rest } = props
   const bgImg = {
     backgroundImage: `url(${backgroundImage})`,
@@ -54,34 +54,34 @@ function Tiles (props) {
   return (
     <>
       {variant === 'image' &&
-        <TilesParent style={bgImg} size={size} variant={variant} {...rest}>
+        <TileParent style={bgImg} size={size} variant={variant} {...rest}>
           <BsCardImage />
-        </TilesParent>}
+        </TileParent>}
       {variant === 'link' &&
-        <TilesParent size={size} variant={variant} linkText={linkText} color={color} {...rest}>
+        <TileParent size={size} variant={variant} linkText={linkText} color={color} {...rest}>
           <BsLink45Deg />
           <span><p>{linkText}</p></span>
-        </TilesParent>}
+        </TileParent>}
       {variant === 'video' &&
-        <TilesParent style={bgImg} size={size} variant={variant} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
+        <TileParent style={bgImg} size={size} variant={variant} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
           <GrCirclePlay />
           <span>
             <p>{calculateTimeString(hours, minutes, seconds)}</p>
           </span>
-        </TilesParent>}
+        </TileParent>}
       {variant === 'audio' &&
-        <TilesParent style={bgImg} size={size} variant={variant} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
+        <TileParent style={bgImg} size={size} variant={variant} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
           <GiSoundWaves />
           <span>
             <p>{calculateTimeString(hours, minutes, seconds)}</p>
           </span>
-        </TilesParent>}
+        </TileParent>}
       {!(['image', 'link', 'video', 'audio'].includes(variant)) &&
-        <TilesParent size={size} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
-          <p style={{ boxShadow: 'none' }}>Invalid Variant Entered into Tiles Molecule</p>
-        </TilesParent>}
+        <TileParent size={size} color={color} hours={hours} minutes={minutes} seconds={seconds} {...rest}>
+          <p style={{ boxShadow: 'none' }}>Invalid Variant Entered into Tile Molecule</p>
+        </TileParent>}
     </>
   )
 }
 
-export default Tiles
+export default Tile

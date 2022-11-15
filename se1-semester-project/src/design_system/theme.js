@@ -1065,6 +1065,19 @@ export const nestedExitButtonPresets = {
   color: colorPreset
 }
 
+// ------
+// --- Organisms ---
+
+export const rightBarControlPanelPresets = {
+  variant: {
+    messageControl: css``,
+    media: css`
+      grid-template-columns: repeat(3, 1fr);
+    `,
+    chatroomOptions: css``
+  }
+}
+
 // Pre-set Getter function
 // see also: https://github.com/styled-system/styled-system/issues/1798
 // see also: https://stackoverflow.com/questions/63663554/approach-to-creating-variants-with-styled-components

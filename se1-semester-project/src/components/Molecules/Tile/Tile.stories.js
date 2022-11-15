@@ -1,10 +1,10 @@
-import Tiles from './Tiles'
+import Tile from './Tile'
 import Movie from '../../../../public/movie.jpg'
 import Woman from '../../../../public/woman-in-field.jpg' // source: https://unsplash.com/photos/y83TaGzr3mk
 
 export default {
   title: 'Molecules/Tiles',
-  component: Tiles,
+  component: Tile,
   argTypes: {
     variant: { control: 'text' },
     size: { control: 'text' },
@@ -17,7 +17,7 @@ export default {
   }
 }
 
-const Template = args => <Tiles {...args} />
+const Template = args => <Tile {...args} />
 
 export const imageTile = Template.bind({})
 imageTile.args = {
