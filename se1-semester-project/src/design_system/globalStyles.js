@@ -9,6 +9,15 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-size: ${props => props.theme.fontSizes.medium};
     font-family: 'Poppins', 'Source Sans Pro', 'sans-serif';
+    ::-moz-selection { /* Code for Firefox */
+        color: ${props => props.theme.colors.lightNeutralLight};
+        background: ${props => props.theme.colors.primary};
+    }
+
+    ::selection {
+        color: ${props => props.theme.colors.lightNeutralLight};
+        background: ${props => props.theme.colors.primary};
+    }
 }
 
 a {
