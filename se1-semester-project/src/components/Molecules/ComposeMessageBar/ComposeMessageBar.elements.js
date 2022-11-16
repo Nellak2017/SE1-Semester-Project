@@ -4,4 +4,6 @@ import styled from 'styled-components'
 export const ComposeMessageBarContainer = styled.div`
     display: flex;
     align-items: center;
+    column-gap: .5rem;
+    width: 100%;
 `

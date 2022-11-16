@@ -1,7 +1,8 @@
 import ComposeMessageBar from './ComposeMessageBar'
+import { Temp } from '../ColorChooser/ColorChooser.elements'
 
 export default {
-  title: 'Molecules/Compose Message Bar',
+  title: 'Molecules/Message/Compose Message Bar',
   component: ComposeMessageBar,
   argTypes: {
     variant: { control: 'text' },
@@ -9,7 +10,7 @@ export default {
   }
 }
 
-const Template = args => <ComposeMessageBar {...args} />
+const Template = args => <Temp><ComposeMessageBar {...args} /></Temp>
 
 export const defaultInput = Template.bind({})
 defaultInput.args = {}

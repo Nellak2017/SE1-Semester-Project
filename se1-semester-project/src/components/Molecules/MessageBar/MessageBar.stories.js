@@ -1,7 +1,7 @@
 import MessageBar from './MessageBar'
 
 export default {
-  title: 'Molecules/Message Bar',
+  title: 'Molecules/Message/Message Bar',
   component: MessageBar,
   argTypes: {
     color: { control: 'text' },
