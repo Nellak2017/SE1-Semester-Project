@@ -25,6 +25,8 @@ export const UserProfileParent = styled(Container)`
 
 export const CardDescription = styled.div`
     height: 100%;
+    display: inline-flex;
+    align-items: center;
     & h2 {
         max-width: 235px; // easter egg. This is atomic number of Uranium and my apt#
         font-size: 14px;
@@ -46,4 +48,13 @@ export const CardImage = styled.img`
     height: 44px;
     border-radius: 50%;
     object-fit: cover;
+`
+
+// used to wrap the parent to give proper styling within the right bar container organism
+export const WrapperDiv = styled.section`
+    width: 100%; 
+    display: flex; 
+    flex-direction: row; 
+    align-items: flex-start; 
+    justify-content: flex-end;
 `

@@ -1,5 +1,5 @@
 import React from 'react'
-import { RightBarControlPanelParent } from './RightBarControlPanel.elements'
+import { RightBarControlPanelParent, WrapperDiv } from './RightBarControlPanel.elements'
 import Button from '../../Atoms/Button/Button'
 
 // Note: the variant should give default component lists, so you can use it as a shorthand
@@ -19,29 +19,35 @@ function RightBarControlPanel (props) {
     'Remove Person': listeners && listeners[3],
     'Delete Chat': listeners && listeners[4]
   }
+  const handleClickBubbling = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   return (
-    <>
+    <WrapperDiv>
       {variant === 'messageControl' &&
-        <RightBarControlPanelParent variant={variant} components={components} color={color} size='l' {...rest}>
-          <h3>Message Controls</h3>
-          {Object.keys(messageControlNames).map((name, index) =>
+        <RightBarControlPanelParent variant={variant} components={components} color={color} size='m' onClick={handleClickBubbling} {...rest}>
+          {name && <h3>{name}</h3>}
+          {!name && <h3>Message Controls</h3>}
+          {Object.keys(messageControlNames)?.map((name, index) =>
             <Button key={`msgControlBtn${index}`} variant='messageControl' size='xs' onClick={messageControlNames[name]}>{name}</Button>
           )}
         </RightBarControlPanelParent>}
       {variant === 'chatroomOptions' &&
-        <RightBarControlPanelParent variant={variant} components={components} color={color} size='l' {...rest}>
-          <h3>Chatroom Options</h3>
-          {Object.keys(chatRoomOptionsNames).map((name, index) =>
+        <RightBarControlPanelParent variant={variant} components={components} color={color} size='m' onClick={handleClickBubbling} {...rest}>
+          {name && <h3>{name}</h3>}
+          {!name && <h3>Chatroom Options</h3>}
+          {Object.keys(chatRoomOptionsNames)?.map((name, index) =>
             <Button key={`chatOptionBtn${index}`} variant='messageControl' size='xs' onClick={chatRoomOptionsNames[name]}>{name}</Button>
           )}
         </RightBarControlPanelParent>}
       {!['messageControl', 'chatroomOptions'].includes(variant) &&
-        <RightBarControlPanelParent name={name} variant={variant} components={components} color={color} size='m' {...rest}>
-          <h3>{name}</h3>
-          {components.map((component, index) => React.cloneElement(component, { onClick: listeners && listeners[index], key: `controlPanelBtn${index}` }))}
+        <RightBarControlPanelParent name={name} variant={variant} components={components} color={color} size='m' onClick={handleClickBubbling} {...rest}>
+          <h3>{name && name}</h3>
+          {components?.map((component, index) => React.cloneElement(component, { onClick: listeners && listeners[index], key: `controlPanelBtn${index}` }))}
         </RightBarControlPanelParent>}
-    </>
+    </WrapperDiv>
   )
 }
 

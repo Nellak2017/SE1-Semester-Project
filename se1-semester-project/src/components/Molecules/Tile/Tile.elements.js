@@ -7,6 +7,10 @@ export const TileParent = styled(SquareButton)`
     position: relative;
     overflow: hidden;
 
+    // Added so that it will place nice inside the Media & Links Control Panel
+    width: 75px;
+    height: 72px;
+
     & svg {
         height: ${props => props.theme.fontSizes.larger};
         width: ${props => props.theme.fontSizes.larger};

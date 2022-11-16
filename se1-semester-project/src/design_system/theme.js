@@ -1032,6 +1032,7 @@ export const closeRightBarPresets = {
     `,
     closed: css`
       right: -310px;
+      padding-left: 3rem;
     `
   },
   color: colorPreset

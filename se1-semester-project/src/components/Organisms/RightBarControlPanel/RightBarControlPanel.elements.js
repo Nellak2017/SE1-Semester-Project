@@ -9,6 +9,7 @@ export const RightBarControlPanelParent = styled(Container)`
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    width: 100%;
     max-width: 315px;
     max-height: 275px;
     scroll-behavior: auto;
@@ -37,4 +38,13 @@ export const RightBarControlPanelParent = styled(Container)`
     ${layout}
     ${typography}
     ${getPresetCSS(rightBarControlPanelPresets, 'variant')}
+`
+
+// used to wrap the parent to give proper styling within the right bar container organism
+export const WrapperDiv = styled.section`
+    width: 100%; 
+    display: flex; 
+    flex-direction: row; 
+    align-content: center; 
+    justify-content: center;
 `

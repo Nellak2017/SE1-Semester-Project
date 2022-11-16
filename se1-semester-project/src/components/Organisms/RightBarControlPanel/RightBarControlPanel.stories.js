@@ -27,7 +27,7 @@ messageControlPanel.args = {
 }
 
 const linkMedia = <Tile variant='link' linkText='https://www.google.com' />
-const imgMedia = <Tile variant='image' backgroundImage={Woman} onClick={() => { console.log('First Listener') }} />
+const imgMedia = <Tile variant='image' backgroundImage={Woman} />
 const videoMedia = <Tile variant='video' backgroundImage={Movie} hours='0' minutes='5' seconds='42' />
 
 export const mediaControlPanel = Template.bind({})

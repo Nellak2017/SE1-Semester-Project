@@ -4,13 +4,15 @@ import { getPresetCSS, closeRightBarPresets, leftComponentWrapperSideNavPresets 
 
 // This component has the Most Magic Numbers, and has the weird "Left" and "Right" component props
 export const CloseRightBarParent = styled.nav`
-    z-index: 999; 
+    display: grid;
+    grid-template-columns: 290px; // It is possible this might be wrong
+    grid-template-rows: 64px auto auto auto; // This may break at different media queries (bc it is magic num)
+    justify-content: center;
+    align-items: center;
+    row-gap: 0;
+    z-index: 100; 
     width: 360px;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     position: fixed;
     top: 0;
     right: -310px;
@@ -26,11 +28,19 @@ export const CloseRightBarParent = styled.nav`
         display: none; /* for Chrome, Safari, and Opera */
     }
 
-    & svg, path {
+    // Without this, it will select all SVG and give all weird position
+    & > svg:first-of-type {
+        z-index: 999;
         position: absolute;
         top: 5px;
         left: 5px;
         font-size: 45px;
+    }
+
+    // The media queries here are designed to make the right bar responsive to smaller screens
+    // Hide the Right bar if the screen is the size of a phone or smaller
+    @media (max-width: ${props => props.theme.breakpoints.sm}) {
+        display: none;
     }
 
     ${space}
