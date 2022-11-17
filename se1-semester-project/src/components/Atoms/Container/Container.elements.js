@@ -21,12 +21,10 @@ export const ContainerStyled = styled.span`
     background-color: ${props => props.theme.colors.primary};
 
     &:hover {
-        background-color: ${props => props.theme.colors.primaryHover};
         box-shadow: ${props => props.theme.elevations.small};
         cursor: pointer;
         }
     &:active {
-        background-color: ${props => props.theme.colors.primaryActive};
         box-shadow: ${props => props.theme.insets.normal};
         cursor: pointer;
     }

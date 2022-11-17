@@ -404,6 +404,38 @@ const allColorsPreset = {
   `
 }
 
+// contains all color and bg, without a hover or active effect (used in container for example)
+const colorBgPreset = {
+  primary: css`
+  color: ${props => props.theme.colors.primaryLight};
+  background-color: ${props => props.theme.colors.primary};
+`,
+  darkNeutral: css`
+  color: ${props => props.theme.colors.darkNeutralLight};
+  background-color: ${props => props.theme.colors.darkNeutral};
+`,
+  lightNeutral: css`
+  color: ${props => props.theme.colors.lightNeutralLight};
+  background-color: ${props => props.theme.colors.lightNeutral};
+`,
+  danger: css`
+  color: ${props => props.theme.colors.dangerLight};
+  background-color: ${props => props.theme.colors.danger};
+`,
+  success: css`
+  color: ${props => props.theme.colors.successLight};
+  background-color: ${props => props.theme.colors.success};
+`,
+  warning: css`
+  color: ${props => props.theme.colors.warningLight};
+  background-color: ${props => props.theme.colors.warning};
+`,
+  transparent: css`
+  color: #fff;
+  background-color: transparent;
+`
+}
+
 const roundButtonSizePreset = {
   xs: css`
     padding: ${props => props.theme.spaces.smaller} ${props => props.theme.spaces.smaller};
@@ -770,7 +802,7 @@ export const containerPreSets = {
     `
   },
   size: containerSizePreset,
-  color: colorPreset,
+  color: colorBgPreset,
   outlineSize: outlineSizePreset,
   outlineColor: outlineColorPreset
 }

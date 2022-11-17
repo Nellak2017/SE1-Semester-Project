@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { space, layout, typography } from 'styled-system'
 import { getPresetCSS, nestedExitButtonPresets } from '../../../design_system/theme'
-import NestedButton from '../NestedButton/NestedButton'
+import Container from '../../Atoms/Container/Container'
 
-export const NestedExitButtonParent = styled(NestedButton)`
+export const NestedExitButtonParent = styled(Container)`
     position: relative; // added so that exit button works as expected
     & button {
         opacity: 50%;
@@ -20,6 +20,12 @@ export const NestedExitButtonParent = styled(NestedButton)`
         position: absolute;
         top: -7px;
         right: -7px;
+    }
+    &:hover {
+        box-shadow: none;
+    }
+    &:active {
+        box-shadow: none;
     }
 
     ${space}

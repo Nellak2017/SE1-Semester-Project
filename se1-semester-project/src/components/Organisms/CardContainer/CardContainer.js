@@ -14,7 +14,12 @@ function CardContainer (props) {
         <h1>All Messages</h1>
         <Button variant='newChat' size='s' onClick={btnListener}>New Chat</Button>
       </CardNavArea>
-      {children?.map((card, index) => React.cloneElement(card, { onClick: listeners && listeners[index], key: `cardContainerCard${index}` }))}
+      {children?.map((card, index) =>
+        <React.Fragment key={`cardContainerCard${index}`}>
+          {React.cloneElement(card, { ...props, key: `cardContainerCard${index}`, onClick: listeners && listeners[index] })}
+        </React.Fragment>
+      )}
+
     </CardContainerParent>
   )
 }

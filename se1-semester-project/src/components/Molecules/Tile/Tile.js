@@ -9,19 +9,19 @@ import { GiSoundWaves } from 'react-icons/gi'
 const calculateTimeString = (hours, minutes, seconds) => {
   let returnStr = ''
 
-  if (hours && parseInt(hours) !== parseInt(hours)) { // if hours is defined and nan
+  if (hours && typeof hours === 'number' && isNaN(hours)) { // if hours is defined and nan
     returnStr += ''
-  } else if (hours && parseInt(hours) === parseInt(hours) && hours > 0) { // if hours is defined and not nan and greater than 0
+  } else if (hours && typeof hours === 'number' && !isNaN(hours) && hours > 0) { // if hours is defined and not nan and greater than 0
     returnStr += parseInt(hours) + ':'
   }
 
-  if (minutes && parseInt(minutes) !== parseInt(minutes)) { // if minutes is defined and nan
+  if (minutes && typeof minutes === 'number' && isNaN(minutes)) { // if minutes is defined and nan
     returnStr += '00'
-  } else if (hours && hours > 0 && minutes && parseInt(minutes) === parseInt(minutes)) { // if minutes and hours is defined and not nan
+  } else if (hours && hours > 0 && minutes && typeof minutes === 'number' && !isNaN(minutes)) { // if minutes and hours is defined and not nan
     returnStr += (parseInt(minutes) % 60).toString().padStart(2, '0')
-  } else if (hours && hours <= 0 && minutes && parseInt(minutes) === parseInt(minutes)) { // if minutes and hours is defined and not nan
+  } else if (hours && hours <= 0 && minutes && typeof minutes === 'number' && !isNaN(minutes)) { // if minutes and hours is defined and not nan
     returnStr += (parseInt(minutes) % 60).toString()
-  } else if (!hours && minutes && parseInt(minutes) === parseInt(minutes)) {
+  } else if (!hours && minutes && typeof minutes === 'number' && !isNaN(minutes)) {
     returnStr += (parseInt(minutes) % 60).toString()
   } else if (!minutes && seconds) { // if minutes not defined but seconds are
     returnStr += '00'
@@ -31,9 +31,9 @@ const calculateTimeString = (hours, minutes, seconds) => {
     returnStr += '0'
   }
 
-  if (seconds && parseInt(seconds) !== parseInt(seconds)) { // if seconds is defined and nan
+  if (seconds && typeof seconds === 'number' && isNaN(seconds)) { // if seconds is defined and nan
     returnStr += ':00'
-  } else if (seconds && parseInt(seconds) === parseInt(seconds)) { // if seconds is defined and not nan
+  } else if (seconds && typeof seconds === 'number' && !isNaN(seconds)) { // if seconds is defined and not nan
     returnStr += ':' + (parseInt(seconds) % 60).toString().padStart(2, '0')
   } else if (!seconds) { // if seconds not defined
     returnStr += ':00'
