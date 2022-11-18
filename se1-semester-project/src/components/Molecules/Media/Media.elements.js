@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-export const TextOverlayParent = styled.span`
+export const MediaParent = styled.span`
+    z-index: 0; // by default the parent will be below all other Media
     position: relative;
     display: inline-flex;
     flex-direction: column;
@@ -12,18 +13,22 @@ export const TextOverlayParent = styled.span`
 
     // Every video or image that isn't the last video must be below the current video, but still playable
     & > video,image {
+        position: absolute;
         :not(:last-child) {
-            position: absolute;
             z-index: 0;
         }
         :last-child {
             z-index: 1;
         }
     }
+    // Every Audio will be hidden, but will still play noise and be controlled by the component
+    & > audio {
+        // audios by default don't display, so you don't do any styles haha
+    }
 `
 
 // The Text overlay must have a higher z-index than the video (last video has z-index 1)
-export const TextOverlayChild = styled.h1`
+export const MediaChild = styled.h1`
     // color is determined by text color prop
     position: absolute;
     max-height: 33%;
@@ -38,6 +43,7 @@ export const Temp = styled.div`
     height: 98vh;
     width: 100%;
     display: flex;
+    column-gap: 5rem;
     align-items: center;
     justify-content: center;
 `
