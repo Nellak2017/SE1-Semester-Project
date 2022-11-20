@@ -18,8 +18,8 @@ const Template = args => <Temp><Media {...args} /></Temp>
 // if you pass in a React Fragment containing the Video, then the React Clone will not have the ref to play/pause the video
 // So always pass in a <video /> or <audio />
 const testVideo = (
-  <video playsInline autoPlay muted loop>
-    <source src='https://www.w3schools.com/html/mov_bbb.mp4' type='video/mp4' />
+  <video playsInline autoPlay muted controls='controls' loop>
+    <source src='https://www.w3schools.com/html/mov_bbb.mp4#t=2,6' type='video/mp4' />
     <source src='https://www.w3schools.com/html/mov_bbb.ogg' type='video' />
     Your browser does not support the video tag. I suggest you upgrade your browser.
   </video>
@@ -34,6 +34,9 @@ const testAudio = (
 // font sizes: [14px, 20px, 32px, 34px] work fine
 // Only last image is displayed as background image, videos have higher z-index than images
 // Only last video is displayed, all others are hidden underneath with 0 z-index yet are all playing
+
+// To start and stop videos at certain times, see also: https://blog.addpipe.com/10-advanced-features-in-html5-video-player/#startorstopthevideoatacertainpointortimestamp
+
 export const media = Template.bind({})
 media.args = {
   text: 'The Quick Brown Fox Jumped Over The Lazy Dog.',

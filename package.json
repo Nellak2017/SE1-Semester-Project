@@ -2,6 +2,10 @@
   "dependencies": {
     "next": "^13.0.3",
     "react-color": "^2.19.3",
-    "react-textarea-autosize": "^8.4.0"
+    "react-textarea-autosize": "^8.4.0",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "jest-environment-jsdom": "^29.3.1"
   }
 }
