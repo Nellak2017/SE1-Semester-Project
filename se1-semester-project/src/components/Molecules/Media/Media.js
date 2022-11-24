@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { MediaChild, MediaParent } from './Media.elements'
 
 /* @docstring
@@ -25,6 +25,7 @@ import { MediaChild, MediaParent } from './Media.elements'
 */
 function Media (props) {
   const { text, color, position, size, video, image, audio, zindex, playing, ...rest } = props
+  const [mediaLen, setMediaLen] = useState(0)
   const videoRef = useRef(null)
   const audioRef = useRef(null)
 
@@ -40,6 +41,15 @@ function Media (props) {
     else console.error("Can't pause video, it isn't a video tag. Try putting <video> in video prop.")
     if (audioRef.current.tagName.toLowerCase() === 'audio') audioRef.current?.pause()
     else console.error("Can't pause audio, it isn't an audio tag. Try putting <audio> in audio prop.")
+  }
+
+  // We have no other way but to useImperativeHook to get the MediaLength because it is not known ahead of time
+  // So we make a rare exception of breaking the declarative nature of React to get the Media Length
+  const getMediaLen = () => {
+    if (videoRef.current.tagName.toLowerCase() === 'video') setMediaLen(videoRef.current?.duration)
+    else console.error("Can't get Length of video, it isn't a video tag. Try putting <video> in video prop.")
+    if (audioRef.current.tagName.toLowerCase() === 'audio') setMediaLen(audioRef.current?.duration)
+    else console.error("Can't get Length of audio, it isn't an audio tag. Try putting <audio> in audio prop.")
   }
 
   const posToStyle = (position) => {

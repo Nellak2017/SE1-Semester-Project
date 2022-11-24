@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
 // This provides default global CSS that is as minimal and as reasonable as possible
-// @todo: add default font-family
 const GlobalStyle = createGlobalStyle`
 * {
     box-sizing: border-box;

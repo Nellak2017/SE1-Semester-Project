@@ -19,7 +19,7 @@ const Template = args => <Temp><Media {...args} /></Temp>
 // So always pass in a <video /> or <audio />
 const testVideo = (
   <video playsInline autoPlay muted controls='controls' loop>
-    <source src='https://www.w3schools.com/html/mov_bbb.mp4#t=2,6' type='video/mp4' />
+    <source src='https://www.w3schools.com/html/mov_bbb.mp4#t=9' type='video/mp4' />
     <source src='https://www.w3schools.com/html/mov_bbb.ogg' type='video' />
     Your browser does not support the video tag. I suggest you upgrade your browser.
   </video>

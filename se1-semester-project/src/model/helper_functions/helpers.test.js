@@ -4,6 +4,8 @@ import {
   validateDuration,
   SMILtoJSON,
   JSONtoSMIL,
+  getNthTag,
+  JSONtoTimings,
   JSONtoMedia,
   timeRules,
   zIndex,
@@ -14,16 +16,16 @@ import {
 } from './helpers'
 
 const testStr1 =
-'<smil>' +
-'<body>' +
-'<par>' +
-'<text src="1.txt" dur="10s"/>' +
-'<img src="img2.jpg" dur="14s"/>' +
-'<audio src="711.mp3" begin="5s" end="16s"/>' +
-'</par>' +
-'<video src="panda.flv" begin="3s"/>' +
-'</body>' +
-'</smil>'
+  '<smil>' +
+  '<body>' +
+  '<par>' +
+  '<text src="1.txt" dur="10s"/>' +
+  '<img src="img2.jpg" dur="14s"/>' +
+  '<audio src="711.mp3" begin="5s" end="16s"/>' +
+  '</par>' +
+  '<video src="panda.flv" begin="3s"/>' +
+  '</body>' +
+  '</smil>'
 
 const expectedStr1 = JSON.parse('{"smil": {"body": {"par": {"text": {"_attributes":{"src": "1.txt","dur": "10s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}},"video": {"_attributes": {"src": "panda.flv","begin": "3s"}}}}}')
 
@@ -163,23 +165,519 @@ describe('zIndex Function Tests', () => {
   })
 })
 
+describe('playing Function Tests', () => {
+  test('playing should return proper values for given durations', () => {
+    expect(playing('1s', '', '', 10.1, 2)).toBeTruthy()
+    expect(playing('', '1s', '', 10.1, 2)).toBeFalsy()
+    expect(playing('', '', '1s', 10.1, 2)).toBeFalsy()
+    expect(playing('1s', '3s', '', 10.1, 2)).toBeTruthy()
+    expect(playing('1s', '', '3s', 10.1, 2)).toBeTruthy()
+    expect(playing('', '4s', '3s', 10.1, 2)).toBeTruthy()
+    expect(playing('', '4s', '1s', 10.1, 2)).toBeFalsy()
+    expect(playing('1s', '4s', '1s', 10.1, 2)).toBeTruthy()
+    expect(playing('1s', '4s', '2s', 10.1, 2)).toBeTruthy()
+    expect(playing('1s', '4s', '0s', 10.1, 2)).toBeFalsy()
+  })
+})
+
+const goodMedias = { media1: { start: '1s', end: '3s', dur: '', len: 10.1 }, media2: { start: '2s', end: '6s', dur: '', len: 10.1 } }
+const goodTime = 5
+const goodMediasXgoodTimeRetValue = { media1: '0', media2: '1' }
+describe('zIndexArr Function Tests', () => {
+  const l = 10.1
+  const badMediasArr = [{ media1: { start: '1s', end: '3s', dur: '', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }]
+  const badMediasBadProp = { media1: { start: '1s', ended: '3s', dur: '', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }
+  const badMediasBadDuration = { media1: { start: '1s', end: '3s', dur: '-1', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }
+
+  const badTime = '1'
+
+  test('zIndexArr Function should throw an Error when given invalid inputs', () => {
+    expect(() => zIndexArr(badMediasArr, goodTime)).toThrow(Error)
+    expect(() => zIndexArr(badMediasBadProp, goodTime)).toThrow(Error)
+    expect(() => zIndexArr(badMediasBadDuration, goodTime)).toThrow(Error)
+    expect(() => zIndexArr(goodMedias, badTime)).toThrow(Error)
+    expect(() => zIndexArr(badMediasArr, badTime)).toThrow(Error)
+    expect(() => zIndexArr(badMediasBadProp, badTime)).toThrow(Error)
+    expect(() => zIndexArr(badMediasBadDuration, badTime)).toThrow(Error)
+  })
+
+  test('zIndexArr Function not throw an Error when given valid inputs', () => {
+    expect(() => zIndexArr(goodMedias, goodTime)).not.toThrow(Error)
+  })
+
+  test('zIndexArr Function should return proper values on valid inputs', () => {
+    expect(zIndexArr(goodMedias, goodTime)).toEqual(goodMediasXgoodTimeRetValue)
+  })
+})
+
+describe('playingArr Function Tests', () => {
+  test('zIndexArr Function should return proper values on valid inputs', () => {
+    const goodMedias2 = { par1media1: { start: '1s', end: '3s', dur: '', len: 10.1 }, media2: { start: '2s', end: '6s', dur: '', len: 10.1 } }
+    const expected = { par1media1: false, media2: true }
+    expect(playingArr(goodMedias2, goodTime)).toEqual(expected)
+  })
+})
+
+const validClass1 = {
+  smil: {
+    body: {
+      par: {
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '14s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '16s',
+            len: '20s'
+          }
+        }
+      },
+      video: {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      },
+      audio: [{
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      },
+      {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '30s'
+        }
+      }]
+    }
+  }
+} // [par, obj]
+
+const validClass2 = {
+  smil: {
+    body: {
+      par: [{
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '14s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '16s',
+            len: '20s'
+          }
+        }
+      },
+      {
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '16s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '18s',
+            len: '20s'
+          }
+        }
+      }]
+    }
+  }
+} // [par, !obj]
+
+const validClass3 = {
+  smil: {
+    body: {
+      par: {
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '14s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '16s',
+            len: '20s'
+          }
+        }
+      },
+      video: {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      }
+    }
+  }
+} // [!par, obj]
+
+const validClass4 = {
+  smil: {
+    body: {
+      par: {
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '14s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '16s',
+            len: '20s'
+          }
+        }
+      },
+      audio: [{
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      },
+      {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '30s',
+          len: '60s'
+        }
+      }]
+    }
+  }
+} // [!par, !obj]
+
+const validIntegrated1 = {
+  smil: {
+    body: {
+      par: {
+        text: {
+          _attributes: {
+            src: '1.txt',
+            dur: '10s'
+          }
+        },
+        img: {
+          _attributes: {
+            src: 'img2.jpg',
+            dur: '14s'
+          }
+        },
+        audio: {
+          _attributes: {
+            src: '711.mp3',
+            begin: '5s',
+            end: '16s',
+            len: '20s'
+          }
+        }
+      },
+      video: {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      },
+      audio: [
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s'
+          }
+        },
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '30s'
+          }
+        }]
+    }
+  }
+}
+
+const validIntegrated2 = {
+  smil: {
+    body: {
+      par: [
+        {
+          text: {
+            _attributes: {
+              src: '1.txt',
+              dur: '10s'
+            }
+          },
+          img: {
+            _attributes: {
+              src: 'img2.jpg',
+              dur: '14s'
+            }
+          },
+          audio: {
+            _attributes: {
+              src: '711.mp3',
+              begin: '5s',
+              end: '16s',
+              len: '20s'
+            }
+          }
+        },
+        {
+          text: {
+            _attributes: {
+              src: '1.txt',
+              dur: '10s'
+            }
+          },
+          img: {
+            _attributes: {
+              src: 'img2.jpg',
+              dur: '16s'
+            }
+          },
+          audio: {
+            _attributes: {
+              src: '711.mp3',
+              begin: '5s',
+              end: '18s',
+              len: '20s'
+            }
+          }
+        }],
+      video: {
+        _attributes: {
+          src: 'panda.flv',
+          begin: '3s'
+        }
+      },
+      audio: [
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s'
+          }
+        },
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '30s'
+          }
+        }]
+    }
+  }
+}
+
+describe('getNthTag Tests', () => {
+  const invalid1 = {
+    smil: {
+      body: {
+        par: {
+          text: {
+            _attributes: {
+              src: '1.txt',
+              dur: '10s'
+            }
+          },
+          img: {
+            _attributes: {
+              src: 'img2.jpg',
+              dur: '14s'
+            }
+          },
+          audio: {
+            _attributes: {
+              sourrc: '711.mp3',
+              begin: '5s',
+              end: '16s',
+              len: '20s'
+            }
+          }
+        },
+        video: {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s'
+          }
+        },
+        audio: [{
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s'
+          }
+        },
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '30s'
+          }
+        }]
+      }
+    }
+  }
+  const invalid2 = {
+    par: {
+      text: {
+        attributes: {
+          src: '1.txt',
+          dur: '10s'
+        }
+      },
+      img: {
+        _attributes: {
+          src: 'img2.jpg',
+          dur: '14s'
+        }
+      },
+      audio: {
+        _attributes: {
+          src: '711.mp3',
+          begin: '5s',
+          end: '16s',
+          len: '20s'
+        }
+      }
+    }
+  }
+  const invalid3 = {
+    par: {
+      text: {
+        _attributes: {
+          src: '1.txt',
+          duration: '10s'
+        }
+      },
+      img: {
+        _attributes: {
+          src: 'img2.jpg',
+          dur: '14s'
+        }
+      },
+      audio: {
+        _attributes: {
+          src: '711.mp3',
+          begin: '5s',
+          end: '16s',
+          len: '20s'
+        }
+      }
+    }
+  }
+
+  const validClass1Res = {
+    text: { src: '1.txt', dur: '10s' },
+    img: { src: 'img2.jpg', dur: '14s' },
+    audio: { src: '711.mp3', begin: '5s', end: '16s', len: '20s' }
+  }
+
+  const validClass2Res = {
+    text: { src: '1.txt', dur: '10s' },
+    img: { src: 'img2.jpg', dur: '14s' },
+    audio: { src: '711.mp3', begin: '5s', end: '16s', len: '20s' }
+  }
+
+  const validClass3Res = { video: { src: 'panda.flv', begin: '3s' } }
+
+  const validClass4Res = { audio: { src: 'panda.flv', begin: '3s' } }
+
+  test('getNthTag should throw errors on invalid inputs', () => {
+    expect(() => getNthTag(invalid1)).toThrow(Error)
+    expect(() => getNthTag(invalid2)).toThrow(Error)
+    expect(() => getNthTag(invalid1, -5)).toThrow(Error)
+    expect(() => getNthTag(invalid2, -5)).toThrow(Error)
+    expect(() => getNthTag(invalid1, NaN)).toThrow(Error)
+    expect(() => getNthTag(invalid2, NaN)).toThrow(Error)
+    expect(() => getNthTag(invalid1, null)).toThrow(Error)
+    expect(() => getNthTag(invalid2, null)).toThrow(Error)
+    expect(() => getNthTag(invalid1, 0)).toThrow(Error)
+    expect(() => getNthTag(invalid2, 0)).toThrow(Error)
+    expect(() => getNthTag(invalid3, 0)).toThrow(Error)
+  })
+  test('getNthTag should return proper results on the 4 classes of valid inputs', () => {
+    expect(getNthTag(validClass1, 0)).toEqual(validClass1Res)
+    expect(getNthTag(validClass2, 0)).toEqual(validClass2Res)
+    expect(getNthTag(validClass3, 1)).toEqual(validClass3Res)
+    expect(getNthTag(validClass4, 1)).toEqual(validClass4Res)
+
+    expect(getNthTag(validIntegrated1, 0)).toEqual(validClass1Res)
+    expect(getNthTag(validIntegrated2, 2)).toEqual(validClass3Res)
+  })
+})
+
+describe('JSON -> Timings Tests', () => {
+  const class1Res = {
+    text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
+    img: {
+      src: 'img2.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: ''
+    },
+    audio: {
+      src: '711.mp3',
+      begin: '5s',
+      end: '16s',
+      len: '20s',
+      dur: '',
+      region: ''
+    }
+  }
+  test('JSON -> Timings should return proper values on valid inputs', () => {
+    expect(JSONtoTimings(validClass1, 0)).toEqual(class1Res)
+  })
+})
+
 describe('JSON -> Media Tests', () => {
 
 })
 
 /*
-
-describe('playing Function Tests', () => {
-
-})
-
-describe('zIndexArr Function Tests', () => {
-
-})
-
-describe('playingArr Function Tests', () => {
-
-})
 
 describe('mediaChanges Function Tests', () => {
 
