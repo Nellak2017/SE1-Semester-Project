@@ -11,7 +11,8 @@ import {
   playing,
   zIndexArr,
   playingArr,
-  mediaFactory
+  mediaFactory,
+  JSONtoMedia
 } from './helpers'
 import Media from '../../components/Molecules/Media/Media'
 
@@ -639,6 +640,7 @@ describe('getNthTag Tests', () => {
   })
   test('getNthTag should return proper results on the 4 classes of valid inputs', () => {
     expect(getNthTag(validClass1, 0)).toEqual(validClass1Res)
+    expect(getNthTag(validClass1, 0)).toEqual(validClass1Res)
     expect(getNthTag(validClass2, 0)).toEqual(validClass2Res)
     expect(getNthTag(validClass3, 1)).toEqual(validClass3Res)
     expect(getNthTag(validClass4, 1)).toEqual(validClass4Res)
@@ -725,6 +727,7 @@ describe('JSON -> Timings Tests', () => {
   })
 })
 
+// @TODO: Create Error Throwing logic in this function and tests for it as well
 describe('mediaFactory Tests', () => {
   const validTestMedia1 = {
     text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
@@ -820,6 +823,42 @@ describe('mediaFactory Tests', () => {
   })
 })
 
-describe('JSON -> Media Tests', () => {
+const class1Audio1 = (
+  <audio playsInline>
+    <source src='711.mp3' type='audio' />
+  </audio>
+)
 
+const class1Audio2 = (
+  <audio playsInline>
+    <source src='panda.flv' type='audio' />
+  </audio>
+)
+
+const class1Video1 = (
+  <video playsInline>
+    <source src='panda.flv' type='video' />
+  </video>
+)
+
+const validClass1Ret = [
+  <Media key='Media[0][audio]' audio={class1Audio1} video='' />,
+  <Media key='Media[1][video]' audio='' video={class1Video1} />,
+  <Media key='Media[2][audio]' audio={class1Audio2} video='' />,
+  <Media key='Media[3][audio]' audio={class1Audio2} video='' />
+]
+
+const validIntegrated1Ret = [
+  <Media key='Media[0][audio]' audio={class1Audio1} video='' />,
+  <Media key='Media[1][video]' audio='' video={class1Video1} />,
+  <Media key='Media[2][audio]' audio={class1Audio2} video='' />,
+  <Media key='Media[3][audio]' audio={class1Audio2} video='' />
+]
+
+describe('JSON -> Media Tests', () => {
+  expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
+  expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
+
+  expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
+  expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
 })

@@ -359,22 +359,23 @@ export const getNthTag = (json, tag) => {
 // input: Media object like {text: {...}, img: {...}, audio: {...}}
 // output: Media object with all fields filled properly or ''
 export const fillMedia = (MediaTag) => {
+  const mediaCopy = JSON.parse(JSON.stringify(MediaTag))
   const ret = {}
-  for (const media in MediaTag) {
+  for (const media in mediaCopy) {
     const isDefined = {
-      src: typeof MediaTag[media].src !== 'undefined',
-      dur: typeof MediaTag[media].dur !== 'undefined',
-      begin: typeof MediaTag[media].begin !== 'undefined',
-      end: typeof MediaTag[media].end !== 'undefined',
-      len: typeof MediaTag[media].len !== 'undefined',
-      region: typeof MediaTag[media].region !== 'undefined'
+      src: typeof mediaCopy[media].src !== 'undefined',
+      dur: typeof mediaCopy[media].dur !== 'undefined',
+      begin: typeof mediaCopy[media].begin !== 'undefined',
+      end: typeof mediaCopy[media].end !== 'undefined',
+      len: typeof mediaCopy[media].len !== 'undefined',
+      region: typeof mediaCopy[media].region !== 'undefined'
     }
     for (const attr in isDefined) {
       if (!isDefined[attr]) {
-        MediaTag[media][attr] = ''
+        mediaCopy[media][attr] = ''
       }
     }
-    ret[media] = MediaTag[media]
+    ret[media] = mediaCopy[media]
   }
   return ret
 }
@@ -429,17 +430,60 @@ export const playingArr = (medias, time) => {
 }
 
 // input: JSON
-// output: [<Media ...INCORRECT/>] | Error
+// output: [<Media ...INCORRECT (-[text,img,len,z,play])/>] | Error
 // This fx requires a try-catch block for caller
 // This fx is near the beginning of the SMIL Player pipe and is solely used to get the Length info of each Media it is INCORRECT
 export const JSONtoMedia = (json) => {
   // return [<Media ... />]
   verifyJSONwithDTD(json, 'JSONtoMedia') // Error or nothing
-  // 1. figure out layout of body.
-  // 1.1 Get keys of body. Ex: -> [par, video] Ex: -> [video,par,par,video,img]
-  // 2. for each non-par tag in the body, generate a <Media /> component, add it to return list. Make sure it has z-index = 0, and is not playing
-  // 2.1 Ex: [video](src=.., begin=2, end=6, dur='') -> <Media zindex='0' playing='false' video=<video><source src='https://www.w3schools.com/html/mov_bbb.mp4#t=2,6' type='video/mp4' /></video>/>
-  // 3.
+
+  // 1. Get the json to a convienient form using json->timings in a loop
+  // note: I could have used map/filter/reduce for this, but I find imperative is simpler for me
+  const body = json.smil.body
+  let tagCount = 0
+  for (const tag in body) {
+    if (!Array.isArray(body[tag])) tagCount += 1
+    else tagCount += body[tag].length
+  }
+
+  const timingTagsArr = []
+  for (let tag = 0; tag < tagCount; tag++) { // iterate over all tags in JSON
+    // for each tag, call the json->timings function and store the result in timingTagsArr
+    timingTagsArr.push(JSONtoTimings(json, tag))
+  }
+
+  // 2. Do a 'mediaFactory' but without combining everything
+  const ret = []
+  let count = 0
+  for (const medias of timingTagsArr) {
+    // make video/audio if they exist
+    let video
+    let audio
+    if (typeof medias.video !== 'undefined') {
+      video = (
+        <video playsInline>
+          <source src={medias.video.src} type='video' />
+        </video>
+      )
+    }
+    if (typeof medias.audio !== 'undefined') {
+      audio = (
+        <audio playsInline>
+          <source src={medias.audio.src} type='audio' />
+        </audio>
+      )
+    }
+
+    for (const tag in medias) {
+      if (tag.toLowerCase().trim() !== 'text' && tag.toLowerCase().trim() !== 'img') {
+        ret.push(<Media key={`Media[${count}][${tag}]`} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} />)
+        count = count + 1
+      }
+    }
+  }
+
+  // 3. Return ret
+  return ret
 }
 
 // input: [zIndex], [playing], {medias}
