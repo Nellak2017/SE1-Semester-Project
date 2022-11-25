@@ -1,5 +1,31 @@
 // These are **Most** of the helper functions used in the App (Some trivial ones are inline with the Component)
 import convert from 'xml-js'
+import Media from '../../components/Molecules/Media/Media'
+
+// ---------------------------------------
+
+/*
+SMIL Player Functions
+________  _____ ______   ___  ___               ________  ___       ________      ___    ___ _______   ________
+|\   ____\|\   _ \  _   \|\  \|\  \             |\   __  \|\  \     |\   __  \    |\  \  /  /|\  ___ \ |\   __  \
+\ \  \___|\ \  \\\__\ \  \ \  \ \  \            \ \  \|\  \ \  \    \ \  \|\  \   \ \  \/  / | \   __/|\ \  \|\  \
+ \ \_____  \ \  \\|__| \  \ \  \ \  \            \ \   ____\ \  \    \ \   __  \   \ \    / / \ \  \_|/_\ \   _  _\
+  \|____|\  \ \  \    \ \  \ \  \ \  \____        \ \  \___|\ \  \____\ \  \ \  \   \/  /  /   \ \  \_|\ \ \  \\  \|
+    ____\_\  \ \__\    \ \__\ \__\ \_______\       \ \__\    \ \_______\ \__\ \__\__/  / /      \ \_______\ \__\\ _\
+   |\_________\|__|     \|__|\|__|\|_______|        \|__|     \|_______|\|__|\|__|\___/ /        \|_______|\|__|\|__|
+   \|_________|                                                                  \|___|/
+
+ ________ ___  ___  ________   ________ _________  ___  ________  ________   ________
+|\  _____\\  \|\  \|\   ___  \|\   ____\\___   ___\\  \|\   __  \|\   ___  \|\   ____\
+\ \  \__/\ \  \\\  \ \  \\ \  \ \  \___\|___ \  \_\ \  \ \  \|\  \ \  \\ \  \ \  \___|_
+ \ \   __\\ \  \\\  \ \  \\ \  \ \  \       \ \  \ \ \  \ \  \\\  \ \  \\ \  \ \_____  \
+  \ \  \_| \ \  \\\  \ \  \\ \  \ \  \____   \ \  \ \ \  \ \  \\\  \ \  \\ \  \|____|\  \
+   \ \__\   \ \_______\ \__\\ \__\ \_______\  \ \__\ \ \__\ \_______\ \__\\ \__\____\_\  \
+    \|__|    \|_______|\|__| \|__|\|_______|   \|__|  \|__|\|_______|\|__| \|__|\_________\
+                                                                               \|_________|
+
+*/
+// ---------------------------------------
 
 // input: min, max, time
 // output: 1 if time in interval, 0 otherwise
@@ -32,7 +58,11 @@ export const durationStrToInt = (duration) => {
 // input: String <float+'s'>
 // output: float
 export const durationStrToFloat = (duration) => {
-  return parseFloat(duration.replace(/s/, ''))
+  if (typeof duration !== 'undefined' && duration !== '') {
+    return parseFloat(duration.replace(/s/, ''))
+  } else {
+    return ''
+  }
 }
 
 // input: number
@@ -41,16 +71,16 @@ export const numberToDurationStr = (duration) => {
   return duration.toString() + 's'
 }
 
-// input: start, end, dur, len, functionName
+// input: begin, end, dur, len, functionName
 // output: Error | none
-export const validateDuration = (start, end, dur, len, functionName) => {
+export const validateDuration = (begin, end, dur, len, functionName) => {
   if (typeof len !== 'number' || (typeof len === 'number' && isNaN(len))) throw new Error(`Entered len in ${functionName} is not a number`)
-  if ([start, end, dur].every(duration => duration === '')) throw new Error(`You must give atleast 1 duration argument to the ${functionName} function`)
-  if (![start, end, dur].every(duration => typeof duration === 'string')) throw new Error(`Only Strings or '' are allowed for durations in ${functionName}.\nExpected: String\nGot: ${typeof duration}`)
-  if (![start, end, dur].every(duration => testDurationInput(duration) === true || duration === '')) throw new Error(`Invalid duration input in ${functionName} function.\nExpected start:${start}, end:${end}, dur:${dur}\nTo be Strings of form int+'s'\nGot: start:${start}, end:${end}, dur:${dur}`)
-  if ([start, end, dur].some(duration => durationStrToInt(duration) > len)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected start, dur, and end to all be <= len\nGot: start = ${durationStrToInt(start)}, end = ${durationStrToInt(end)}, dur = ${durationStrToInt(dur)} \nExpected: start <= ${len}, end <= ${len}, dur <= ${len}`) // (start, dur, end) <= [len]s
-  if ([start, end, dur].some(duration => testDurationInput(duration) === false) && durationStrToInt(start) > durationStrToInt(end)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected start < end \nGot start = ${start}, end = ${end}`) // start <= end except for [start,end,dur]
-  if (durationStrToInt(start) + durationStrToInt(dur) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: start + dur <= len\nGot: ${durationStrToInt(start)} + ${durationStrToInt(dur)} > ${len}`) // start + dur <= [len]s
+  if ([begin, end, dur].every(duration => duration === '')) throw new Error(`You must give atleast 1 duration argument to the ${functionName} function`)
+  if (![begin, end, dur].every(duration => typeof duration === 'string')) throw new Error(`Only Strings or '' are allowed for durations in ${functionName}.\nExpected: String\nGot: ${typeof duration}`)
+  if (![begin, end, dur].every(duration => testDurationInput(duration) === true || duration === '')) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin:${begin}, end:${end}, dur:${dur}\nTo be Strings of form int+'s'\nGot: begin:${begin}, end:${end}, dur:${dur}`)
+  if ([begin, end, dur].some(duration => durationStrToInt(duration) > len)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin, dur, and end to all be <= len\nGot: begin= ${durationStrToInt(begin)}, end = ${durationStrToInt(end)}, dur = ${durationStrToInt(dur)} \nExpected: begin<= ${len}, end <= ${len}, dur <= ${len}`) // (begin, dur, end) <= [len]s
+  if ([begin, end, dur].some(duration => testDurationInput(duration) === false) && durationStrToInt(begin) > durationStrToInt(end)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin< end \nGot begin= ${begin}, end = ${end}`) // begin<= end except for [begin,end,dur]
+  if (durationStrToInt(begin) + durationStrToInt(dur) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: begin+ dur <= len\nGot: ${durationStrToInt(begin)} + ${durationStrToInt(dur)} > ${len}`) // begin+ dur <= [len]s
   if (durationStrToInt(dur) + durationStrToInt(end) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: dur + end <= len\nGot: ${durationStrToInt(dur)} + ${durationStrToInt(end)} > ${len}`) // dur + end <= [len]s
 }
 
@@ -126,7 +156,12 @@ export const verifyJSONwithDTD = (json, functionName) => {
     for (const media in parTag) { // media is like: text, audio, img, video
       for (const attr in parTag[media]?._attributes) {
         if (['begin', 'end', 'dur'].includes(attr)) {
-          if (!testDurationInput(parTag[media]?._attributes[attr])) throw new Error('One of the [begin, end, dur] _attributes of a par media element has a disallowed value. It is not of form INT+"s"')
+          if (!testDurationInput(parTag[media]?._attributes[attr]) && parTag[media]?._attributes[attr] !== '') {
+            throw new Error(`One of the [begin, end, dur] _attributes of a par media element, for ${functionName} function has a disallowed value. It is not of form INT+"s"
+          \nMedia: ${media}\nKeys: ${Object.keys(parTag[media]._attributes)}\nValues: ${Object.values(parTag[media]._attributes)}
+          \nparTag[media]?._attributes[attr] should match par tag regex, but it actually is: ${parTag[media]?._attributes[attr]}
+          \nattr=${attr}`)
+          }
         }
       }
     }
@@ -137,7 +172,12 @@ export const verifyJSONwithDTD = (json, functionName) => {
       for (const media in obj) {
         for (const attr in obj[media]?._attributes) {
           if (['begin', 'end', 'dur'].includes(attr)) {
-            if (!testDurationInput(obj[media]?._attributes[attr])) throw new Error('One of the [begin, end, dur] _attributes of a par media element has a disallowed value. It is not of form INT+"s"')
+            if (!testDurationInput(obj[media]?._attributes[attr]) && obj[media]?._attributes[attr] !== '') {
+              throw new Error(`One of the [begin, end, dur] _attributes of a par media element, for ${functionName} function has a disallowed value. It is not of form INT+"s"
+            \nMedia: ${media}\nKeys: ${Object.keys(parTag[media]._attributes)}\nValues: ${Object.values(parTag[media]._attributes)}
+            \nparTag[media]?._attributes[attr] should match par tag regex, but it actually is: ${parTag[media]?._attributes[attr]}
+            \nattr=${attr}`)
+            }
           }
         }
       }
@@ -160,87 +200,87 @@ export const JSONtoSMIL = (json) => {
   return convert.json2xml(json, { compact: true })
 }
 
-// input: start: String <positive+'s'>, end: String <positive+'s'>, dur: String <positive+'s'>, len: float <length of video>
+// input: begin: String <positive+'s'>, end: String <positive+'s'>, dur: String <positive+'s'>, len: float <length of video>
 // output: {presentationStart:<positive>, presentationEnd:<positive>, fileStart:<positive>, fileEnd:<positive>} | Error
-export const timeRules = (start, end, dur, len) => {
+export const timeRules = (begin, end, dur, len) => {
   // 1. Validate that input is of proper form: String(<positive>+'s')
-  validateDuration(start, end, dur, len, 'timeRules')
+  validateDuration(begin, end, dur, len, 'timeRules')
 
   // 2. Output the rules
-  // [start] -> {presentationStart: "[start]s", presentationEnd:"[len]s", fileStart:"0s", fileEnd:"[len]s"}
-  if (testDurationInput(start) && end === '' && dur === '') return { presentationStart: numberToDurationStr(durationStrToInt(start)), presentationEnd: numberToDurationStr(len), fileStart: '0s', fileEnd: numberToDurationStr(len) }
+  // [begin] -> {presentationStart: "[begin]s", presentationEnd:"[len]s", fileStart:"0s", fileEnd:"[len]s"}
+  if (testDurationInput(begin) && end === '' && dur === '') return { presentationStart: numberToDurationStr(durationStrToInt(begin)), presentationEnd: numberToDurationStr(len), fileStart: '0s', fileEnd: numberToDurationStr(len) }
 
   // [end] -> {presentationStart: "0s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[end]s" }
-  if (start === '' && testDurationInput(end) && dur === '') return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(end)) }
+  if (begin === '' && testDurationInput(end) && dur === '') return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(end)) }
 
   // [dur] -> {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "0s", fileEnd: "[dur]s" }
-  if (start === '' && end === '' && testDurationInput(dur)) return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(dur)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(dur)) }
+  if (begin === '' && end === '' && testDurationInput(dur)) return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(dur)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(dur)) }
 
-  // [start, end] -> {presentationStart: "[start]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[end-start]s" }
-  if (testDurationInput(start) && testDurationInput(end) && dur === '') return { presentationStart: numberToDurationStr(durationStrToInt(start)), presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(end) - durationStrToInt(start)) }
+  // [begin, end] -> {presentationStart: "[begin]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[end-begin]s" }
+  if (testDurationInput(begin) && testDurationInput(end) && dur === '') return { presentationStart: numberToDurationStr(durationStrToInt(begin)), presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(end) - durationStrToInt(begin)) }
 
-  // [start, dur] -> {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "[start]s", fileEnd: "[start+dur]s" }
-  if (testDurationInput(start) && end === '' && testDurationInput(dur)) return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(dur)), fileStart: numberToDurationStr(durationStrToInt(start)), fileEnd: numberToDurationStr(durationStrToInt(start) + durationStrToInt(dur)) }
+  // [begin, dur] -> {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "[begin]s", fileEnd: "[begin+dur]s" }
+  if (testDurationInput(begin) && end === '' && testDurationInput(dur)) return { presentationStart: '0s', presentationEnd: numberToDurationStr(durationStrToInt(dur)), fileStart: numberToDurationStr(durationStrToInt(begin)), fileEnd: numberToDurationStr(durationStrToInt(begin) + durationStrToInt(dur)) }
 
   // [end, dur] -> {presentationStart: "[end - dur]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[dur]s" }
-  if (start === '' && testDurationInput(end) && testDurationInput(dur)) return { presentationStart: numberToDurationStr(durationStrToInt(end) - durationStrToInt(dur)), presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(dur)) }
+  if (begin === '' && testDurationInput(end) && testDurationInput(dur)) return { presentationStart: numberToDurationStr(durationStrToInt(end) - durationStrToInt(dur)), presentationEnd: numberToDurationStr(durationStrToInt(end)), fileStart: '0s', fileEnd: numberToDurationStr(durationStrToInt(dur)) }
 
-  // [start, end, dur] -> {presentationStart: "[start]s", presentationEnd: "[start+dur]s", fileStart: "[end]s", fileEnd: "[end+dur]s" }
-  if (testDurationInput(start) && testDurationInput(end) && testDurationInput(dur)) return { presentationStart: numberToDurationStr(durationStrToInt(start)), presentationEnd: numberToDurationStr(durationStrToInt(start) + durationStrToInt(dur)), fileStart: numberToDurationStr(durationStrToInt(end)), fileEnd: numberToDurationStr(durationStrToInt(end) + durationStrToInt(dur)) }
+  // [begin, end, dur] -> {presentationStart: "[begin]s", presentationEnd: "[begin+dur]s", fileStart: "[end]s", fileEnd: "[end+dur]s" }
+  if (testDurationInput(begin) && testDurationInput(end) && testDurationInput(dur)) return { presentationStart: numberToDurationStr(durationStrToInt(begin)), presentationEnd: numberToDurationStr(durationStrToInt(begin) + durationStrToInt(dur)), fileStart: numberToDurationStr(durationStrToInt(end)), fileEnd: numberToDurationStr(durationStrToInt(end) + durationStrToInt(dur)) }
 }
 
-// input: start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, pos:<SMIL time>, time:<float>
+// input: begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, pos:<SMIL time>, time:<float>
 // output: String (int [0 | 1]) | Error
-export const zIndex = (start, end, dur, len, time) => {
+export const zIndex = (begin, end, dur, len, time) => {
   // return z-index at particular time. Intended to be used with <Media />. (int)
 
   // 1. validate input and define variables
   const functionName = 'zIndex'
-  validateDuration(start, end, dur, len, functionName)
+  validateDuration(begin, end, dur, len, functionName)
   validateTime(len, time, functionName)
 
-  const s = durationStrToInt(start)
+  const s = durationStrToInt(begin)
   const e = durationStrToInt(end)
   const d = durationStrToInt(dur)
 
   // 2. output correct z-index of Media
   // return 1 if time is in the time interval in the presentation where it is playing, 0 otherwise
 
-  // [start] -> [start, len]
-  if (testDurationInput(start) && end === '' && dur === '') return between(s, len, time)
+  // [begin] -> [begin, len]
+  if (testDurationInput(begin) && end === '' && dur === '') return between(s, len, time)
 
   // [end] -> [0, end]
-  if (start === '' && testDurationInput(end) && dur === '') return between(0, e, time)
+  if (begin === '' && testDurationInput(end) && dur === '') return between(0, e, time)
 
   // [dur] -> [0, dur]
-  if (start === '' && end === '' && testDurationInput(dur)) return between(0, d, time)
+  if (begin === '' && end === '' && testDurationInput(dur)) return between(0, d, time)
 
-  // [start,end] -> [start, end]
-  if (testDurationInput(start) && testDurationInput(end) && dur === '') return between(s, e, time)
+  // [begin,end] -> [begin, end]
+  if (testDurationInput(begin) && testDurationInput(end) && dur === '') return between(s, e, time)
 
-  // [start,dur] -> [0, dur]
-  if (testDurationInput(start) && end === '' && testDurationInput(dur)) return between(0, d, time)
+  // [begin,dur] -> [0, dur]
+  if (testDurationInput(begin) && end === '' && testDurationInput(dur)) return between(0, d, time)
 
   // [end,dur] -> [end-dur, end]
-  if (start === '' && testDurationInput(end) && testDurationInput(dur)) return between(e - d, e, time)
+  if (begin === '' && testDurationInput(end) && testDurationInput(dur)) return between(e - d, e, time)
 
-  // [start,end,dur] -> [start, start+dur]
-  if (testDurationInput(start) && testDurationInput(end) && testDurationInput(dur)) return between(s, s + d, time)
+  // [begin,end,dur] -> [begin, begin+dur]
+  if (testDurationInput(begin) && testDurationInput(end) && testDurationInput(dur)) return between(s, s + d, time)
 }
 
-// input: start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>,time:<float>
+// input: begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>,time:<float>
 // output: boolean | console.error
-export const playing = (start, end, dur, len, time) => {
+export const playing = (begin, end, dur, len, time) => {
   // return whether a particular media is playing at a particular time or not (Boolean)
   // 1. validate input and define variables
   const functionName = 'playing'
-  validateDuration(start, end, dur, len, functionName)
+  validateDuration(begin, end, dur, len, functionName)
   validateTime(len, time, functionName)
 
   // 2. output correct playing of Media
   // return true if time is in the time interval in the presentation where it is playing, false otherwise
   try {
-    return zIndex(start, end, dur, len, time) === '1'
+    return zIndex(begin, end, dur, len, time) === '1'
   } catch (e) {
     console.error(e)
   }
@@ -280,28 +320,20 @@ export const getNthTag = (json, tag) => {
       const par = Object.keys(subKeyValue) // obj
       for (const item of par) {
         ret[item] = subKeyValue[item]._attributes
-      }
-      if (count === tag) {
+      } if (count === tag) {
         return ret
       }
       count += 1
-    }
-
-    // If [par, arr]
-    else if (isPar && isArr) {
+    } else if (isPar && isArr) { // If [par, arr]
       const par = subKeyValue // array
       for (let i = 0; i < par.length; i++) {
         const ret = {}
         for (const item of Object.keys(par[i])) {
           ret[item] = par[i][item]._attributes
-        }
-        if (count === tag) return ret
+        } if (count === tag) return ret
         count += 1 // iterate on every arr obj
       }
-    }
-
-    // if [!par, obj]
-    else if (!isPar && !isArr) {
+    } else if (!isPar && !isArr) { // if [!par, obj]
       for (const item of Object.values(subKeyValue)) {
         if (count === tag) {
           return {
@@ -310,10 +342,7 @@ export const getNthTag = (json, tag) => {
         }
         count += 1
       }
-    }
-
-    // If [!par, arr]
-    else if (!isPar && isArr) {
+    } else if (!isPar && isArr) { // If [!par, arr]
       const media = subKeyValue // array
       for (let i = 0; i < media.length; i++) {
         if (count === tag) {
@@ -351,7 +380,7 @@ export const fillMedia = (MediaTag) => {
 }
 
 // input: JSON, tag (int)
-// output: medias:{[mediaName][n]:{start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, len:<float>}}
+// output: medias:{[mediaName][n]:{begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, len:<float>}}
 export const JSONtoTimings = (json, tag) => {
   // 1. verify JSON and Tag number
   verifyJSONwithDTD(json, 'JSONtoTimings')
@@ -363,28 +392,28 @@ export const JSONtoTimings = (json, tag) => {
   return fillMedia(nthTag)
 }
 
-// input: medias:{media[n]:{start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, len:<float>}}, time:<float>
+// input: medias:{media[n]:{begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, len:<float>}}, time:<float>
 // output: {media[n]:[0 | 1], ...} | Error
 export const zIndexArr = (medias, time) => {
   // return object that has {media[n]:[0 | 1], ...}
   // 1. validate input and define variables
   const functionName = 'zIndexArr'
   if (typeof medias !== 'object') throw new Error(`Invalid input in zIndexArr.\nExpected medias to be an Object, but got ${typeof medias}.`) // expect medias to be an object
-  objHasAllowedProps(Object.values(medias), ['start', 'end', 'dur', 'len', 'src', 'region']) // expect medias to have start, end, dur, len keys
+  objHasAllowedProps(Object.values(medias), ['begin', 'end', 'dur', 'len', 'src', 'region']) // expect medias to have begin, end, dur, len keys
   for (const obj in medias) {
-    validateDuration(medias[obj]?.start, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, functionName)
+    validateDuration(medias[obj]?.begin, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, functionName)
     validateTime(medias[obj]?.len, time, functionName)
   }
 
   // 2. create an Object that has form of {media[n]:[0 | 1], ...}
   const ret = {}
   for (const obj in medias) {
-    ret[obj] = zIndex(medias[obj]?.start, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, time)
+    ret[obj] = zIndex(medias[obj]?.begin, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, time)
   }
   return ret
 }
 
-// input: medias:{media[n]:{start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>}}, time:<float>
+// input: medias:{media[n]:{begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>}}, time:<float>
 // output: {media[n]:boolean, ...} | console.error
 export const playingArr = (medias, time) => {
   // return object that has {media[n]:boolean, ...}
@@ -399,21 +428,134 @@ export const playingArr = (medias, time) => {
   }
 }
 
-// input: medias:{media[n]:{start:<SMIL time>, end:<SMIL time>, dur:<SMIL time>,pos:[n]<int>}}, time:<float>)
-// output: [int: <time in milliseconds>]
-export const mediaChanges = (medias, time) => {
-  // return array of ints for when media either changes z-index or when it changes from playing->paused or paused->playing
-}
-
 // input: JSON
-// output: [<Media .../>] | Error
+// output: [<Media ...INCORRECT/>] | Error
 // This fx requires a try-catch block for caller
+// This fx is near the beginning of the SMIL Player pipe and is solely used to get the Length info of each Media it is INCORRECT
 export const JSONtoMedia = (json) => {
   // return [<Media ... />]
   verifyJSONwithDTD(json, 'JSONtoMedia') // Error or nothing
   // 1. figure out layout of body.
   // 1.1 Get keys of body. Ex: -> [par, video] Ex: -> [video,par,par,video,img]
   // 2. for each non-par tag in the body, generate a <Media /> component, add it to return list. Make sure it has z-index = 0, and is not playing
-  // 2.1 Ex: [video](src=.., start=2, end=6, dur='') -> <Media zindex='0' playing='false' video=<video><source src='https://www.w3schools.com/html/mov_bbb.mp4#t=2,6' type='video/mp4' /></video>/>
+  // 2.1 Ex: [video](src=.., begin=2, end=6, dur='') -> <Media zindex='0' playing='false' video=<video><source src='https://www.w3schools.com/html/mov_bbb.mp4#t=2,6' type='video/mp4' /></video>/>
   // 3.
 }
+
+// input: [zIndex], [playing], {medias}
+// output: {medias, ...zindex, ...playing}
+// used to combine these 3 together for the final mediaFactory function
+export const combine = (zIndices, playingArr, medias) => {
+  for (const key in medias) {
+    medias[key].zindex = zIndices[key]
+    medias[key].playing = playingArr[key]
+  }
+  return medias
+}
+
+// input: [zIndex], [playing], {medias, ...lengths too}
+// output: <Media ...CORRECT /> | Error
+// This function is at the end of the SMIL Player pipe and generates <Media /> with correct props
+export const mediaFactory = (zIndices, playingArr, medias) => {
+  /*
+  src -> 1. Create a html video,img,audio element 2. add src 3. wrap in <Media video=video|audio=audio|... ...rest />
+  dur, begin, end, len -> Passed through Rules fx to calculate begin/end times. Appended while making video/audio.
+  region -> Map directly into position. <Media ...rest position=region />
+  zIndex, playing -> Map directly onto Media. <Media ...rest zindex=zindex playing=playing />
+  text -> This will be src of a Text element
+
+  color -> To be added in allowed props list later (and in other fx too), will be color prop in Media
+  */
+
+  // 1. define ret
+  const ret = []
+
+  // 2. combine zIndices, playing, and medias
+  const combined = combine(zIndices, playingArr, medias)
+
+  // 3. for each media in combined, createMedia and add that to ret
+
+  // 4. Calculate t values
+  const videoBegin = typeof combined?.video?.begin === 'undefined' ? '' : combined?.video?.begin
+  const videoEnd = typeof combined?.video?.end === 'undefined' ? '' : combined?.video?.end
+  const videoDur = typeof combined?.video?.dur === 'undefined' ? '' : combined?.video?.dur
+  const videoLen = typeof combined?.video?.len === 'undefined' ? '' : combined?.video?.len
+  const audioBegin = typeof combined?.audio?.begin === 'undefined' ? '' : combined?.audio?.begin
+  const audioEnd = typeof combined?.audio?.end === 'undefined' ? '' : combined?.audio?.end
+  const audioDur = typeof combined?.audio?.dur === 'undefined' ? '' : combined?.audio?.dur
+  const audioLen = typeof combined?.audio?.len === 'undefined' ? '' : combined?.audio?.len
+
+  // Only case that can't be covered by potentially missing video Len is the [begin] case. That is absolutely needed
+  let videoTimes
+  if (!videoBegin && !videoEnd && !videoDur && !videoLen) {
+    videoTimes = undefined
+  } else if ((videoBegin || videoEnd || videoDur) && videoLen) { // Anything where [begin,end,dur], len
+    videoTimes = timeRules(videoBegin, videoEnd, videoDur, videoLen) // creates begin,end for video media clip
+  } else if ((!videoBegin || videoEnd || videoDur) && !videoLen) { // Anything but the [begin],!len case
+    const vidEndTime = durationStrToFloat(videoEnd) === '' ? 0 : durationStrToFloat(videoEnd)
+    const vidDurTime = durationStrToFloat(videoDur) === '' ? 0 : durationStrToFloat(videoDur)
+    const s = parseFloat(vidEndTime + vidDurTime) // we must use parse float bc the case of ''+number = 'number'
+    videoTimes = timeRules('0s', videoEnd, videoDur, s) // creates begin,end for video media clip
+  } else if ((videoBegin && (videoEnd || videoDur)) && !videoLen) {
+    const vidEndTime = durationStrToFloat(videoEnd) === '' ? 0 : durationStrToFloat(videoEnd)
+    const vidDurTime = durationStrToFloat(videoDur) === '' ? 0 : durationStrToFloat(videoDur)
+    const s = parseFloat(vidEndTime + vidDurTime)
+    videoTimes = timeRules(videoBegin, videoEnd, videoDur, s)
+  }
+
+  let audioTimes
+  if (!audioBegin && !audioEnd && !audioDur && !audioLen) {
+    audioTimes = undefined
+  } else if ((audioBegin || audioEnd || audioDur) && audioLen) {
+    audioTimes = timeRules(audioBegin, audioEnd, audioDur, audioLen)
+  } else if ((!audioBegin && (audioEnd || audioDur)) && !audioLen) {
+    const audEndTime = durationStrToFloat(audioEnd) === '' ? 0 : durationStrToFloat(audioEnd)
+    const audDurTime = durationStrToFloat(audioDur) === '' ? 0 : durationStrToFloat(audioDur)
+    const s = parseFloat(audEndTime + audDurTime)
+    audioTimes = timeRules('0s', audioEnd, audioDur, s)
+  } else if ((audioBegin && (audioEnd || audioDur)) && !audioLen) {
+    const audEndTime = durationStrToFloat(audioEnd) === '' ? 0 : durationStrToFloat(audioEnd)
+    const audDurTime = durationStrToFloat(audioDur) === '' ? 0 : durationStrToFloat(audioDur)
+    const s = parseFloat(audEndTime + audDurTime)
+    audioTimes = timeRules(audioBegin, audioEnd, audioDur, s)
+  }
+
+  const videoT = typeof videoTimes !== 'undefined' ? `${durationStrToInt(videoTimes.presentationStart)},${durationStrToInt(videoTimes.presentationEnd)}` : ''
+  const audioT = typeof audioTimes !== 'undefined' ? `${durationStrToInt(audioTimes.presentationStart)},${durationStrToInt(audioTimes.presentationEnd)}` : ''
+
+  // 5. Create video|audio elements if they exist
+  let video
+  let audio
+  if (typeof combined.video !== 'undefined') {
+    video = (
+      <video playsInline>
+        <source src={`${combined.video.src}#t=${videoT}`} type='video' />
+        Your browser does not support the video tag. I suggest you upgrade your browser.
+      </video>
+    )
+  }
+  if (typeof combined.audio !== 'undefined') {
+    audio = (
+      <audio playsInline>
+        <source src={`${combined.audio.src}#t=${audioT}`} type='audio' />
+        Your browser does not support the audio tag. I suggest you upgrade your browser.
+      </audio>
+    )
+  }
+
+  // 6. Create [<Media ...rest/>] by looping through Keys of all except text (display text only if z-index is 1)
+  const text = combined.text.zindex === '1' ? combined.text : undefined
+  const img = combined.img.zindex === '1' ? combined.img : undefined
+  let count = 0
+  for (const tag in combined) {
+    if (tag.toLowerCase().trim() !== 'text') {
+      ret.push(<Media key={`Media[${count}]`} text={text && text.src} position={text && text.region} color={text && text.color} image={tag === 'img' ? img && img.src : ''} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} zindex={combined[tag].zindex} playing={combined[tag].playing} />)
+      count += 1
+    }
+  }
+
+  // 7. Return Ret
+  return ret
+}
+
+// ---------------------------------------

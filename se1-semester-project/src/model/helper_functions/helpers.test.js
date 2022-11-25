@@ -6,14 +6,14 @@ import {
   JSONtoSMIL,
   getNthTag,
   JSONtoTimings,
-  JSONtoMedia,
   timeRules,
   zIndex,
   playing,
   zIndexArr,
   playingArr,
-  mediaChanges
+  mediaFactory
 } from './helpers'
+import Media from '../../components/Molecules/Media/Media'
 
 const testStr1 =
   '<smil>' +
@@ -106,7 +106,7 @@ describe('Duration Input Validator', () => {
 })
 
 describe('Time Rules Tests', () => {
-  test('timeRules([start]) should return {presentationStart: "[start]s", presentationEnd: "[len]s", fileStart: "0s", fileEnd: "[len]s" }', () => {
+  test('timeRules([begin]) should return {presentationStart: "[begin]s", presentationEnd: "[len]s", fileStart: "0s", fileEnd: "[len]s" }', () => {
     expect(timeRules('1s', '', '', 10)).toEqual({ presentationStart: '1s', presentationEnd: '10s', fileStart: '0s', fileEnd: '10s' })
     expect(timeRules('10s', '', '', 10)).toEqual({ presentationStart: '10s', presentationEnd: '10s', fileStart: '0s', fileEnd: '10s' })
     expect(timeRules('01s', '', '', 10)).toEqual({ presentationStart: '1s', presentationEnd: '10s', fileStart: '0s', fileEnd: '10s' })
@@ -117,16 +117,16 @@ describe('Time Rules Tests', () => {
   test('timeRules([dur]) should return {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "0s", fileEnd: "[dur]s" }', () => {
     expect(timeRules('', '', '1s', 10)).toEqual({ presentationStart: '0s', presentationEnd: '1s', fileStart: '0s', fileEnd: '1s' })
   })
-  test('timeRules([start,end]) should return {presentationStart: "[start]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[end-start]s"}', () => {
+  test('timeRules([begin,end]) should return {presentationStart: "[begin]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[end-begin]s"}', () => {
     expect(timeRules('1s', '3s', '', 10)).toEqual({ presentationStart: '1s', presentationEnd: '3s', fileStart: '0s', fileEnd: '2s' })
   })
-  test('timeRules([start,dur]) should return {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "[start]s", fileEnd: "[start+dur]s" }', () => {
+  test('timeRules([begin,dur]) should return {presentationStart: "0s", presentationEnd: "[dur]s", fileStart: "[begin]s", fileEnd: "[begin+dur]s" }', () => {
     expect(timeRules('1s', '', '2s', 10)).toEqual({ presentationStart: '0s', presentationEnd: '2s', fileStart: '1s', fileEnd: '3s' })
   })
   test('timeRules([end,dur]) should return {presentationStart: "[end - dur]s", presentationEnd: "[end]s", fileStart: "0s", fileEnd: "[dur]s" }', () => {
     expect(timeRules('', '1s', '1s', 10)).toEqual({ presentationStart: '0s', presentationEnd: '1s', fileStart: '0s', fileEnd: '1s' })
   })
-  test('timeRules([start, end, dur]) should return {presentationStart: "[start]s", presentationEnd: "[start+dur]s", fileStart: "[end]s", fileEnd: "[end+dur]s" }', () => {
+  test('timeRules([begin, end, dur]) should return {presentationStart: "[begin]s", presentationEnd: "[begin+dur]s", fileStart: "[end]s", fileEnd: "[end+dur]s" }', () => {
     expect(timeRules('2s', '1s', '5s', 10)).toEqual({ presentationStart: '2s', presentationEnd: '7s', fileStart: '1s', fileEnd: '6s' })
   })
 })
@@ -180,14 +180,14 @@ describe('playing Function Tests', () => {
   })
 })
 
-const goodMedias = { media1: { start: '1s', end: '3s', dur: '', len: 10.1 }, media2: { start: '2s', end: '6s', dur: '', len: 10.1 } }
+const goodMedias = { media1: { begin: '1s', end: '3s', dur: '', len: 10.1 }, media2: { begin: '2s', end: '6s', dur: '', len: 10.1 } }
 const goodTime = 5
 const goodMediasXgoodTimeRetValue = { media1: '0', media2: '1' }
 describe('zIndexArr Function Tests', () => {
   const l = 10.1
-  const badMediasArr = [{ media1: { start: '1s', end: '3s', dur: '', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }]
-  const badMediasBadProp = { media1: { start: '1s', ended: '3s', dur: '', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }
-  const badMediasBadDuration = { media1: { start: '1s', end: '3s', dur: '-1', len: l }, media2: { start: '2s', end: '4s', dur: '', len: l } }
+  const badMediasArr = [{ media1: { begin: '1s', end: '3s', dur: '', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }]
+  const badMediasBadProp = { media1: { begin: '1s', ended: '3s', dur: '', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }
+  const badMediasBadDuration = { media1: { begin: '1s', end: '3s', dur: '-1', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }
 
   const badTime = '1'
 
@@ -212,7 +212,7 @@ describe('zIndexArr Function Tests', () => {
 
 describe('playingArr Function Tests', () => {
   test('zIndexArr Function should return proper values on valid inputs', () => {
-    const goodMedias2 = { par1media1: { start: '1s', end: '3s', dur: '', len: 10.1 }, media2: { start: '2s', end: '6s', dur: '', len: 10.1 } }
+    const goodMedias2 = { par1media1: { begin: '1s', end: '3s', dur: '', len: 10.1 }, media2: { begin: '2s', end: '6s', dur: '', len: 10.1 } }
     const expected = { par1media1: false, media2: true }
     expect(playingArr(goodMedias2, goodTime)).toEqual(expected)
   })
@@ -668,18 +668,158 @@ describe('JSON -> Timings Tests', () => {
       region: ''
     }
   }
+  const class1Res1 = {
+    video: {
+      src: 'panda.flv',
+      begin: '3s',
+      dur: '',
+      end: '',
+      len: '',
+      region: ''
+    }
+  }
+  const class2Res = {
+    text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
+    img: {
+      src: 'img2.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: ''
+    },
+    audio: {
+      src: '711.mp3',
+      begin: '5s',
+      end: '16s',
+      dur: '',
+      len: '20s',
+      region: ''
+    }
+  }
+  const class2Res1 = {
+    text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
+    img: {
+      src: 'img2.jpg',
+      dur: '16s',
+      begin: '',
+      end: '',
+      len: '',
+      region: ''
+    },
+    audio: {
+      src: '711.mp3',
+      begin: '5s',
+      end: '18s',
+      dur: '',
+      len: '20s',
+      region: ''
+    }
+  }
   test('JSON -> Timings should return proper values on valid inputs', () => {
     expect(JSONtoTimings(validClass1, 0)).toEqual(class1Res)
+    expect(JSONtoTimings(validClass1, 1)).toEqual(class1Res1)
+
+    expect(JSONtoTimings(validClass2, 0)).toEqual(class2Res)
+    expect(JSONtoTimings(validClass2, 1)).toEqual(class2Res1)
+  })
+})
+
+describe('mediaFactory Tests', () => {
+  const validTestMedia1 = {
+    text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
+    img: {
+      src: 'img2.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: ''
+    },
+    audio: {
+      src: '711.mp3',
+      begin: '5s',
+      end: '16s',
+      dur: '',
+      len: '',
+      region: ''
+    }
+  }
+
+  const validTestZ1 = {
+    text: '1',
+    img: '1',
+    audio: '0'
+  }
+
+  const validTestPlay1 = {
+    text: true,
+    img: true,
+    audio: false
+  }
+
+  const validAudio1 = (
+    <audio playsInline>
+      <source src='711.mp3#t=5,16' type='audio' />
+      Your browser does not support the audio tag. I suggest you upgrade your browser.
+    </audio>
+  )
+
+  const validTestMedia2 = {
+    text: { src: '1.txt', dur: '10s', begin: '', end: '', len: '', region: '' },
+    img: {
+      src: 'img2.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: ''
+    },
+    video: {
+      src: '711.mp3',
+      begin: '0s',
+      end: '16s',
+      dur: '',
+      len: '',
+      region: ''
+    }
+  }
+
+  const validTestZ2 = {
+    text: '1',
+    img: '1',
+    video: '0'
+  }
+
+  const validTestPlay2 = {
+    text: true,
+    img: true,
+    video: false
+  }
+
+  const validVideo2 = (
+    <video playsInline>
+      <source src='711.mp3#t=0,16' type='video' />
+      Your browser does not support the video tag. I suggest you upgrade your browser.
+    </video>
+  )
+
+  const validExpected1 = [
+    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing />,
+    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video='' audio={validAudio1} zindex='0' playing={false} />
+  ]
+
+  const validExpected2 = [
+    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing />,
+    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video={validVideo2} audio='' zindex='0' playing={false} />
+  ]
+
+  test('mediaFactory should return proper output on proper inputs', () => {
+    expect(mediaFactory(validTestZ1, validTestPlay1, validTestMedia1)).toEqual(validExpected1)
+    expect(mediaFactory(validTestZ2, validTestPlay2, validTestMedia2)).toEqual(validExpected2)
   })
 })
 
 describe('JSON -> Media Tests', () => {
 
 })
-
-/*
-
-describe('mediaChanges Function Tests', () => {
-
-})
-*/
