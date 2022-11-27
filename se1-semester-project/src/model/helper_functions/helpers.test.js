@@ -12,7 +12,8 @@ import {
   zIndexArr,
   playingArr,
   mediaFactory,
-  JSONtoMedia
+  JSONtoMedia,
+  JSONplusLens
 } from './helpers'
 import Media from '../../components/Molecules/Media/Media'
 
@@ -133,6 +134,9 @@ describe('Time Rules Tests', () => {
 })
 
 describe('zIndex Function Tests', () => {
+  // NOTE: It turns out to actually be a bad idea to input validate zIndex. Once time is out of bounds it throws a fit.
+  //       Likewise for durations on non-video/audio inputs
+  /*
   test('zIndex should verify it has valid input. It should throw errors if not', () => {
     expect(() => zIndex('1s', '1s', '1s', 'nan', 1)).toThrow(Error)
     expect(() => zIndex('1s', '1s', '1s', 1, 'nan')).toThrow(Error)
@@ -148,6 +152,7 @@ describe('zIndex Function Tests', () => {
     expect(() => zIndex('1s', '1', -1, 1)).toThrow(Error)
     expect(() => zIndex('1s', '1', 10, 1)).toThrow(Error)
   })
+  */
   test('zIndex should not throw errors on valid inputs.', () => {
     expect(() => zIndex('1s', '1s', '1s', 10.1, 2)).not.toThrow(Error)
     expect(() => zIndex('1s', '1s', '5s', 11.1, 10.1)).not.toThrow(Error)
@@ -192,6 +197,9 @@ describe('zIndexArr Function Tests', () => {
 
   const badTime = '1'
 
+  // NOTE: It turns out to actually be a bad idea to input validate zIndexArr. Once time is out of bounds it throws a fit.
+  //       Likewise for durations on non-video/audio inputs
+  /*
   test('zIndexArr Function should throw an Error when given invalid inputs', () => {
     expect(() => zIndexArr(badMediasArr, goodTime)).toThrow(Error)
     expect(() => zIndexArr(badMediasBadProp, goodTime)).toThrow(Error)
@@ -201,7 +209,7 @@ describe('zIndexArr Function Tests', () => {
     expect(() => zIndexArr(badMediasBadProp, badTime)).toThrow(Error)
     expect(() => zIndexArr(badMediasBadDuration, badTime)).toThrow(Error)
   })
-
+  */
   test('zIndexArr Function not throw an Error when given valid inputs', () => {
     expect(() => zIndexArr(goodMedias, goodTime)).not.toThrow(Error)
   })
@@ -214,7 +222,7 @@ describe('zIndexArr Function Tests', () => {
 describe('playingArr Function Tests', () => {
   test('zIndexArr Function should return proper values on valid inputs', () => {
     const goodMedias2 = { par1media1: { begin: '1s', end: '3s', dur: '', len: 10.1 }, media2: { begin: '2s', end: '6s', dur: '', len: 10.1 } }
-    const expected = { par1media1: false, media2: true }
+    const expected = { par1media1: 'false', media2: 'true' }
     expect(playingArr(goodMedias2, goodTime)).toEqual(expected)
   })
 })
@@ -756,9 +764,9 @@ describe('mediaFactory Tests', () => {
   }
 
   const validTestPlay1 = {
-    text: true,
-    img: true,
-    audio: false
+    text: 'true',
+    img: 'true',
+    audio: 'false'
   }
 
   const validAudio1 = (
@@ -795,9 +803,9 @@ describe('mediaFactory Tests', () => {
   }
 
   const validTestPlay2 = {
-    text: true,
-    img: true,
-    video: false
+    text: 'true',
+    img: 'true',
+    video: 'false'
   }
 
   const validVideo2 = (
@@ -808,13 +816,13 @@ describe('mediaFactory Tests', () => {
   )
 
   const validExpected1 = [
-    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing />,
-    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video='' audio={validAudio1} zindex='0' playing={false} />
+    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing='true' />,
+    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video='' audio={validAudio1} zindex='0' playing='false' />
   ]
 
   const validExpected2 = [
-    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing />,
-    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video={validVideo2} audio='' zindex='0' playing={false} />
+    <Media key='Media[0]' text='1.txt' position='' color={undefined} image='img2.jpg' video='' audio='' zindex='1' playing='true' />,
+    <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video={validVideo2} audio='' zindex='0' playing='false' />
   ]
 
   test('mediaFactory should return proper output on proper inputs', () => {
@@ -825,40 +833,105 @@ describe('mediaFactory Tests', () => {
 
 const class1Audio1 = (
   <audio playsInline>
-    <source src='711.mp3' type='audio' />
+    <source src='711.mp3' />
   </audio>
 )
 
 const class1Audio2 = (
   <audio playsInline>
-    <source src='panda.flv' type='audio' />
+    <source src='panda.flv' />
   </audio>
 )
 
 const class1Video1 = (
   <video playsInline>
-    <source src='panda.flv' type='video' />
+    <source src='panda.flv' />
   </video>
 )
 
 const validClass1Ret = [
-  <Media key='Media[0][audio]' audio={class1Audio1} video='' />,
+  <Media key='Media[0][audio]' audio={class1Audio1} video='' image='img2.jpg' text='1.txt' />,
   <Media key='Media[1][video]' audio='' video={class1Video1} />,
   <Media key='Media[2][audio]' audio={class1Audio2} video='' />,
   <Media key='Media[3][audio]' audio={class1Audio2} video='' />
 ]
 
 const validIntegrated1Ret = [
-  <Media key='Media[0][audio]' audio={class1Audio1} video='' />,
+  <Media key='Media[0][audio]' audio={class1Audio1} video='' image='img2.jpg' text='1.txt' />,
   <Media key='Media[1][video]' audio='' video={class1Video1} />,
   <Media key='Media[2][audio]' audio={class1Audio2} video='' />,
   <Media key='Media[3][audio]' audio={class1Audio2} video='' />
 ]
 
 describe('JSON -> Media Tests', () => {
-  expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
-  expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
+  test('JSON -> Media should return proper values on valid inputs', () => {
+    expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
+    expect(JSONtoMedia(validClass1)).toEqual(validClass1Ret)
 
-  expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
-  expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
+    expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
+    expect(JSONtoMedia(validIntegrated1)).toEqual(validIntegrated1Ret)
+  })
+})
+
+describe('JSON + Lens Tests', () => {
+  const lens = {
+    'Media[0][audio]': 372.715083,
+    'Media[1][video]': 10.1,
+    'Media[2][audio]': 10.1,
+    'Media[3][audio]': 10.1
+  }
+
+  // We are rounding up on lens to nearest int!
+  const validClass1PlusLens = {
+    smil: {
+      body: {
+        par: {
+          text: {
+            _attributes: {
+              src: '1.txt',
+              dur: '10s'
+            }
+          },
+          img: {
+            _attributes: {
+              src: 'img2.jpg',
+              dur: '14s'
+            }
+          },
+          audio: {
+            _attributes: {
+              src: '711.mp3',
+              begin: '5s',
+              end: '16s',
+              len: 372.715083
+            }
+          }
+        },
+        video: {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s',
+            len: 10.1
+          }
+        },
+        audio: [{
+          _attributes: {
+            src: 'panda.flv',
+            begin: '3s',
+            len: 10.1
+          }
+        },
+        {
+          _attributes: {
+            src: 'panda.flv',
+            begin: '30s',
+            len: 10.1
+          }
+        }]
+      }
+    }
+  }
+  test('JSON + Lens should return proper values on valid inputs', () => {
+    expect(JSONplusLens(validClass1, lens)).toEqual(validClass1PlusLens)
+  })
 })

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import { MediaChild, MediaParent } from './Media.elements'
 
 /* @docstring
@@ -23,33 +23,52 @@ import { MediaChild, MediaParent } from './Media.elements'
     if more than one is defined then [video > image]
     audio can exist alongside image and video and text (it is hidden but plays)
 */
-function Media (props) {
+const Media = forwardRef((props, ref) => {
   const { text, color, position, size, video, image, audio, zindex, playing, ...rest } = props
-  const [mediaLen, setMediaLen] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
   const videoRef = useRef(null)
   const audioRef = useRef(null)
 
-  const playMedia = () => {
-    if (videoRef.current.tagName.toLowerCase() === 'video') videoRef.current?.play()
-    else console.error("Can't play video, it isn't a video tag. Try putting <video> in video prop.")
-    if (audioRef.current.tagName.toLowerCase() === 'audio') audioRef.current?.play()
-    else console.error("Can't play audio, it isn't an audio tag. Try putting <audio> in audio prop.")
-  }
+  // NOTE: I only use this because I see no other way to get the durations of medias
+  useImperativeHandle(ref, () => ({
+    getMediaLen () { return getMediaLen() }
+  }))
 
-  const pauseMedia = () => {
-    if (videoRef.current.tagName.toLowerCase() === 'video') videoRef.current?.pause()
-    else console.error("Can't pause video, it isn't a video tag. Try putting <video> in video prop.")
-    if (audioRef.current.tagName.toLowerCase() === 'audio') audioRef.current?.pause()
-    else console.error("Can't pause audio, it isn't an audio tag. Try putting <audio> in audio prop.")
+  const playMedia = () => {
+    // if media is video
+    if (videoRef !== null && videoRef?.current?.tagName?.toLowerCase() === 'video') {
+      if (!isPlaying) {
+        videoRef.current?.play()
+      } else {
+        if (videoRef.current?.play()) {
+          videoRef.current?.play().then(() => {
+            videoRef.current?.pause()
+          })
+        }
+      }
+      setIsPlaying(!isPlaying)
+    }
+
+    // if media is audio
+    if (audioRef !== null && audioRef?.current?.tagName?.toLowerCase() === 'audio') {
+      if (!isPlaying) {
+        audioRef.current?.play()
+      } else {
+        if (audioRef.current?.play()) {
+          audioRef.current?.play().then(() => {
+            audioRef.current?.pause()
+          })
+        }
+      }
+      setIsPlaying(!isPlaying)
+    }
   }
 
   // We have no other way but to useImperativeHook to get the MediaLength because it is not known ahead of time
   // So we make a rare exception of breaking the declarative nature of React to get the Media Length
   const getMediaLen = () => {
-    if (videoRef.current.tagName.toLowerCase() === 'video') setMediaLen(videoRef.current?.duration)
-    else console.error("Can't get Length of video, it isn't a video tag. Try putting <video> in video prop.")
-    if (audioRef.current.tagName.toLowerCase() === 'audio') setMediaLen(audioRef.current?.duration)
-    else console.error("Can't get Length of audio, it isn't an audio tag. Try putting <audio> in audio prop.")
+    if (videoRef.current?.tagName.toLowerCase() === 'video') return videoRef.current?.duration
+    if (audioRef.current?.tagName.toLowerCase() === 'audio') return audioRef.current?.duration
   }
 
   const posToStyle = (position) => {
@@ -80,15 +99,15 @@ function Media (props) {
 
   return (
     <>
-      <MediaParent style={parentStyles} {...rest}>
+      <MediaParent onClick={playMedia} style={parentStyles} {...rest}>
         <MediaChild style={childStyles}>
           {text && text}
         </MediaChild>
-        {video && React.cloneElement(video, { ...props, autoPlay: !!(playing && playing.toString().toLowerCase().trim() === 'true'), ref: videoRef })}
-        {audio && React.cloneElement(audio, { ...props, autoPlay: !!(playing && playing.toString().toLowerCase().trim() === 'true'), ref: audioRef })}
+        {video && React.cloneElement(video, { autoPlay: !!(playing && playing.toString().toLowerCase().trim() === 'true'), ref: videoRef })}
+        {audio && React.cloneElement(audio, { ref: audioRef })}
       </MediaParent>
     </>
   )
-}
+})
 
 export default Media

@@ -24,6 +24,7 @@ export const MediaParent = styled.span`
     // Every Audio will be hidden, but will still play noise and be controlled by the component
     & > audio {
         // audios by default don't display, so you don't do any styles haha
+        
     }
 `
 

@@ -74,13 +74,13 @@ export const numberToDurationStr = (duration) => {
 // input: begin, end, dur, len, functionName
 // output: Error | none
 export const validateDuration = (begin, end, dur, len, functionName) => {
-  if (typeof len !== 'number' || (typeof len === 'number' && isNaN(len))) throw new Error(`Entered len in ${functionName} is not a number`)
+  if (typeof len !== 'number' || (typeof len === 'number' && isNaN(len))) throw new Error(`Entered len in ${functionName} is not a number\nIt is ${len}\nWhich has type: ${typeof len}`)
   if ([begin, end, dur].every(duration => duration === '')) throw new Error(`You must give atleast 1 duration argument to the ${functionName} function`)
   if (![begin, end, dur].every(duration => typeof duration === 'string')) throw new Error(`Only Strings or '' are allowed for durations in ${functionName}.\nExpected: String\nGot: ${typeof duration}`)
   if (![begin, end, dur].every(duration => testDurationInput(duration) === true || duration === '')) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin:${begin}, end:${end}, dur:${dur}\nTo be Strings of form int+'s'\nGot: begin:${begin}, end:${end}, dur:${dur}`)
   if ([begin, end, dur].some(duration => durationStrToInt(duration) > len)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin, dur, and end to all be <= len\nGot: begin= ${durationStrToInt(begin)}, end = ${durationStrToInt(end)}, dur = ${durationStrToInt(dur)} \nExpected: begin<= ${len}, end <= ${len}, dur <= ${len}`) // (begin, dur, end) <= [len]s
   if ([begin, end, dur].some(duration => testDurationInput(duration) === false) && durationStrToInt(begin) > durationStrToInt(end)) throw new Error(`Invalid duration input in ${functionName} function.\nExpected begin< end \nGot begin= ${begin}, end = ${end}`) // begin<= end except for [begin,end,dur]
-  if (durationStrToInt(begin) + durationStrToInt(dur) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: begin+ dur <= len\nGot: ${durationStrToInt(begin)} + ${durationStrToInt(dur)} > ${len}`) // begin+ dur <= [len]s
+  if (durationStrToInt(begin) + durationStrToInt(dur) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: begin + dur <= len\nGot: ${durationStrToInt(begin)} + ${durationStrToInt(dur)} > ${len}`) // begin+ dur <= [len]s
   if (durationStrToInt(dur) + durationStrToInt(end) > len) throw new Error(`Invalid duration input in ${functionName} function.\nExpected: dur + end <= len\nGot: ${durationStrToInt(dur)} + ${durationStrToInt(end)} > ${len}`) // dur + end <= [len]s
 }
 
@@ -235,9 +235,14 @@ export const zIndex = (begin, end, dur, len, time) => {
   // return z-index at particular time. Intended to be used with <Media />. (int)
 
   // 1. validate input and define variables
+  /*
   const functionName = 'zIndex'
-  validateDuration(begin, end, dur, len, functionName)
-  validateTime(len, time, functionName)
+
+  if (tagName === 'audio' || tagName === 'video') {
+    validateDuration(begin, end, dur, len, functionName)
+    validateTime(len, time, functionName)
+  }
+  */
 
   const s = durationStrToInt(begin)
   const e = durationStrToInt(end)
@@ -266,6 +271,8 @@ export const zIndex = (begin, end, dur, len, time) => {
 
   // [begin,end,dur] -> [begin, begin+dur]
   if (testDurationInput(begin) && testDurationInput(end) && testDurationInput(dur)) return between(s, s + d, time)
+
+  return '0' // if all else fails, return 0
 }
 
 // input: begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>,time:<float>
@@ -394,22 +401,26 @@ export const JSONtoTimings = (json, tag) => {
 }
 
 // input: medias:{media[n]:{begin:<SMIL time>, end:<SMIL time>, dur:<SMIL time>, len:<float>}}, time:<float>
-// output: {media[n]:[0 | 1], ...} | Error
+// output: {media[n]:[0 | 1], ...}
+// NOTE: No input validation is happening because if you validate durations -> text,img throw errors. If you validate time -> throws errors once time is greater than what you need.
 export const zIndexArr = (medias, time) => {
   // return object that has {media[n]:[0 | 1], ...}
   // 1. validate input and define variables
   const functionName = 'zIndexArr'
   if (typeof medias !== 'object') throw new Error(`Invalid input in zIndexArr.\nExpected medias to be an Object, but got ${typeof medias}.`) // expect medias to be an object
   objHasAllowedProps(Object.values(medias), ['begin', 'end', 'dur', 'len', 'src', 'region']) // expect medias to have begin, end, dur, len keys
-  for (const obj in medias) {
-    validateDuration(medias[obj]?.begin, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, functionName)
-    validateTime(medias[obj]?.len, time, functionName)
+
+  for (const objKey of Object.keys(medias)) {
+    if (objKey === 'video' || objKey === 'audio') { // only video/audio should have valid len durations
+      validateDuration(medias[objKey]?.begin, medias[objKey]?.end, medias[objKey]?.dur, medias[objKey]?.len, objKey, functionName)
+      // validateTime(medias[objKey]?.len, time, functionName)
+    }
   }
 
   // 2. create an Object that has form of {media[n]:[0 | 1], ...}
   const ret = {}
-  for (const obj in medias) {
-    ret[obj] = zIndex(medias[obj]?.begin, medias[obj]?.end, medias[obj]?.dur, medias[obj]?.len, time)
+  for (const objKey of Object.keys(medias)) {
+    ret[objKey] = zIndex(medias[objKey]?.begin, medias[objKey]?.end, medias[objKey]?.dur, medias[objKey]?.len, time)
   }
   return ret
 }
@@ -421,7 +432,7 @@ export const playingArr = (medias, time) => {
   try {
     const z = zIndexArr(medias, time)
     for (const obj in z) {
-      z[obj] = z[obj] === '1'
+      z[obj] = z[obj] === '1' ? 'true' : 'false'
     }
     return z
   } catch (e) {
@@ -433,7 +444,7 @@ export const playingArr = (medias, time) => {
 // output: [<Media ...INCORRECT (-[text,img,len,z,play])/>] | Error
 // This fx requires a try-catch block for caller
 // This fx is near the beginning of the SMIL Player pipe and is solely used to get the Length info of each Media it is INCORRECT
-export const JSONtoMedia = (json) => {
+export const JSONtoMedia = (json, ref) => {
   // return [<Media ... />]
   verifyJSONwithDTD(json, 'JSONtoMedia') // Error or nothing
 
@@ -457,26 +468,27 @@ export const JSONtoMedia = (json) => {
   let count = 0
   for (const medias of timingTagsArr) {
     // make video/audio if they exist
+    // NOTE: NEVER PUT type='audio' or type='video' or it won't work!
     let video
     let audio
     if (typeof medias.video !== 'undefined') {
       video = (
         <video playsInline>
-          <source src={medias.video.src} type='video' />
+          <source src={medias.video.src} />
         </video>
       )
     }
     if (typeof medias.audio !== 'undefined') {
       audio = (
         <audio playsInline>
-          <source src={medias.audio.src} type='audio' />
+          <source src={medias.audio.src} />
         </audio>
       )
     }
 
     for (const tag in medias) {
       if (tag.toLowerCase().trim() !== 'text' && tag.toLowerCase().trim() !== 'img') {
-        ret.push(<Media key={`Media[${count}][${tag}]`} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} />)
+        ret.push(<Media ref={ref} key={`Media[${count}][${tag}]`} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} image={medias.img && medias.img.src} text={medias.text && medias.text.src} />)
         count = count + 1
       }
     }
@@ -600,6 +612,65 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
 
   // 7. Return Ret
   return ret
+}
+
+export const JSONplusLens = (json, lens) => {
+  verifyJSONwithDTD(json, 'JSONplusLens')
+  if (typeof lens === 'undefined') throw new Error('lens is undefined in JSONplusLens')
+  if (Object.keys(lens) === 0) throw new Error('lens is 0 length in JSONplusLens')
+
+  // Note: you should check if i < len lens
+  const clone = JSON.parse(JSON.stringify(json))
+  const body = clone.smil.body
+  const len = Object.values(lens).length
+  let i = 0
+  for (const topTag of Object.keys(body)) {
+    // [par, arr]
+    if (topTag === 'par' && Array.isArray(body[topTag])) {
+      for (const botTag of Object.values(body[topTag])) {
+        for (const el of Object.keys(botTag)) {
+          if (el === 'audio' || el === 'video') {
+            if (i < len) {
+              botTag[el]._attributes.len = Object.values(lens)[i]
+              i += 1
+            }
+          }
+        }
+      }
+    }
+
+    // [par, !arr]
+    if (topTag === 'par' && !Array.isArray(body[topTag])) {
+      for (const botTag of Object.keys(body[topTag])) {
+        if (botTag === 'audio' || botTag === 'video') {
+          if (i < len) {
+            body[topTag][botTag]._attributes.len = Object.values(lens)[i]
+            i += 1
+          }
+        }
+      }
+    }
+
+    // [!par, arr]
+    if (topTag !== 'par' && Array.isArray(body[topTag])) {
+      for (const botAttr of Object.values(body[topTag])) {
+        if (i < len) {
+          botAttr._attributes.len = Object.values(lens)[i]
+          i += 1
+        }
+      }
+    }
+
+    // [!par, !arr]
+    if (topTag !== 'par' && !Array.isArray(body[topTag])) {
+      if (i < len) {
+        body[topTag]._attributes.len = Object.values(lens)[i]
+        i += 1
+      }
+    }
+  }
+
+  return clone
 }
 
 // ---------------------------------------
