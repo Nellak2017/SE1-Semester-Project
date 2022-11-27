@@ -13,7 +13,8 @@ import {
   playingArr,
   mediaFactory,
   JSONtoMedia,
-  JSONplusLens
+  JSONplusLens,
+  maxJsonTiming
 } from './helpers'
 import Media from '../../components/Molecules/Media/Media'
 
@@ -771,7 +772,7 @@ describe('mediaFactory Tests', () => {
 
   const validAudio1 = (
     <audio playsInline>
-      <source src='711.mp3#t=5,16' type='audio' />
+      <source src='711.mp3#t=5,16' />
       Your browser does not support the audio tag. I suggest you upgrade your browser.
     </audio>
   )
@@ -810,7 +811,33 @@ describe('mediaFactory Tests', () => {
 
   const validVideo2 = (
     <video playsInline>
-      <source src='711.mp3#t=0,16' type='video' />
+      <source src='711.mp3#t=0,16' />
+      Your browser does not support the video tag. I suggest you upgrade your browser.
+    </video>
+  )
+
+  const validTestMedia3 = {
+    video: {
+      src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      begin: '3s',
+      end: '',
+      dur: '',
+      len: 10.026667,
+      region: ''
+    }
+  }
+
+  const validTestZ3 = {
+    video: '0'
+  }
+
+  const validTestPlay3 = {
+    video: 'false'
+  }
+
+  const validVideo3 = (
+    <video playsInline>
+      <source src='https://www.w3schools.com/html/mov_bbb.mp4#t=3,10' />
       Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
   )
@@ -825,9 +852,14 @@ describe('mediaFactory Tests', () => {
     <Media key='Media[1]' text='1.txt' position='' color={undefined} image='' video={validVideo2} audio='' zindex='0' playing='false' />
   ]
 
+  const validExpected3 = [
+    <Media key='Media[1]' text='' position='' color={undefined} image='' video={validVideo3} audio='' zindex='0' playing='false' />
+  ]
+
   test('mediaFactory should return proper output on proper inputs', () => {
     expect(mediaFactory(validTestZ1, validTestPlay1, validTestMedia1)).toEqual(validExpected1)
     expect(mediaFactory(validTestZ2, validTestPlay2, validTestMedia2)).toEqual(validExpected2)
+    expect(mediaFactory(validTestZ3, validTestPlay3, validTestMedia3).toString()).toEqual(validExpected3.toString())
   })
 })
 
@@ -933,5 +965,105 @@ describe('JSON + Lens Tests', () => {
   }
   test('JSON + Lens should return proper values on valid inputs', () => {
     expect(JSONplusLens(validClass1, lens)).toEqual(validClass1PlusLens)
+  })
+})
+
+describe('maxJsonTiming Tests', () => {
+  const test1 = {
+    text: {
+      src: '1.txt',
+      dur: '10s',
+      begin: '',
+      end: '',
+      len: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    img: {
+      src: 'static/media/public/woman-in-field.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    audio: {
+      src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      begin: '5s',
+      end: '16s',
+      len: 372.715083,
+      dur: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    video: {
+      src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      begin: '3s',
+      len: 10.026667,
+      dur: '',
+      end: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    }
+  }
+
+  const test2 = {
+    text: {
+      src: '1.txt',
+      dur: '10s',
+      begin: '',
+      end: '',
+      len: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    img: {
+      src: 'static/media/public/woman-in-field.jpg',
+      dur: '14s',
+      begin: '',
+      end: '',
+      len: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    audio: {
+      src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      begin: '5s',
+      end: '160s',
+      len: 372.715083,
+      dur: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    },
+    video: {
+      src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      begin: '3s',
+      len: 10.026667,
+      dur: '',
+      end: '',
+      region: '',
+      zindex: '0',
+      playing: 'false'
+    }
+  }
+  test('Expect maxJsonTiming to return errors on invalid inputs', () => {
+    expect(() => maxJsonTiming({})).toThrow(Error)
+    expect(() => maxJsonTiming(undefined)).toThrow(Error)
+    expect(() => maxJsonTiming(null)).toThrow(Error)
+    expect(() => maxJsonTiming(NaN)).toThrow(Error)
+  })
+  test('Expect maxJsonTiming to return proper number on valid inputs', () => {
+    expect(maxJsonTiming(test1)).toBeCloseTo(16)
+    expect(maxJsonTiming(test1)).toBeCloseTo(16)
+    expect(maxJsonTiming(test2)).toBeCloseTo(160)
+    expect(maxJsonTiming(test2)).toBeCloseTo(160)
   })
 })

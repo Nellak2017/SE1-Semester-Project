@@ -366,6 +366,8 @@ export const getNthTag = (json, tag) => {
 // input: Media object like {text: {...}, img: {...}, audio: {...}}
 // output: Media object with all fields filled properly or ''
 export const fillMedia = (MediaTag) => {
+  if (MediaTag === null || typeof MediaTag === 'undefined') throw new Error(`MediaTag in fillMedia is\ntype: ${typeof MediaTag}\nis: ${MediaTag}`)
+  if (Object.keys(MediaTag).length === 0) throw new Error('Media Tag in FillMedia is empty obj: {}')
   const mediaCopy = JSON.parse(JSON.stringify(MediaTag))
   const ret = {}
   for (const media in mediaCopy) {
@@ -523,6 +525,11 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
   color -> To be added in allowed props list later (and in other fx too), will be color prop in Media
   */
 
+  // 0. Throw errors if any of the input is undefined
+  if (typeof zIndices === 'undefined') throw new Error('zIndices is undefined in mediaFactory.')
+  if (typeof playingArr === 'undefined') throw new Error('playingArr is undefined in mediaFactory.')
+  if (typeof medias === 'undefined') throw new Error('medias is undefined in mediaFactory.')
+
   // 1. define ret
   const ret = []
 
@@ -585,7 +592,7 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
   if (typeof combined.video !== 'undefined') {
     video = (
       <video playsInline>
-        <source src={`${combined.video.src}#t=${videoT}`} type='video' />
+        <source src={`${combined.video.src}#t=${videoT}`} />
         Your browser does not support the video tag. I suggest you upgrade your browser.
       </video>
     )
@@ -593,19 +600,19 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
   if (typeof combined.audio !== 'undefined') {
     audio = (
       <audio playsInline>
-        <source src={`${combined.audio.src}#t=${audioT}`} type='audio' />
+        <source src={`${combined.audio.src}#t=${audioT}`} />
         Your browser does not support the audio tag. I suggest you upgrade your browser.
       </audio>
     )
   }
 
   // 6. Create [<Media ...rest/>] by looping through Keys of all except text (display text only if z-index is 1)
-  const text = combined.text.zindex === '1' ? combined.text : undefined
-  const img = combined.img.zindex === '1' ? combined.img : undefined
+  const text = combined?.text?.zindex === '1' ? combined.text : undefined
+  const img = combined?.img?.zindex === '1' ? combined.img : undefined
   let count = 0
   for (const tag in combined) {
     if (tag.toLowerCase().trim() !== 'text') {
-      ret.push(<Media key={`Media[${count}]`} text={text && text.src} position={text && text.region} color={text && text.color} image={tag === 'img' ? img && img.src : ''} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} zindex={combined[tag].zindex} playing={combined[tag].playing} />)
+      ret.push(<Media key={`Media[${count}]`} text={text ? text.src : ''} position={text ? text.region : ''} color={text && text.color} image={tag === 'img' ? img && img.src : ''} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} zindex={combined[tag].zindex} playing={combined[tag].playing} />)
       count += 1
     }
   }
@@ -614,10 +621,13 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
   return ret
 }
 
+// input: JSON
+// output: JSON + lens | Error
 export const JSONplusLens = (json, lens) => {
   verifyJSONwithDTD(json, 'JSONplusLens')
   if (typeof lens === 'undefined') throw new Error('lens is undefined in JSONplusLens')
   if (Object.keys(lens) === 0) throw new Error('lens is 0 length in JSONplusLens')
+  if (Object.values(lens).some(value => isNaN(value))) throw new Error('Some or all values in JSONplusLens are NaN. Check the passer to make sure they don\'t give NaN values.')
 
   // Note: you should check if i < len lens
   const clone = JSON.parse(JSON.stringify(json))
@@ -671,6 +681,16 @@ export const JSONplusLens = (json, lens) => {
   }
 
   return clone
+}
+
+// input: {mediaType: {...begin:..., end:..., dur:..., len:...},...}
+// output: <number> Max Presentation End time in the input Object | Error
+// NOTE: I do a hacky solution to dealing with len. If len is '' then I say it is actually the max value of numbers. May cause issues?
+export const maxJsonTiming = (jsonTimings) => {
+  if (typeof jsonTimings === 'undefined' || jsonTimings === null || JSON.stringify(jsonTimings) === '{}' || (isNaN(jsonTimings) && typeof jsonTimings !== 'object')) throw new Error(`jsonTimings entered in maxJsonTiming\nis: ${jsonTimings}\ntype: ${typeof jsonTimings}\nexpected: {mediaType: {...begin:..., end:..., dur:..., len:...},...}; where mediaType can be audio|video|text|img`)
+  return Math.max(...Object.values(jsonTimings).map(el => {
+    return durationStrToFloat(timeRules(el.begin, el.end, el.dur, el.len === '' ? Number.MAX_VALUE : el.len).presentationEnd)
+  }))
 }
 
 // ---------------------------------------

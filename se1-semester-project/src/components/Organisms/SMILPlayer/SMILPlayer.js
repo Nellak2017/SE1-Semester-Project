@@ -6,7 +6,8 @@ import {
   JSONplusLens,
   zIndexArr,
   playingArr,
-  mediaFactory
+  mediaFactory,
+  maxJsonTiming
 } from '../../../model/helper_functions/helpers'
 
 /* @docstring
@@ -36,7 +37,7 @@ function SMILPlayer (props) {
   const [zIndices, setZIndices] = useState([]) // Holds the array of stacking orders
   const [playing, setPlaying] = useState([]) // Holds the array of playing orders
 
-  const setLens = (mediaArr_, ref_) => {
+  const setLens = (mediaArr_, ref_) => { // Returns {media[n][type]: Number | NaN, ...}
     const ret = {}
     let i = 0
     for (const theMedia of mediaArr_) {
@@ -79,9 +80,16 @@ function SMILPlayer (props) {
 
   // 3. Get durations for each media, Set durations for each Media
   // @TODO: Add time-out feature that after a certain amount of time it just gives up and if it does then it displays error can't load
+  // @TODO: Add a Write Lock so that it only updates it once with the Non-NaN values
   useEffect(() => {
-    if ((fastClock === 1 || mediaDurations === {} || !Object.values(mediaDurations).every(number => !isNaN(number))) && fastClock < fps * 10) {
-      setMediaDurations(setLens(incorrectMediaArr, incorrectMediaRefs))
+    const mediaDurStr = JSON.stringify(mediaDurations)
+    if (fastClock >= 1 && mediaDurStr === '{}') {
+      if (Object.values(setLens(incorrectMediaArr, incorrectMediaRefs)).every(number => !isNaN(number))) { // supposedly prevents NaN values for MediaDurations
+        console.log(mediaDurations)
+        console.log(incorrectMediaArr)
+        console.log(setLens(incorrectMediaArr, incorrectMediaRefs))
+        setMediaDurations(setLens(incorrectMediaArr, incorrectMediaRefs))
+      }
     }
   }, [incorrectMediaArr, fastClock])
 
@@ -89,6 +97,7 @@ function SMILPlayer (props) {
   useEffect(() => {
     const jsonStr = JSON.stringify(jsonCopy)
     if (jsonCopy !== null && jsonStr !== '{}' && typeof jsonCopy !== 'undefined' && typeof mediaDurations !== 'undefined' && !isJsonSet) {
+      console.log(mediaDurations)
       setJsonCopy(JSONplusLens(jsonCopy, mediaDurations))
       setIsJsonSet(true) // This ensures that the JSON Copy is set only once during intialization
     }
@@ -101,6 +110,7 @@ function SMILPlayer (props) {
   // 5. On each 10 frames (each 1 second), JSON -> Timings
   useEffect(() => {
     if (fastClock % fps === 0 && typeof mediaDurations !== 'undefined' && mediaDurations !== null && jsonCopy !== null) {
+      console.log(jsonCopy)
       setJsonTimings(JSONtoTimings(jsonCopy, tag))
     }
   }, [mediaDurations, fastClock])
@@ -108,7 +118,8 @@ function SMILPlayer (props) {
   // 6. When JSON->Timings finishes, calculate z-indices and playing array
   useEffect(() => {
     const jsonTimingStr = JSON.stringify(jsonTimings)
-    if (jsonTimingStr !== '{}' && fastClock % fps === 0) {
+    if (jsonTimingStr !== '{}' && jsonTimings !== null && fastClock % fps === 0) {
+      console.log(jsonTimings)
       setZIndices(zIndexArr(jsonTimings, fastClock / fps))
       setPlaying(playingArr(jsonTimings, fastClock / fps))
     }
@@ -116,8 +127,25 @@ function SMILPlayer (props) {
 
   // 7. Generate the Media using Media Factory, give each media an individual ref so we may mess with it when it needs to be messed with
   useEffect(() => {
-    if (Object.keys(zIndices).length !== 0 && Object.keys(playing).length !== 0 && fastClock % fps === 0) {
+    // for a tag to be incremented, it must have only non-displayed elements and time must be the same as or greater than maxJsonTiming
+    const isChangeTag = zIndices === null || zIndices.length === 0 || JSON.stringify(jsonTimings) === '{}'
+      ? false
+      : Object.values(zIndices).every(num => num === '0') && maxJsonTiming(jsonTimings) <= fastClock / fps
+
+    if (fastClock % fps === 0 && Object.keys(zIndices).length !== 0 && Object.keys(playing).length !== 0) {
+      console.log('---')
+      console.log(zIndices)
+      console.log(playing)
+      console.log(jsonTimings)
+      console.log(maxJsonTiming(jsonTimings))
+      console.log('---')
       setCorrectMediaArr(mediaFactory(zIndices, playing, jsonTimings).reverse())
+    }
+    if (isChangeTag && jsonCopy) { // increment tag whenever all z-indices are '0', and < len
+      setTag(tag + 1)
+      setZIndices([])
+      setPlaying([])
+      setFastClock(0)
     }
   }, [zIndices])
 
@@ -127,6 +155,9 @@ function SMILPlayer (props) {
       {correctMediaArr !== null && correctMediaArr.map(el => el)}
       <p>{`Fast Clock: ${fastClock}`}</p>
       <p>{`Example Key: ${incorrectMediaArr !== null && incorrectMediaArr[0].key}`}</p>
+      <p>{`Tag: ${tag}`}</p>
+      <p>{`Length of Tags: ${jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length}`}</p>
+      <p>{`Tag should increment at Clock Time = ${jsonTimings && JSON.stringify(jsonTimings) !== '{}' && 10 * maxJsonTiming(jsonTimings)}`}</p>
     </>
   )
 }
