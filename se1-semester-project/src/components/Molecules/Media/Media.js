@@ -31,10 +31,42 @@ const Media = forwardRef((props, ref) => {
 
   // NOTE: I only use this because I see no other way to get the durations of medias
   useImperativeHandle(ref, () => ({
-    getMediaLen () { return getMediaLen() }
+    getMediaLen () { return getMediaLen() },
+    playMediaImp () { playMedia() },
+    pauseMediaImp () { pauseMedia() }
   }))
 
   const playMedia = () => {
+    // if media is video
+    if (videoRef !== null && videoRef?.current?.tagName?.toLowerCase() === 'video') {
+      videoRef.current?.play()
+    }
+
+    // if media is audio
+    if (audioRef !== null && audioRef?.current?.tagName?.toLowerCase() === 'audio') {
+      audioRef.current?.play()
+    }
+  }
+
+  const pauseMedia = () => {
+    if (videoRef !== null && videoRef?.current?.tagName?.toLowerCase() === 'video') {
+      if (videoRef.current?.play()) {
+        videoRef.current?.play().then(() => {
+          videoRef.current?.pause()
+        })
+      }
+    }
+
+    if (audioRef !== null && audioRef?.current?.tagName?.toLowerCase() === 'audio') {
+      if (audioRef.current?.play()) {
+        audioRef.current?.play().then(() => {
+          audioRef.current?.pause()
+        })
+      }
+    }
+  }
+
+  const playPauseMedia = () => {
     // if media is video
     if (videoRef !== null && videoRef?.current?.tagName?.toLowerCase() === 'video') {
       if (!isPlaying) {
@@ -99,7 +131,7 @@ const Media = forwardRef((props, ref) => {
 
   return (
     <>
-      <MediaParent onClick={playMedia} style={parentStyles} {...rest}>
+      <MediaParent onClick={playPauseMedia} style={parentStyles} {...rest}>
         <MediaChild style={childStyles}>
           {text && text}
         </MediaChild>

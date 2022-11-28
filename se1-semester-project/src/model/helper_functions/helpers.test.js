@@ -30,6 +30,20 @@ const testStr1 =
   '</body>' +
   '</smil>'
 
+const testStr2 =
+  '<smil>' +
+  '<body>' +
+  '<par>' +
+  '<text src="1.txt" dur="10s"/>' +
+  '<img src="static/media/public/woman-in-field.jpg" dur="14s"/>' +
+  '<audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" begin="5s" end="16s"/>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="3s"/>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="4s"/>' +
+  '</par>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="3s"/>' +
+  '</body>' +
+  '</smil>'
+
 const expectedStr1 = JSON.parse('{"smil": {"body": {"par": {"text": {"_attributes":{"src": "1.txt","dur": "10s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}},"video": {"_attributes": {"src": "panda.flv","begin": "3s"}}}}}')
 
 describe('SMIL -> JSON Tests', () => {
@@ -66,6 +80,17 @@ describe('JSON verifier Tests', () => {
   const badJSONillegalpararr = JSON.parse('{"smil": {"foobody": {"par": [{"text": {"_attributes": {"src": "1.txt","dur": "10s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}},{"text": {"_attributes": {"src": "1.txt","dur": "10s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}}],"video": {"src": "panda.flv","begin": "3s"}}}}')
   const badJSONillegalnumber = JSON.parse('{"smil": {"body": {"par": {"text": {"_attributes":{"src": "1.txt","dur": "1.0s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}},"video": {"_attributes": {"src": "panda.flv","begin": "3s"}}}}}')
   const badJSONillegalnumberarr = JSON.parse('{"smil": {"body": {"par": [{"text": {"_attributes": {"src": "1.txt","dur": "1.0s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}},{"text": {"_attributes": {"src": "1.txt","dur": "10s"}},"img": {"_attributes": {"src": "img2.jpg","dur": "14s"}},"audio": {"_attributes": {"src": "711.mp3","begin": "5s","end": "16s"}}}],"video": {"src": "panda.flv","begin": "3s"}}}}')
+
+  const valid1 = JSON.parse(JSON.stringify(SMILtoJSON(testStr1)))
+  const invalid1 = JSON.parse(JSON.stringify(SMILtoJSON(testStr2)))
+
+  test('If Valid JSON is passed in, it should not throw an Error.', () => {
+    expect(() => verifyJSONwithDTD(valid1)).not.toThrow(Error)
+  })
+
+  test('If Multiple Video|Audio|Text|Img tags of the same kind are present in a Par, throw an Error', () => {
+    expect(() => verifyJSONwithDTD(invalid1)).toThrow(Error)
+  })
 
   test('If JSON without a smil property is passed then an Error should be thrown', () => {
     expect(() => verifyJSONwithDTD(badJSONnosmil)).toThrow(Error)
@@ -191,13 +216,14 @@ const goodMedias = { media1: { begin: '1s', end: '3s', dur: '', len: 10.1 }, med
 const goodTime = 5
 const goodMediasXgoodTimeRetValue = { media1: '0', media2: '1' }
 describe('zIndexArr Function Tests', () => {
+  /*
   const l = 10.1
   const badMediasArr = [{ media1: { begin: '1s', end: '3s', dur: '', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }]
   const badMediasBadProp = { media1: { begin: '1s', ended: '3s', dur: '', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }
   const badMediasBadDuration = { media1: { begin: '1s', end: '3s', dur: '-1', len: l }, media2: { begin: '2s', end: '4s', dur: '', len: l } }
 
   const badTime = '1'
-
+  */
   // NOTE: It turns out to actually be a bad idea to input validate zIndexArr. Once time is out of bounds it throws a fit.
   //       Likewise for durations on non-video/audio inputs
   /*
@@ -857,8 +883,8 @@ describe('mediaFactory Tests', () => {
   ]
 
   test('mediaFactory should return proper output on proper inputs', () => {
-    expect(mediaFactory(validTestZ1, validTestPlay1, validTestMedia1)).toEqual(validExpected1)
-    expect(mediaFactory(validTestZ2, validTestPlay2, validTestMedia2)).toEqual(validExpected2)
+    expect(mediaFactory(validTestZ1, validTestPlay1, validTestMedia1).toString()).toEqual(validExpected1.toString())
+    expect(mediaFactory(validTestZ2, validTestPlay2, validTestMedia2).toString()).toEqual(validExpected2.toString())
     expect(mediaFactory(validTestZ3, validTestPlay3, validTestMedia3).toString()).toEqual(validExpected3.toString())
   })
 })

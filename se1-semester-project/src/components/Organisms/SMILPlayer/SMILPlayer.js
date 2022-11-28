@@ -21,6 +21,9 @@ output:
 function SMILPlayer (props) {
   const { json, smil } = props
   const fps = 10
+  const intervalRef = useRef() // Allows us to stop the clock when we need to
+  const [initialPlay, setInitialPlay] = useState(true) // used to determine if it is the first play or not
+  const [mediaPlaying, setMediaPlaying] = useState(false) // if media is playing, you can't call play(). If it is not playing you can't call pause()
   const [jsonCopy, setJsonCopy] = useState(null) // Holds JSON used throughout the Player. JSON+Len only changes it
   const [isJsonSet, setIsJsonSet] = useState(false) // Used to know when JSON Copy is set. Without this, it is called way too many times.
   const [fastClock, setFastClock] = useState(0) // Used for getting initial len info (maybe make clock into this?)
@@ -34,8 +37,8 @@ function SMILPlayer (props) {
   const [correctMediaArr, setCorrectMediaArr] = useState(null) // Has correct media, RENDER
 
   const [jsonTimings, setJsonTimings] = useState({}) // Holds timing info of each media
-  const [zIndices, setZIndices] = useState([]) // Holds the array of stacking orders
-  const [playing, setPlaying] = useState([]) // Holds the array of playing orders
+  const [zIndices, setZIndices] = useState({}) // Holds the array of stacking orders
+  const [playing, setPlaying] = useState({}) // Holds the array of playing orders
 
   const setLens = (mediaArr_, ref_) => { // Returns {media[n][type]: Number | NaN, ...}
     const ret = {}
@@ -47,21 +50,49 @@ function SMILPlayer (props) {
     return ret
   } // this can't be extracted out because the ref.current thing inside
 
-  // ----
-  // Initial state
-  // ----
-
-  // 0. define a clock (10fps) (Means 1/10 of a second lag for video player)
-  // @TODO: Extract to hooks folder
-  // see also: https://stackoverflow.com/questions/68685880/how-to-increment-a-react-state-every-second-using-setinterval
-  useEffect(() => {
-    const id = setInterval(() => {
-      setFastClock(old => old + 1)
-    }, 10 * fps)
-    return () => {
-      clearInterval(id)
+  const playMediaAuto = (mediaArr_, playingArr_, ref_) => { // Will loop through all Media and Press Play on all of them that are supposed to play
+    let i = 0
+    for (const theMedia of mediaArr_) {
+      // [<Media key='Media[i][tagType]' ... />,...]
+      // theMedia.key = 'Media[i][tagType]' // tagType is in ['text','audio','video','img']
+      // Object.keys(playingArr_) = ['text','audio','video','img'] // 1 or 0 of each
+      // Object.values(playingArr_) = ['true'|'false',...] // true or false for each
+      const m = theMedia.key
+      const mediaTagType = m.split('[')[m.split('[').length - 1].replace(']', '') // gives tag type of theMedia. Ex: audio, Ex: video
+      const isMediaPlaying = playingArr_[mediaTagType] === 'true' // true if media should be playing, false otherwise
+      if (isMediaPlaying) {
+        ref_?.current[i]?.playMediaImp(mediaArr_)
+      }
+      i += 1
     }
-  }, [])
+  }
+
+  const pauseMediaAuto = (mediaArr_, playingArr_, ref_) => { // Will loop through all Media and Press Pause on all of them that are supposed to !play
+    let i = 0
+    for (const theMedia of mediaArr_) {
+      const m = theMedia.key
+      const mediaTagType = m.split('[')[m.split('[').length - 1].replace(']', '') // gives tag type of theMedia. Ex: audio, Ex: video
+      const isMediaPlaying = playingArr_[mediaTagType] === 'true' // true if media should be playing, false otherwise
+      if (!isMediaPlaying) {
+        ref_?.current[i]?.pauseMediaImp(mediaArr_)
+      }
+      i += 1
+    }
+  }
+
+  const pauseMedia = (mediaArr_, ref_) => { // Will pause all media regardless of whether it should be playing or not
+    for (let i = 0; i < Object.keys(mediaArr_).length; i++) {
+      ref_?.current[i]?.pauseMediaImp(mediaArr_)
+    }
+  }
+
+  const resetMedia = (mediaArr_, ref_) => { // Will loop through all Media and all of them to their initial starting points
+  }
+
+  // ----
+  // Initial state - Do this once to get vital information
+  // ----
+  // see also: https://stackoverflow.com/questions/68685880/how-to-increment-a-react-state-every-second-using-setinterval
 
   // 1. Set JSON depending on the combination of json and smil passed in parameters. If both or none -> error
   // @TODO: Fix the Error handling and Create Error Components
@@ -79,15 +110,10 @@ function SMILPlayer (props) {
   }, [jsonCopy])
 
   // 3. Get durations for each media, Set durations for each Media
-  // @TODO: Add time-out feature that after a certain amount of time it just gives up and if it does then it displays error can't load
-  // @TODO: Add a Write Lock so that it only updates it once with the Non-NaN values
   useEffect(() => {
     const mediaDurStr = JSON.stringify(mediaDurations)
     if (fastClock >= 1 && mediaDurStr === '{}') {
       if (Object.values(setLens(incorrectMediaArr, incorrectMediaRefs)).every(number => !isNaN(number))) { // supposedly prevents NaN values for MediaDurations
-        console.log(mediaDurations)
-        console.log(incorrectMediaArr)
-        console.log(setLens(incorrectMediaArr, incorrectMediaRefs))
         setMediaDurations(setLens(incorrectMediaArr, incorrectMediaRefs))
       }
     }
@@ -97,20 +123,18 @@ function SMILPlayer (props) {
   useEffect(() => {
     const jsonStr = JSON.stringify(jsonCopy)
     if (jsonCopy !== null && jsonStr !== '{}' && typeof jsonCopy !== 'undefined' && typeof mediaDurations !== 'undefined' && !isJsonSet) {
-      console.log(mediaDurations)
       setJsonCopy(JSONplusLens(jsonCopy, mediaDurations))
       setIsJsonSet(true) // This ensures that the JSON Copy is set only once during intialization
     }
   }, [mediaDurations])
 
   // ----
-  // Post Intialization
+  // Post Intialization - Do this every frame, fps times per second
   // ----
 
   // 5. On each 10 frames (each 1 second), JSON -> Timings
   useEffect(() => {
     if (fastClock % fps === 0 && typeof mediaDurations !== 'undefined' && mediaDurations !== null && jsonCopy !== null) {
-      console.log(jsonCopy)
       setJsonTimings(JSONtoTimings(jsonCopy, tag))
     }
   }, [mediaDurations, fastClock])
@@ -119,7 +143,6 @@ function SMILPlayer (props) {
   useEffect(() => {
     const jsonTimingStr = JSON.stringify(jsonTimings)
     if (jsonTimingStr !== '{}' && jsonTimings !== null && fastClock % fps === 0) {
-      console.log(jsonTimings)
       setZIndices(zIndexArr(jsonTimings, fastClock / fps))
       setPlaying(playingArr(jsonTimings, fastClock / fps))
     }
@@ -133,31 +156,71 @@ function SMILPlayer (props) {
       : Object.values(zIndices).every(num => num === '0') && maxJsonTiming(jsonTimings) <= fastClock / fps
 
     if (fastClock % fps === 0 && Object.keys(zIndices).length !== 0 && Object.keys(playing).length !== 0) {
-      console.log('---')
-      console.log(zIndices)
-      console.log(playing)
-      console.log(jsonTimings)
-      console.log(maxJsonTiming(jsonTimings))
-      console.log('---')
-      setCorrectMediaArr(mediaFactory(zIndices, playing, jsonTimings).reverse())
+      setCorrectMediaArr(mediaFactory(zIndices, playing, jsonTimings, (ref) => { correctMediaRefs.current.push(ref) }).reverse())
+      correctMediaRefs.current = correctMediaRefs.current.filter(x => x !== null)
     }
-    if (isChangeTag && jsonCopy) { // increment tag whenever all z-indices are '0', and < len
+    if (isChangeTag && jsonCopy && tag + 1 < Object.keys(jsonCopy?.smil?.body)?.length) { // increment tag whenever all z-indices are '0', max < clock, and < len
       setTag(tag + 1)
       setZIndices([])
       setPlaying([])
       setFastClock(0)
+      correctMediaRefs.current = []
+    } else if (isChangeTag && jsonCopy && tag + 1 === Object.keys(jsonCopy?.smil?.body)?.length) {
+      onClickPause()
     }
   }, [zIndices])
+
+  // 8. After the Media is created, call the play/pause functions for each automatically (after the user presses play of course)
+  useEffect(() => {
+    if (typeof correctMediaArr !== 'undefined' && correctMediaArr !== null && JSON.stringify(playing) !== '{}') {
+      playMediaAuto(correctMediaArr, playing, correctMediaRefs)
+      pauseMediaAuto(correctMediaArr, playing, correctMediaRefs)
+      correctMediaRefs.current = []
+    }
+  }, [playing])
+
+  const onClickPause = () => {
+    if (mediaPlaying) {
+      clearInterval(intervalRef.current)
+      setMediaPlaying(false)
+      pauseMedia(correctMediaArr, correctMediaRefs)
+    }
+  }
+
+  const onClickPlay = () => {
+    if (!mediaPlaying) {
+      intervalRef.current = setInterval(() => {
+        setFastClock(old => old + 1)
+      }, 10 * fps)
+      setInitialPlay(false)
+      setMediaPlaying(true)
+    }
+    if (!initialPlay) {
+      console.log('made it to Playing thing')
+      playMediaAuto(correctMediaArr, playing, correctMediaRefs)
+    }
+  }
+
+  const onClickResetClock = () => {
+    setFastClock(0)
+  }
+
+  const onClickResetTag = () => {
+    setTag(0)
+    correctMediaRefs.current = []
+  }
 
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
       {correctMediaArr !== null && correctMediaArr.map(el => el)}
       <p>{`Fast Clock: ${fastClock}`}</p>
-      <p>{`Example Key: ${incorrectMediaArr !== null && incorrectMediaArr[0].key}`}</p>
       <p>{`Tag: ${tag}`}</p>
       <p>{`Length of Tags: ${jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length}`}</p>
       <p>{`Tag should increment at Clock Time = ${jsonTimings && JSON.stringify(jsonTimings) !== '{}' && 10 * maxJsonTiming(jsonTimings)}`}</p>
+      <button onClick={mediaPlaying ? onClickPause : onClickPlay}>{mediaPlaying ? 'pause' : 'play'}</button>
+      <button onClick={onClickResetClock}>Click me to Reset the Clock</button>
+      <button onClick={onClickResetTag}>Click me to Reset Tag</button>
     </>
   )
 }

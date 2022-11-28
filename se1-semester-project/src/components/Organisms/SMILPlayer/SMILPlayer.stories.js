@@ -13,11 +13,11 @@ const testStr1 =
   '<body>' +
   '<par>' +
   '<text src="1.txt" dur="10s"/>' +
-  '<img src="static/media/public/woman-in-field.jpg" dur="14s"/>' +
-  '<audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" begin="5s" end="16s"/>' +
+  '<img src="static/media/public/woman-in-field.jpg" dur="9s"/>' +
+  '<audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" begin="5s" end="6s"/>' +
   '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="3s"/>' +
   '</par>' +
-  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="3s"/>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="1s"/>' +
   '</body>' +
   '</smil>'
 

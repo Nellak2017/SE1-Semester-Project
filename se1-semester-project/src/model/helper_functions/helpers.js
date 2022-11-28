@@ -95,6 +95,7 @@ export const validateTime = (len, time, functionName) => {
 // input: JSON
 // output: Error | none
 export const objHasAllowedProps = (json, allowedProps) => {
+  if (typeof json === 'undefined' || typeof allowedProps === 'undefined') throw new Error(`json or allowedProps undefined in objHasAllowedProps.\njson:${json}\nallowedProps:${allowedProps}`)
   if (!Array.isArray(json)) {
     if (!(Object?.keys(json).every(value => allowedProps.includes(value)))) {
       throw new Error('Provided json in objHasAllowedProps function has atleast 1 disallowed key in the Object (not Array).\nExpected this:' + Object.keys(json) + `\nTo have all keys matching one of these: ${allowedProps}`)
@@ -140,13 +141,13 @@ export const verifyJSONwithDTD = (json, functionName) => {
   // test if every par value has only allowed _attributes (each par value like audio should only have: src, begin, end, dur)
   if (!Array.isArray(parTag)) {
     for (const media in parTag) {
-      objHasAllowedProps(parTag[media]?._attributes, allowedMediaAttr)
+      if (typeof media !== 'undefined') objHasAllowedProps(parTag[media]?._attributes, allowedMediaAttr)
     }
   }
   if (Array.isArray(parTag)) {
     for (const obj of parTag) {
       for (const media in obj) {
-        objHasAllowedProps(obj[media]?._attributes, allowedMediaAttr)
+        if (typeof media !== 'undefined') objHasAllowedProps(obj[media]?._attributes, allowedMediaAttr)
       }
     }
   }
@@ -514,7 +515,7 @@ export const combine = (zIndices, playingArr, medias) => {
 // input: [zIndex], [playing], {medias, ...lengths too}
 // output: <Media ...CORRECT /> | Error
 // This function is at the end of the SMIL Player pipe and generates <Media /> with correct props
-export const mediaFactory = (zIndices, playingArr, medias) => {
+export const mediaFactory = (zIndices, playingArr, medias, ref) => {
   /*
   src -> 1. Create a html video,img,audio element 2. add src 3. wrap in <Media video=video|audio=audio|... ...rest />
   dur, begin, end, len -> Passed through Rules fx to calculate begin/end times. Appended while making video/audio.
@@ -612,7 +613,7 @@ export const mediaFactory = (zIndices, playingArr, medias) => {
   let count = 0
   for (const tag in combined) {
     if (tag.toLowerCase().trim() !== 'text') {
-      ret.push(<Media key={`Media[${count}]`} text={text ? text.src : ''} position={text ? text.region : ''} color={text && text.color} image={tag === 'img' ? img && img.src : ''} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} zindex={combined[tag].zindex} playing={combined[tag].playing} />)
+      ret.push(<Media ref={ref} key={`Media[${count}][${tag}]`} text={text ? text.src : ''} position={text ? text.region : ''} color={text && text.color} image={tag === 'img' ? img && img.src : ''} video={tag === 'video' ? video && video : ''} audio={tag === 'audio' ? audio && audio : ''} zindex={combined[tag].zindex} playing={combined[tag].playing} />)
       count += 1
     }
   }
