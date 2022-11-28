@@ -9,6 +9,7 @@ import {
   mediaFactory,
   maxJsonTiming
 } from '../../../model/helper_functions/helpers'
+import { SMILPlayerParentStyled } from './SMILPlayer.elements'
 
 /* @docstring
 inputs:
@@ -81,8 +82,12 @@ function SMILPlayer (props) {
   }
 
   const pauseMedia = (mediaArr_, ref_) => { // Will pause all media regardless of whether it should be playing or not
-    for (let i = 0; i < Object.keys(mediaArr_).length; i++) {
+    let i = 0
+    correctMediaRefs.current = correctMediaRefs.current.filter(x => x !== null)
+    console.log(ref_)
+    for (const theMedia of mediaArr_) {
       ref_?.current[i]?.pauseMediaImp(mediaArr_)
+      i += 1
     }
   }
 
@@ -196,7 +201,6 @@ function SMILPlayer (props) {
       setMediaPlaying(true)
     }
     if (!initialPlay) {
-      console.log('made it to Playing thing')
       playMediaAuto(correctMediaArr, playing, correctMediaRefs)
     }
   }
@@ -213,7 +217,7 @@ function SMILPlayer (props) {
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
-      {correctMediaArr !== null && correctMediaArr.map(el => el)}
+      <SMILPlayerParentStyled>{correctMediaArr !== null && correctMediaArr.map(el => el)}</SMILPlayerParentStyled>
       <p>{`Fast Clock: ${fastClock}`}</p>
       <p>{`Tag: ${tag}`}</p>
       <p>{`Length of Tags: ${jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length}`}</p>
