@@ -13,11 +13,13 @@ import {
   SMILPlayerParentStyled,
   ExitBtnContainer,
   VideoContainer,
+  CenterContainer,
+  MediaContainer,
   ControlBtnsContainer
 } from './SMILPlayer.elements'
 import ExitButton from '../../Atoms/ExitButton/ExitButton'
 import IconButton from '../../Atoms/IconButton/IconButton'
-import { IoIosPause, IoIosPlay } from 'react-icons/io'
+import { IoIosPause, IoIosPlay, IoIosRewind, IoIosFastforward } from 'react-icons/io'
 
 /* @docstring
 inputs:
@@ -28,7 +30,7 @@ output:
 */
 // @TODO: For all functions calling Helpers, surround with Try-Catch
 function SMILPlayer (props) {
-  const { json, smil } = props
+  const { json, smil, exitBtnCallback } = props
   const fps = 10
   const intervalRef = useRef() // Allows us to stop the clock when we need to
   const [initialPlay, setInitialPlay] = useState(true) // used to determine if it is the first play or not
@@ -96,9 +98,6 @@ function SMILPlayer (props) {
       ref_?.current[i]?.pauseMediaImp(mediaArr_)
       i += 1
     }
-  }
-
-  const resetMedia = (mediaArr_, ref_) => { // Will loop through all Media and all of them to their initial starting points
   }
 
   // ----
@@ -212,33 +211,50 @@ function SMILPlayer (props) {
     }
   }
 
-  const onClickResetClock = () => {
-    setFastClock(0)
+  const onClickDecrementTag = () => {
+    const len = jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length
+    if (typeof len !== 'undefined') {
+      setTag((((tag - 1) % len) + len) % len)
+      setZIndices([])
+      setPlaying([])
+      setFastClock(0)
+      correctMediaRefs.current = []
+    }
   }
 
-  const onClickResetTag = () => {
-    setTag(0)
-    correctMediaRefs.current = []
+  const onClickIncrementTag = () => {
+    const len = jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length
+    if (typeof len !== 'undefined') {
+      setTag((tag + 1) % len)
+      setZIndices([])
+      setPlaying([])
+      setFastClock(0)
+      correctMediaRefs.current = []
+    }
   }
 
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
       <SMILPlayerParentStyled>
-        <ExitBtnContainer><ExitButton size='s' /></ExitBtnContainer>
-        <VideoContainer>{correctMediaArr !== null && correctMediaArr.map(el => el)}</VideoContainer>
+        <ExitBtnContainer onClick={exitBtnCallback}><ExitButton size='s' /></ExitBtnContainer>
+        <VideoContainer>
+          <CenterContainer>
+            {correctMediaArr !== null && correctMediaArr.map((el, i) => { return <MediaContainer key={`Media[${i}]`}>{el}</MediaContainer> })}
+          </CenterContainer>
+        </VideoContainer>
         <ControlBtnsContainer>
+          <IconButton onClick={onClickDecrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
+            <IoIosRewind />
+          </IconButton>
           <IconButton onClick={mediaPlaying ? onClickPause : onClickPlay} variant='mediaControllerOutline' size='xl' outlineSize='m'>
             {mediaPlaying ? <IoIosPause /> : <IoIosPlay />}
           </IconButton>
+          <IconButton onClick={onClickIncrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
+            <IoIosFastforward />
+          </IconButton>
         </ControlBtnsContainer>
       </SMILPlayerParentStyled>
-      <p>{`Fast Clock: ${fastClock}`}</p>
-      <p>{`Tag: ${tag}`}</p>
-      <p>{`Length of Tags: ${jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length}`}</p>
-      <p>{`Tag should increment at Clock Time = ${jsonTimings && JSON.stringify(jsonTimings) !== '{}' && 10 * maxJsonTiming(jsonTimings)}`}</p>
-      <button onClick={onClickResetClock}>Click me to Reset the Clock</button>
-      <button onClick={onClickResetTag}>Click me to Reset Tag</button>
     </>
   )
 }

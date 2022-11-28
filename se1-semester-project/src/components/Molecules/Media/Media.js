@@ -66,6 +66,8 @@ const Media = forwardRef((props, ref) => {
     }
   }
 
+  // onClick={playPauseMedia} was in MediaParent, it allowed any one pressing the media to play/pause it at will
+  // It was removed because it makes the presentation get out of sync
   const playPauseMedia = () => {
     // if media is video
     if (videoRef !== null && videoRef?.current?.tagName?.toLowerCase() === 'video') {
@@ -125,13 +127,13 @@ const Media = forwardRef((props, ref) => {
     backgroundImage: `url(${image && !video && image})`,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
+    backgroundSize: 'contain',
     zIndex: `${zindex === '0' || zindex === '1' ? zindex : '0'}`
   }
 
   return (
     <>
-      <MediaParent onClick={playPauseMedia} style={parentStyles} {...rest}>
+      <MediaParent style={parentStyles} {...rest}>
         <MediaChild style={childStyles}>
           {text && text}
         </MediaChild>

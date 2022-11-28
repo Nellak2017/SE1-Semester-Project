@@ -9,11 +9,16 @@ export const MediaParent = styled.span`
     background: transparent;
     min-height: 10rem;
     min-width: 10rem;
+    height: 100%;
+    width: 100%;
     // justify content is determined by text placement area prop
 
     // Every video or image that isn't the last video must be below the current video, but still playable
     & > video,image {
         position: absolute;
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
         :not(:last-child) {
             z-index: 0;
         }
@@ -24,7 +29,7 @@ export const MediaParent = styled.span`
     // Every Audio will be hidden, but will still play noise and be controlled by the component
     & > audio {
         // audios by default don't display, so you don't do any styles haha
-        
+
     }
 `
 
