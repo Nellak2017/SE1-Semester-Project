@@ -9,7 +9,15 @@ import {
   mediaFactory,
   maxJsonTiming
 } from '../../../model/helper_functions/helpers'
-import { SMILPlayerParentStyled } from './SMILPlayer.elements'
+import {
+  SMILPlayerParentStyled,
+  ExitBtnContainer,
+  VideoContainer,
+  ControlBtnsContainer
+} from './SMILPlayer.elements'
+import ExitButton from '../../Atoms/ExitButton/ExitButton'
+import IconButton from '../../Atoms/IconButton/IconButton'
+import { IoIosPause, IoIosPlay } from 'react-icons/io'
 
 /* @docstring
 inputs:
@@ -84,7 +92,6 @@ function SMILPlayer (props) {
   const pauseMedia = (mediaArr_, ref_) => { // Will pause all media regardless of whether it should be playing or not
     let i = 0
     correctMediaRefs.current = correctMediaRefs.current.filter(x => x !== null)
-    console.log(ref_)
     for (const theMedia of mediaArr_) {
       ref_?.current[i]?.pauseMediaImp(mediaArr_)
       i += 1
@@ -217,12 +224,19 @@ function SMILPlayer (props) {
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
-      <SMILPlayerParentStyled>{correctMediaArr !== null && correctMediaArr.map(el => el)}</SMILPlayerParentStyled>
+      <SMILPlayerParentStyled>
+        <ExitBtnContainer><ExitButton size='s' /></ExitBtnContainer>
+        <VideoContainer>{correctMediaArr !== null && correctMediaArr.map(el => el)}</VideoContainer>
+        <ControlBtnsContainer>
+          <IconButton onClick={mediaPlaying ? onClickPause : onClickPlay} variant='mediaControllerOutline' size='xl' outlineSize='m'>
+            {mediaPlaying ? <IoIosPause /> : <IoIosPlay />}
+          </IconButton>
+        </ControlBtnsContainer>
+      </SMILPlayerParentStyled>
       <p>{`Fast Clock: ${fastClock}`}</p>
       <p>{`Tag: ${tag}`}</p>
       <p>{`Length of Tags: ${jsonCopy?.smil?.body && Object.keys(jsonCopy?.smil?.body)?.length}`}</p>
       <p>{`Tag should increment at Clock Time = ${jsonTimings && JSON.stringify(jsonTimings) !== '{}' && 10 * maxJsonTiming(jsonTimings)}`}</p>
-      <button onClick={mediaPlaying ? onClickPause : onClickPlay}>{mediaPlaying ? 'pause' : 'play'}</button>
       <button onClick={onClickResetClock}>Click me to Reset the Clock</button>
       <button onClick={onClickResetTag}>Click me to Reset Tag</button>
     </>
