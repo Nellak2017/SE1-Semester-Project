@@ -515,7 +515,7 @@ export const combine = (zIndices, playingArr, medias) => {
 // input: [zIndex], [playing], {medias, ...lengths too}
 // output: <Media ...CORRECT /> | Error
 // This function is at the end of the SMIL Player pipe and generates <Media /> with correct props
-export const mediaFactory = (zIndices, playingArr, medias, ref) => {
+export const mediaFactory = (zIndices, playingArr, medias, ref, sliderRef) => {
   /*
   src -> 1. Create a html video,img,audio element 2. add src 3. wrap in <Media video=video|audio=audio|... ...rest />
   dur, begin, end, len -> Passed through Rules fx to calculate begin/end times. Appended while making video/audio.
@@ -592,7 +592,7 @@ export const mediaFactory = (zIndices, playingArr, medias, ref) => {
   let audio
   if (typeof combined.video !== 'undefined') {
     video = (
-      <video playsInline>
+      <video playsInline className='video-preview' ref={sliderRef}>
         <source src={`${combined.video.src}#t=${videoT}`} />
         Your browser does not support the video tag. I suggest you upgrade your browser.
       </video>
@@ -600,7 +600,7 @@ export const mediaFactory = (zIndices, playingArr, medias, ref) => {
   }
   if (typeof combined.audio !== 'undefined') {
     audio = (
-      <audio playsInline>
+      <audio playsInline className='video-preview' ref={sliderRef}>
         <source src={`${combined.audio.src}#t=${audioT}`} />
         Your browser does not support the audio tag. I suggest you upgrade your browser.
       </audio>

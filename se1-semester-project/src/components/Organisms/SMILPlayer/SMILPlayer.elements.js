@@ -28,6 +28,7 @@ export const ExitBtnContainer = styled.div`
 
 // Holds ALL Of the Video Media
 export const VideoContainer = styled.div`
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -56,6 +57,23 @@ export const VideoContainer = styled.div`
         min-height: 500px;
 		max-height: 600px;
     }
+
+	// Video Slider Styles
+
+	// The whole Slider
+	& .ui-video-seek-slider {
+		//position: absolute;
+		//bottom: 2rem;
+		& > .thumb .track .main .connect .handler{
+			background-color: purple;
+		}
+	}
+
+	// color the slider to be primary colored
+	& .ui-video-seek-slider .thumb .track .main .connect .handler {
+		background-color: purple;
+	}
+
 `
 
 export const CenterContainer = styled.span`

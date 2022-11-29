@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useCallback, useState, useEffect, useRef } from 'react'
 import {
   SMILtoJSON,
   JSONtoMedia,
@@ -21,9 +21,16 @@ import ExitButton from '../../Atoms/ExitButton/ExitButton'
 import IconButton from '../../Atoms/IconButton/IconButton'
 import { IoIosPause, IoIosPlay, IoIosRewind, IoIosFastforward } from 'react-icons/io'
 
+/*
+// Video Slider Imports
+import 'react-video-seek-slider/styles.css'
+import { VideoSeekSlider } from 'react-video-seek-slider'
+*/
+
 /* @docstring
 inputs:
- json or smil, not both
+ json or smil, not both,
+ exitBtnListener (When exit button is pressed, parent decides what the SMILPlayer does)
 
 output:
  SMILPlayer that plays media contained in json or smil
@@ -50,6 +57,16 @@ function SMILPlayer (props) {
   const [jsonTimings, setJsonTimings] = useState({}) // Holds timing info of each media
   const [zIndices, setZIndices] = useState({}) // Holds the array of stacking orders
   const [playing, setPlaying] = useState({}) // Holds the array of playing orders
+
+  /*
+  // Video Slider Variables
+  const player = useRef(null)
+  const previewImage = useRef('')
+  const interval = useRef(null)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [maxTime, setMaxTime] = useState(0)
+  */
 
   const setLens = (mediaArr_, ref_) => { // Returns {media[n][type]: Number | NaN, ...}
     const ret = {}
@@ -156,6 +173,11 @@ function SMILPlayer (props) {
     if (jsonTimingStr !== '{}' && jsonTimings !== null && fastClock % fps === 0) {
       setZIndices(zIndexArr(jsonTimings, fastClock / fps))
       setPlaying(playingArr(jsonTimings, fastClock / fps))
+
+      /*
+      // Video Slider Max Time
+      setMaxTime(maxJsonTiming(jsonTimings))
+      */
     }
   }, [jsonTimings])
 
@@ -189,6 +211,10 @@ function SMILPlayer (props) {
       correctMediaRefs.current = []
     }
   }, [playing])
+
+  // ----
+  // Event Listeners
+  // ----
 
   const onClickPause = () => {
     if (mediaPlaying) {
@@ -233,12 +259,85 @@ function SMILPlayer (props) {
     }
   }
 
+  /*
+  // ----
+  // Slider Stuff
+  // ----
+
+  const handleTimeChange = useCallback((time, offsetTime) => {
+    if (!player.current?.currentTime) return
+    player.current.currentTime = time / 1000
+    setFastClock(time)
+  }, [])
+
+  const handlePlay = () => {
+    interval.current = setInterval(() => {
+      setCurrentTime((player.current?.currentTime || 0) * 1000)
+    }, 1000)
+  }
+
+  const handlePause = () => {
+    clearInterval(interval.current)
+  }
+
+  const handleDataLoaded = () => {
+    setMaxTime((player.current?.duration || 0) * 1000)
+  }
+
+  const handleProgress = () => {
+    const buffer = player?.current?.buffered
+    if (((buffer?.length > 0 && player.current?.duration) || 0) > 0) {
+      let currentBuffer = 0
+      const inSeconds = player.current?.currentTime || 0
+      for (let i = 0; i < buffer.length; i++) {
+        if (buffer.start(i) <= inSeconds && inSeconds <= buffer.end(i)) {
+          currentBuffer = i
+          break
+        }
+      }
+      setProgress(buffer.end(currentBuffer) * 1000 || 0)
+    }
+  }
+
+  const updatePreviewImage = (hoverTime) => {
+    const url = `https://via.placeholder.com/140x60?text=${hoverTime}`
+    const image = document.createElement('img')
+    image.src = url
+    image.onload = () => {
+      previewImage.current = url
+    }
+  }
+
+  const handleGettingPreview = useCallback(
+    (hoverTime) => {
+      // FIND AND RETURN LOADED!!! VIDEO PREVIEW ACCORDING TO the hoverTime TIME
+      console.log({ hoverTime, maxTime })
+      updatePreviewImage(hoverTime, maxTime)
+
+      return previewImage.current
+    },
+    [maxTime]
+  )
+
+  useEffect(() => {
+    if (!player) {
+      return
+    }
+
+    player.current?.addEventListener('play', handlePlay)
+    player.current?.addEventListener('pause', handlePause)
+    player.current?.addEventListener('loadeddata', handleDataLoaded)
+    player.current?.addEventListener('progress', handleProgress)
+  }, [player])
+
+  */
+
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
       <SMILPlayerParentStyled>
         <ExitBtnContainer onClick={exitBtnCallback}><ExitButton size='s' /></ExitBtnContainer>
-        <VideoContainer>
+        <VideoContainer onClick={mediaPlaying ? onClickPause : onClickPlay}>
           <CenterContainer>
             {correctMediaArr !== null && correctMediaArr.map((el, i) => { return <MediaContainer key={`Media[${i}]`}>{el}</MediaContainer> })}
           </CenterContainer>
