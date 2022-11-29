@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { space, layout, typography } from 'styled-system'
+import { space, layout, typography, border } from 'styled-system'
 import { getPresetCSS, nestedExitButtonPresets } from '../../../design_system/theme'
 import Container from '../../Atoms/Container/Container'
 
@@ -31,6 +31,7 @@ export const NestedExitButtonParent = styled(Container)`
     ${space}
     ${layout}
     ${typography}
+    ${border}
     ${getPresetCSS(nestedExitButtonPresets, 'variant')}
     ${getPresetCSS(nestedExitButtonPresets, 'color')} 
 `

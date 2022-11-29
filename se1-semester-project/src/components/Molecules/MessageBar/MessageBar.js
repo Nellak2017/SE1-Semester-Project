@@ -2,11 +2,11 @@ import { MessageBarParent, ChatInputStyled, SquareButtonStyled } from './Message
 import { GoChevronUp } from 'react-icons/go'
 
 function MessageBar (props) {
-  const { color, icon = <GoChevronUp />, ...rest } = props
+  const { color, buttonListener, icon = <GoChevronUp />, ...rest } = props
   return (
-    <MessageBarParent color={color} {...rest}>
-      <SquareButtonStyled size='m'>{icon}</SquareButtonStyled>
-      <ChatInputStyled variant='default' />
+    <MessageBarParent {...rest}>
+      <SquareButtonStyled onClick={buttonListener} color={color} size='m'>{icon}</SquareButtonStyled>
+      <ChatInputStyled color={color} variant='default' />
     </MessageBarParent>
   )
 }

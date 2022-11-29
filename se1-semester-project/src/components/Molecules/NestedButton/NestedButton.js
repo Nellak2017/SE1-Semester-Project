@@ -12,7 +12,7 @@ function NestedButton (props) {
         {variant === 'savedMMS' && <GiHamburgerMenu />}
         {variant === 'eyeglass' && <MdSearch />}
         {variant === 'save' && <GiSave />}
-        {variant === 'newMedia' && <SquareButton color='darkNeutral' size='xs'><AiOutlinePlus /></SquareButton>}
+        {variant === 'newMedia' && <SquareButton color='lightNeutral' size='xs'><AiOutlinePlus /></SquareButton>}
       </NestedButtonParent>}
       {!(['savedMMS', 'eyeglass', 'save', 'newMedia'].includes(variant)) &&
         <NestedButtonParent variant={variant} color={color} size='s' {...rest}>

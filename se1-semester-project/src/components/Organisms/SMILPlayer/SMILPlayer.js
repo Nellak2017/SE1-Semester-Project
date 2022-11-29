@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   SMILtoJSON,
   JSONtoMedia,

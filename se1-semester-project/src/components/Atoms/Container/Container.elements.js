@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { space, layout, typography } from 'styled-system'
+import { space, layout, typography, border } from 'styled-system'
 import { getPresetCSS, containerPreSets } from '../../../design_system/theme'
 
 export const ContainerStyled = styled.span`
@@ -22,11 +22,11 @@ export const ContainerStyled = styled.span`
 
     &:hover {
         box-shadow: ${props => props.theme.elevations.small};
-        cursor: pointer;
+        cursor: default;
         }
     &:active {
-        box-shadow: ${props => props.theme.insets.normal};
-        cursor: pointer;
+        box-shadow: none;
+        cursor: default;
     }
     ${getPresetCSS(containerPreSets, 'variant')}
     ${getPresetCSS(containerPreSets, 'size')}
@@ -35,5 +35,6 @@ export const ContainerStyled = styled.span`
     ${getPresetCSS(containerPreSets, 'outlineColor')}
     ${space}
     ${layout}
-    ${typography}  
+    ${typography}
+    ${border}   
 `

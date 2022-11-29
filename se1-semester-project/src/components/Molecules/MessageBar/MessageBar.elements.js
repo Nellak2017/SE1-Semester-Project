@@ -10,6 +10,7 @@ export const MessageBarParent = styled.div`
     display: flex;
     column-gap: .5rem;
     align-items: center;
+    width: 100%;
 
     ${space}
     ${layout}
