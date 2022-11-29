@@ -17,11 +17,16 @@ const theMessages = [
   <Message key='msg2' variant='sent' type='text'>No, I think that's next week.</Message>,
   <Message key='msg3' variant='received' type='text'>Explain this.</Message>,
   <Message key='msg4' variant='received' type='smil' />,
+
   <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>,
   <Message key='msg4' variant='received' type='smil' />,
   <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>,
   <Message key='msg4' variant='received' type='smil' />,
-  <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>
+  <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>,
+  <Message key='msg4' variant='received' type='smil' />,
+  <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>,
+  <Message key='msg4' variant='received' type='smil' />
+
 ]
 
 export const messageContainer = Template.bind({})

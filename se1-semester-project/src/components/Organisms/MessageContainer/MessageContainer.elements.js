@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+// @TODO: Fix the cutting off top visual glitch
 export const UserName = styled.h1`
     font-size: 20px;
     font-weight: 100;
@@ -24,15 +25,20 @@ export const StyledMessageContainer = styled.section`
 `
 
 export const MessageOverflowContainer = styled.div`
+    border: 1px solid red;
     width: 100%;
-    max-height: 65vh;
-    height: 100%;
-    overflow-y: auto;
+    height: 756px;
+    overflow-y: scroll;
+    flex-shrink: 1;
+    flex-grow: 1;
     scroll-behavior: auto;
     display: flex;
     justify-content: center;
     flex-direction: column;
     row-gap: 1rem;
+    overflow-anchor: none;
+    flex-basis: auto;
+    min-height: 0;
 
     & > [data-variant="sent"] {
         align-self: flex-end;
@@ -40,4 +46,11 @@ export const MessageOverflowContainer = styled.div`
     & > [data-variant="received"] {
         align-self: flex-start;
     }
+
+    & > * {
+        border: 1px solid blue;
+        
+        flex-grow: 1;
+    }
+    
 `
