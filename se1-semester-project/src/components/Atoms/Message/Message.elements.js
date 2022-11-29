@@ -15,6 +15,8 @@ export const MessageStyled = styled.div`
     max-width: ${props => props.theme.breakpoints.sm};
     border-radius: ${props => props.theme.spaces.medium};
 
+    box-shadow: ${props => props.theme.elevations.medium};
+
     // initially m sized
     padding: ${props => props.theme.spaces.small} ${props => props.theme.spaces.medium}; 
 
