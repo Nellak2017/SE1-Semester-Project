@@ -11,9 +11,26 @@ export const UserNameContainer = styled.div`
     justify-content: center;
 `
 
-export const StyledMessageContainer = styled.section`
-    display: flex;
+export const ChatFormContainer = styled.div`
+    //position: absolute;
+    //bottom: 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
+`
+
+export const StyledMessageContainer = styled.section`
+    position: relative;
+`
+
+export const MessageOverflowContainer = styled.div`
+    width: 100%;
+    max-height: 65vh;
+    height: 100%;
+    overflow-y: auto;
+    scroll-behavior: auto;
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     row-gap: 1rem;
 

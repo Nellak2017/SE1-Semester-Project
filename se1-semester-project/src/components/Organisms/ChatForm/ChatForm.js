@@ -12,10 +12,6 @@ import ChatInput from '../../Atoms/ChatInput/ChatInput'
 import MessageBar from '../../Molecules/MessageBar/MessageBar'
 import NestedButton from '../../Molecules/NestedButton/NestedButton'
 
-import NestedExitButton from '../../Molecules/NestedExitButton/NestedExitButton' // Testing only
-import Woman from '../../../../public/woman-in-field.jpg' // Testing only
-import { AiOutlinePlus } from 'react-icons/ai' // Testing only
-
 // Note store the form state outside of the form, it has conditional rendering applied
 // Note it is likely that to get rid of the Media inside this, you simply display none until the form is submitted (then you clean it out)
 // 		if you do it in this way, you can avoid messing with refs and stuff
