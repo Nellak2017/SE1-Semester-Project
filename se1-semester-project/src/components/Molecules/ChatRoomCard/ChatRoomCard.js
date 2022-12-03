@@ -5,10 +5,9 @@ import {
   CardImage
 } from './ChatRoomCard.elements'
 import Notification from '../../Atoms/Notification/Notification'
-import Placeholder from '../../../../public/card-placeholder.jpg'
 
 function ChatRoomCard (props) {
-  const { variant, color = 'lightNeutral', src = Placeholder, alt = 'someone forgot an alt attribute.. it is supposed to be an image', name, descriptionText, ...rest } = props
+  const { variant, color = 'lightNeutral', src = '/card-placeholder.jpg', alt = 'someone forgot an alt attribute.. it is supposed to be an image', name, descriptionText, ...rest } = props
   const handleClickBubbling = (e) => {
     e.preventDefault()
     e.stopPropagation()

@@ -17,5 +17,5 @@ const Template = args => <RightBarContainer {...args} />
 
 export const rightBarContainer = Template.bind({})
 rightBarContainer.args = {
-
+  children: <div> Test Test </div>
 }

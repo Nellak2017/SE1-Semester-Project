@@ -26,11 +26,11 @@ function SearchSideBar (props) {
   const [strippedCardInfo, setStrippedCardInfo] = useState(cardInfo) // Takes your userName out of the chat participants like: user1, user2, ..., userName
 
   useEffect(() => {
-    const newInfo = cardInfo.map((obj, i) => { return { ...obj, chatName: obj.chatName.replace(', ' + userName, '') } })
+    const newInfo = cardInfo?.map((obj, i) => { return { ...obj, chatName: obj.chatName.replace(', ' + userName, '') } })
     setStrippedCardInfo(newInfo)
   }, [])
 
-  const filtered = strippedCardInfo.filter(
+  const filtered = strippedCardInfo?.filter(
     person => {
       return (
         person.chatName.toLowerCase().trim().includes(searchState.toLowerCase().trim())

@@ -10,7 +10,8 @@ export const CardContainerParent = styled(Container)`
     row-gap: 1rem;
     width: 100%;
     max-width: 390px;
-    max-height: 100vh;
+    min-height: 89vh;
+    height: 100%;
     border-radius: ${props => props.theme.spaces.medium};
     scroll-behavior: auto;
     scroll-behavior: smooth;

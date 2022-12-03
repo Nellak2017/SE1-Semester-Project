@@ -1,5 +1,6 @@
 import SearchSideBar from './SearchSideBar'
 import ChatRoomCard from '../../Molecules/ChatRoomCard/ChatRoomCard'
+import Placeholder from '../../../../public/card-placeholder.jpg'
 
 export default {
   title: 'Organisms/Search Side Bar',
@@ -46,5 +47,6 @@ export const searchSideBar = Template.bind({})
 searchSideBar.args = {
   cardInfo: mockData,
   listeners: events,
-  userName: 'Connor Keenum'
+  userName: 'Connor Keenum',
+  src: Placeholder
 }

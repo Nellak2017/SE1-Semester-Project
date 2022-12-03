@@ -4,15 +4,15 @@ import ExitButton from '../../Atoms/ExitButton/ExitButton'
 import NestedButton from '../../Molecules/NestedButton/NestedButton'
 
 export const FormContainer = styled(Container)`
-    padding-bottom: .5rem;
-    padding-top: 1.5rem;
+    padding-bottom: 0rem; // was .5rem
+    padding-top: 0rem; // was 1.5rem
     padding-left: 1.5rem;
     padding-right: 1rem;
     position: relative;
     min-width: 215px;
     max-width: 540px;
     width: 100%;
-    min-height: 250px;
+    min-height: 0px; // was 250px
     height: 100%;
 
     &:hover {

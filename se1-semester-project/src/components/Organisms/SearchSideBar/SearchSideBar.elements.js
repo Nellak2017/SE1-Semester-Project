@@ -9,6 +9,7 @@ export const ParentContainer = styled.aside`
     row-gap: 1rem;
     max-width: 400px;
     width: 100%;
+    height: 100%;
 `
 export const CreateChatFormStyled = styled(CreateChatForm)`
     position: absolute;

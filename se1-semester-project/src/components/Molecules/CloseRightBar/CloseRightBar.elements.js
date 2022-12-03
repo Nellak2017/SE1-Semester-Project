@@ -59,6 +59,9 @@ export const LeftComponentWrapper = styled.div`
         width: calc(100% - 35px); // found through experiment
         transition: 850ms;
         margin: 0;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
     }
 
     ${space}

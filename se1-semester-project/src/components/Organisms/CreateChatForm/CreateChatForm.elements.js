@@ -3,6 +3,7 @@ import Container from '../../Atoms/Container/Container'
 import IconButton from '../../Atoms/IconButton/IconButton'
 
 export const CreateChatFormParent = styled(Container)`
+    z-index: 10;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

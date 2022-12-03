@@ -6,6 +6,7 @@ import Tile from '../../Molecules/Tile/Tile'
 import Woman from '../../../../public/woman-in-field.jpg'
 import Movie from '../../../../public/movie.jpg'
 
+// @TODO: Fix the rightComponent name problem -> Convert rightComponent to data maybe? or maybe specify name, and others
 function RightBarContainer (props) {
   const linkMedia = <Tile variant='link' linkText='https://www.google.com' />
   const imgMedia = <Tile variant='image' backgroundImage={Woman} />
@@ -20,10 +21,10 @@ function RightBarContainer (props) {
       <RightBarControlPanel variant='chatroomOptions' />
     </>
   )
-  const { leftComponent, rightComponent = panels, variant = 'closed', color, ...rest } = props
+  const { children, rightComponent = panels, variant = 'closed', color, ...rest } = props
 
   return (
-    <CloseRightBar leftComponent={leftComponent} rightComponent={rightComponent} variant={variant} {...rest} />
+    <CloseRightBar leftComponent={children} rightComponent={rightComponent} variant={variant} {...rest} />
   )
 }
 

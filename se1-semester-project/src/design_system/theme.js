@@ -1076,13 +1076,13 @@ export const leftComponentWrapperSideNavPresets = {
   variant: {
     open: css`
      &:first-child {
-      width: calc(100% - 345px);
+      width: calc(100% - 343px);
       transition: 350ms;
      }
     `,
     closed: css`
      &:first-child {
-      width: calc(100% - 35px);
+      width: calc(100% - 33.5px);
       transition: 850ms;
      }
     `

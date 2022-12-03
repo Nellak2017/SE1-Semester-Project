@@ -25,13 +25,16 @@ export const StyledMessageContainer = styled.section`
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     row-gap: 2rem;
+    width: 100%;
+    height: 96vh;
 `
 
 export const MessageOverflowContainer = styled.div`
     width: 100%;
-    height: 60vh;
+    max-height: 60vh;
+    height: 100%;
     overflow-y: scroll;
     scroll-behavior: auto;
     display: flex;
