@@ -8,6 +8,7 @@ export const ChatRoomCardParent = styled(Container)`
     column-gap: 1rem;
     align-items: center;
     max-width: 346px;
+    width: 100%;
     border-radius: ${props => props.theme.fontSizes.large};
 
     ${space}
@@ -19,6 +20,7 @@ export const ChatRoomCardParent = styled(Container)`
 
 export const CardDescription = styled.div`
     height: 100%;
+    width: 100%;
     & h1 {
         max-width: 230px;
         overflow: hidden;

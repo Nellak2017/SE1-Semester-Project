@@ -947,7 +947,7 @@ export const searchInputPresets = {
       border-radius: ${props => props.theme.spaces.larger};
     `
   },
-  color: allColorsPreset
+  color: colorPreset
 }
 
 // ------

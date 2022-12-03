@@ -8,7 +8,7 @@ import IconButton from '../IconButton/IconButton' // testing only
 // This ChatInput will be controlled by a Formik form that has ChatInput as a Field
 // NOTE: Small variant overrides the Button Size to make it fit!!
 function SearchInput (props) {
-  const { placeholder = 'Find a person or chatroom', name, onChange, onBlur, variant, color, ...rest } = props
+  const { placeholder = 'Find a person or chatroom', initialValue, name, onClick, onChange, onBlur, variant, color, ...rest } = props
   const ref = useRef(null)
 
   const handleClick = () => {
@@ -17,7 +17,7 @@ function SearchInput (props) {
 
   return (
     <SearchInputParent variant={variant} color={color} onClick={handleClick}>
-      <IconButton variant='icon' size='xl' color='lightNeutralLight'><MdSearch /></IconButton>
+      <IconButton variant='icon' size='xl' color='lightNeutralLight' onClick={onClick}><MdSearch /></IconButton>
       <SearchInputChild type='search' maxLength={100} placeholder={placeholder} name={name} onChange={onChange} onBlur={onBlur} ref={ref} {...rest} />
     </SearchInputParent>
   )

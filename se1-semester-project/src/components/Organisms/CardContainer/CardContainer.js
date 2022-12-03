@@ -3,7 +3,7 @@ import { CardContainerParent, CardNavArea } from './CardContainer.elements'
 import Button from '../../Atoms/Button/Button'
 
 function CardContainer (props) {
-  const { children, btnListener, listeners, ...rest } = props
+  const { components, btnListener, listeners, children, ...rest } = props
   const handleClickBubbling = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -14,7 +14,8 @@ function CardContainer (props) {
         <h1>All Messages</h1>
         <Button variant='newChat' size='s' onClick={btnListener}>New Chat</Button>
       </CardNavArea>
-      {children?.map((card, index) =>
+      {typeof components === 'undefined' && children}
+      {components && components?.map((card, index) =>
         <React.Fragment key={`cardContainerCard${index}`}>
           {React.cloneElement(card, { ...props, key: `cardContainerCard${index}`, onClick: listeners && listeners[index] })}
         </React.Fragment>

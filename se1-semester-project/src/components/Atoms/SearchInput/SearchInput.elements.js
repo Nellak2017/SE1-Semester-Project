@@ -43,8 +43,8 @@ export const SearchInputParent = styled.div`
     ${space}
     ${layout}
     ${typography}  
-    ${getPresetCSS(searchInputPresets, 'color')}
     ${getPresetCSS(searchInputPresets, 'variant')}
+    ${getPresetCSS(searchInputPresets, 'color')}
 `
 
 export const SearchInputChild = styled.input`
@@ -73,5 +73,8 @@ export const SearchInputChild = styled.input`
 
     &:active{
         box-shadow: none;
+    }
+    &:hover {
+        background-color: transparent;
     }
 `

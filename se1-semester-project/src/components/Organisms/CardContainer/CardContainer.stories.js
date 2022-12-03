@@ -21,7 +21,7 @@ const events = [listen, listen, listen, listen, listen, listen, listen, listen, 
 
 export const cardContainer = Template.bind({})
 cardContainer.args = {
-  children: components,
+  components,
   listeners: events,
   btnListener: () => console.log('I am the button, I was clicked')
 }

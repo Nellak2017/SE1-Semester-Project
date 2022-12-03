@@ -9,6 +9,10 @@ import {
 } from './MessageContainer.elements'
 
 // @TODO: Add media queries for Small/tablets
+// @TODO: Context API with SearchSideBar so that we know what messages to load
+// @TODO: Load most recent message by default
+// @TODO: Load only top 100 messages until scrolled to that final message
+// @TODO: Render loading spinner if waiting on messages
 function MessageContainer (props) {
   const { userName, messages, chatForm, ...rest } = props
   return (
