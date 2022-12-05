@@ -1,7 +1,7 @@
 import TextPosPopup from './TextPosPopup'
 
 export default {
-  title: 'Molecules/Text Position Popup',
+  title: 'Molecules/Text Popups/Text Position Popup',
   component: TextPosPopup,
   argTypes: {
   }

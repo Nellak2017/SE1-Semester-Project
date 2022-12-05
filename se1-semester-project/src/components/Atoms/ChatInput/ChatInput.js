@@ -8,7 +8,7 @@ import IconButton from '../IconButton/IconButton' // testing only
 // This ChatInput will be controlled by a Formik form that has ChatInput as a Field
 // NOTE: Small variant overrides the Button Size to make it fit!!
 function ChatInput (props) {
-  const { placeholder = 'Write a Message...', name, onChange, onBlur, variant, color, ...rest } = props
+  const { placeholder = 'Write a Message...', name, onSubmitHandler, buttonType = 'submit', onChange, onBlur, variant, color, ...rest } = props
   const ref = useRef(null)
 
   const handleClick = () => {
@@ -18,7 +18,7 @@ function ChatInput (props) {
   return (
     <ChatInputParent variant={variant} color={color} onClick={handleClick}>
       <ChatInputChild placeholder={placeholder} name={name} onChange={onChange} onBlur={onBlur} ref={ref} {...rest} />
-      <IconButton variant='icon' size='xl'><IoIosSend /></IconButton>
+      <IconButton type={buttonType} onClick={onSubmitHandler} variant='icon' size='xl'><IoIosSend /></IconButton>
     </ChatInputParent>
   )
 }

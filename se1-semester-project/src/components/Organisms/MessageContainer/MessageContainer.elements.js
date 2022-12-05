@@ -33,12 +33,13 @@ export const StyledMessageContainer = styled.section`
 
 export const MessageOverflowContainer = styled.div`
     width: 100%;
-    max-height: 60vh;
+    //max-height: 60vh; // only needed for a parent with variable sizes
     height: 100%;
     overflow-y: scroll;
     scroll-behavior: auto;
     display: flex;
-    flex-direction: column;
+    //  Mix with reverse message list so that you can get messages starting at bottom, not top
+    flex-direction: column-reverse; // So that the scroll starts at bottom. 
     row-gap: 1rem;
     overflow-anchor: none;
 

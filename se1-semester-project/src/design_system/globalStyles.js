@@ -30,6 +30,19 @@ body {
     color: ${props => props.theme.colors.defaultFontColor};
 }
 
+*::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+*::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 p, input, button, li, a, span {
     color: ${props => props.theme.colors.defaultFontColor};
 }

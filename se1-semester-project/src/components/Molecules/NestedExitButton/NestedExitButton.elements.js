@@ -5,11 +5,12 @@ import Container from '../../Atoms/Container/Container'
 
 export const NestedExitButtonParent = styled(Container)`
     position: relative; // added so that exit button works as expected
+    overflow: visible;
     & button {
-        opacity: 50%;
+        opacity: 85%;
         box-shadow: ${props => props.theme.elevations.smaller};
         &:hover {
-            opacity: 80%;
+            opacity: 90%;
         }
         &:active {
             opacity: 95%;

@@ -10,7 +10,7 @@ export const FormContainer = styled(Container)`
     padding-right: 1rem;
     position: relative;
     min-width: 215px;
-    max-width: 540px;
+    max-width: 90%;
     width: 100%;
     min-height: 0px; // was 250px
     height: 100%;
@@ -34,12 +34,13 @@ export const ChatFormStyled = styled.form`
     min-height: 218px;
     height: 100%;
     width: 100%;
+    padding-bottom: .5rem;
     `
 
 export const MediaBox = styled.div`
     z-index: 0;
+    overflow: visible;
     padding-top: 8px;
-    //border: 1px solid red;
     display: flex;
     column-gap: 1.0rem;
     row-gap: 1rem;
@@ -48,14 +49,13 @@ export const MediaBox = styled.div`
     flex-wrap: wrap;
     width: 100%;
     max-height: 240px;
-    overflow-y: auto;
+    //overflow-y: auto;
     scroll-behavior: auto;
-    & > * {
-        z-index: 100;
-    }
+    
     `
 
 export const ExitButtonStyled = styled(ExitButton)`
+    z-index: 10; // fixes the half button hover glitch
     position: absolute;
     top: 8px;
     right: 8px;
@@ -65,14 +65,26 @@ export const LeftButtonBottom = styled(NestedButton)`
     position: absolute;
     left: -45px;
     top: 20px;
+    cursor: pointer;
+    & :hover {
+        cursor: pointer;
+    }
     `
 export const LeftButtonMiddle = styled(NestedButton)`
     position: absolute;
     left: -45px;
     top: 65px;
+    cursor: pointer;
+    & :hover {
+        cursor: pointer;
+    }
     `
 export const LeftButtonTop = styled(NestedButton)`
     position: absolute;
     left: -45px;
     top: 110px;
+    cursor: pointer;
+    & :hover {
+        cursor: pointer;
+    }
 `

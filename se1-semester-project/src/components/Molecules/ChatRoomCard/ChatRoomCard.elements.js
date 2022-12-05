@@ -10,6 +10,9 @@ export const ChatRoomCardParent = styled(Container)`
     max-width: 346px;
     width: 100%;
     border-radius: ${props => props.theme.fontSizes.large};
+    & :hover {
+        cursor: pointer;
+    }
 
     ${space}
     ${layout}

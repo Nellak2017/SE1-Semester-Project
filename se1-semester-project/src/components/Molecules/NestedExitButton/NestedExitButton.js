@@ -5,7 +5,13 @@ import IconButton from '../../Atoms/IconButton/IconButton'
 import { AiOutlineClose } from 'react-icons/ai'
 
 function NestedExitButton (props) {
-  const { color = 'lightNeutral', component, backgroundImage, buttonListener, icon, iconListener, size, ...rest } = props
+  const {
+    color = 'darkNeutral', subColor = 'lightNeutral', component, backgroundImage,
+    buttonListener = (e) => { e.stopPropagation(); console.log('button listener not assigned') }, icon,
+    iconListener = (e) => { e.stopPropagation(); console.log('icon listener not assigned') },
+    text, size = 'l', subSize = 'm', type, children, ...rest
+  } = props
+
   const bgImg = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundPosition: 'center',
@@ -14,20 +20,24 @@ function NestedExitButton (props) {
   }
 
   return (
-    <NestedExitButtonParent
-      {...rest}
-      style={bgImg}
-      icon={icon}
-      color={color}
-      size='l'
-    >
-      <>
-        <IconButton variant='declineOutline' id='exitBtn' size='m'><AiOutlineClose /></IconButton>
-        <SquareButton color='darkNeutral' size='xs' onClick={buttonListener}>
-          {React.cloneElement(icon, { onClick: iconListener })}
-        </SquareButton>
-      </>
-    </NestedExitButtonParent>
+    <>
+      <NestedExitButtonParent
+        {...rest}
+        style={bgImg}
+        icon={icon}
+        color={color}
+        size={size}
+      >
+        <>
+          <IconButton variant='declineOutline' id='exitBtn' size='m' type={type} onClick={iconListener}><AiOutlineClose /></IconButton>
+          <SquareButton color={subColor} size={subSize} onClick={buttonListener} type={type}>
+            {icon && !text && icon}
+            {text && !icon && text}
+          </SquareButton>
+        </>
+        {children}
+      </NestedExitButtonParent>
+    </>
   )
 }
 export default NestedExitButton

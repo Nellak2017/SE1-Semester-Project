@@ -10,18 +10,19 @@ import {
 
 // @TODO: Add media queries for Small/tablets
 // @TODO: Context API with SearchSideBar so that we know what messages to load
-// @TODO: Load most recent message by default
 // @TODO: Load only top 100 messages until scrolled to that final message
 // @TODO: Render loading spinner if waiting on messages
 function MessageContainer (props) {
   const { userName, messages, chatForm, ...rest } = props
+  const messagesClone = messages.slice() // makes a shallow copy of the messages so that it renders correctly always
   return (
     <StyledMessageContainer {...rest}>
       <UserNameContainer>
         <UserName>{userName}</UserName>
       </UserNameContainer>
       <MessageOverflowContainer>
-        {messages && messages.map(el => el)}
+        {messages && messagesClone.reverse().map(el => el)}
+        {/* messages are reversed so that column-reverse property displays them normally, but starting at bottom not top */}
       </MessageOverflowContainer>
       <ChatFormContainer>{chatForm && chatForm}</ChatFormContainer>
     </StyledMessageContainer>

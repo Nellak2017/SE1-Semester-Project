@@ -10,6 +10,8 @@ export const ParentContainer = styled.aside`
     max-width: 400px;
     width: 100%;
     height: 100%;
+    padding-top: .5rem;
+    margin-left: .5rem;
 `
 export const CreateChatFormStyled = styled(CreateChatForm)`
     position: absolute;
