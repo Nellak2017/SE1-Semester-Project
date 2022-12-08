@@ -25,8 +25,7 @@ import TextDurPopup from '../../Molecules/TextDurPopup/TextDurPopup'
 // @TODO: if 1 media submitted then it is not a par tag
 // @TODO: Create API that POST to DB
 // @TODO: Add .src to background images so that it can be read in production
-// @TODO: When Media Len is 3, disable the button
-// @TODO: Address the bug where you can't add the same file twice in a row
+// @TODO: When form is submitted, handle it
 */
 
 const formJSON = {
@@ -64,12 +63,10 @@ const formBLOBs = {
 
 function ChatForm (props) {
   const { ...rest } = props
-  // @TODO: Validate the submitted form inputs
-  // @TODO: When form is submitted, handle it
   const inputRef = useRef()
   const [small, setSmall] = useState(false) // if small -> molecule, if !small -> full size
   const [textDurationVisible, setTextDurationVisible] = useState(false) // Shows text duration modifier or not
-  const [mediaVisible, setMediaVisible] = useState({ 0: false, 1: false, 2: false, 2: false }) // laziest possible way to see if media is visible. Obv. Not generalizable
+  const [mediaVisible, setMediaVisible] = useState({ 0: false, 1: false, 2: false, 3: false }) // laziest possible way to see if media is visible. Obv. Not generalizable
   const [textInput, setTextInput] = useState('') // stores the 2 chatinputs as 1 here.
   const [mediaJSON, setMediaJSON] = useState(formJSON) // Holds JSON for Form. Used for turning into SMIL and sending to Server
   const [mediaBLOBs, setMediaBLOBs] = useState(formBLOBs) // Holds actual Media BLOB data. Which is the file itself
@@ -80,7 +77,15 @@ function ChatForm (props) {
     if (str?.includes('video')) return video
     else if (str?.includes('audio')) return aud
     else if (str?.includes('image')) return img
-    else return
+  }
+  // Input: file , formik.values
+  // Output: true|false --> If true then it is valid, if false then invalid
+  // This is called when the user tries to input a file, if it is not valid, you can't even input it. But if you can, then the validate catches it.
+  const validationFunction = (file, values) => {
+    // 1. Convert file into file type
+    const theValue = determineMediaType(file.type, 'audio', 'video', 'image')
+    // 2. If the values has that file type, then return false, otherwise true
+    return !values.some(obj => theValue === determineMediaType(obj.type, 'audio', 'video', 'image'))
   }
   const formik = useFormik({
     initialValues: {
@@ -88,6 +93,7 @@ function ChatForm (props) {
     },
     onSubmit: (values) => {
       // usually e.preventDefault() here
+      console.log(values)
       console.log('form submitted')
 
       // 0. Get the Message ID (and chatroom ID?) for the particular message being sent, call them mid and cid
@@ -96,6 +102,19 @@ function ChatForm (props) {
       // 3. Convert mediaJSON into a SMIL String, save it into SMILForServer variable
       // 4. POST {type: SMIL, ...SMILForServer} at (chatroomID: cid, messageID: mid)
       // 5. POST {type: BLOB, ...mediaBLOBs} at (chatroomID: cid, messageID: mid)
+    },
+    validate: (values) => {
+      // This Function is run onSubmit mostly. The validationFunction covers when it is entered in the Form
+      const errors = {}
+      // Constraint #1: The media should have a Set of the media types
+      // 1. Convert values array to a list of media types
+      const theValues = values.fileChooser.map(file => determineMediaType(file.type, 'audio', 'video', 'image'))
+      // 2. Create a set of the media types
+      const theSet = [...new Set(theValues)]
+      // 3. Compare set of media types with the values. If equal (regardless of order) then we are good! If not we have invalid inputs.
+      const isValuesSetType = (theValues.length === theSet.length && theValues.every(el => theSet.includes(el)))
+      if (!isValuesSetType) errors.fileChooser = 'Cannot have more than one of each type'
+      return errors
     }
   })
 
@@ -154,7 +173,8 @@ function ChatForm (props) {
                   type='file'
                   name='fileChooser'
                   accept='audio/*, video/*, image/*'
-                  onChange={e => e.currentTarget.files[0] && formik.setFieldValue('fileChooser', formik.values.fileChooser.concat(e.currentTarget.files[0]))}
+                  onChange={e => e.currentTarget.files[0] && validationFunction(e.currentTarget.files[0], formik.values.fileChooser) &&
+                    formik.setFieldValue('fileChooser', formik.values.fileChooser.concat(e.currentTarget.files[0]))}
                 />
                 {
                   formik.values?.fileChooser.map((file, index) =>
@@ -227,4 +247,3 @@ function ChatForm (props) {
 }
 
 export default ChatForm
-// <button type='button' onClick={() => console.log(formik.values.fileChooser[0])} />

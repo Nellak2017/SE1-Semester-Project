@@ -13,7 +13,7 @@ import MessageContainer from '../Organisms/MessageContainer/MessageContainer'
 function ChatPage (props) {
   const { userName, messages, chatForm, cardInfo, cardListeners, ...rest } = props
   return (
-    <RightBarContainer>
+    <RightBarContainer {...rest}>
       <SearchSideBar cardInfo={cardInfo} listeners={cardListeners} userName={userName} />
       <MessageContainer userName={userName} messages={messages} chatForm={chatForm} />
     </RightBarContainer>
