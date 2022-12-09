@@ -23,7 +23,7 @@ function CreateChatForm (props) {
 
   const [searchInputState, setSearchInputState] = useState(initialValue || '') // OnChange, update this
   const [selectedUsers, setSelectedUsers] = useState([]) // Will be a list of selected users. pattern: [{user: String, display: Boolean}]
-  const [availableUsers, setAvailableUsers] = useState([]) // Will be a list of strings. Holds users available str from query
+  const [availableUsers, setAvailableUsers] = useState(['bill','tom']) // Will be a list of strings. Holds users available str from query
   const [, forceUpdate] = useReducer(x => x + 1, 0) // Used to make react re-render in the case of adding 2 of the same names
 
   // @TODO: Make a GET request for the Available Users
@@ -52,10 +52,12 @@ function CreateChatForm (props) {
     if (typeof maxSelectedUsers !== 'undefined' && selectedUsers.length + 1 <= maxSelectedUsers && searchInputState !== '') {
       selectedUsers.push(`${searchInputState}`)
       setSearchInputState('') // does not clear the input, but prevents spamming names
+      setAvailableUsers([]) // When adding a new user, the old searched users will be removed
       forceUpdate() // in the rare case that this is needed, just always do it
     } else if (typeof maxUsers !== 'undefined' && selectedUsers.length + 1 <= maxUsers && searchInputState !== '') {
       selectedUsers.push(`${searchInputState}`)
       setSearchInputState('')
+      setAvailableUsers([]) // When adding a new user, the old searched users will be removed
       forceUpdate() // in the rare case that this is needed, just always do it
     }
     // }

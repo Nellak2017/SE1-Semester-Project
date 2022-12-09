@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 // @TODO: Add Media Queries
 export const SmallSmilStyled = styled.article`
+    z-index: 1;
     position: relative;
     width: 340px;
     min-height: 190px;

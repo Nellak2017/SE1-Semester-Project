@@ -65,6 +65,8 @@ const formBLOBs = {
 function ChatForm (props) {
   const { ...rest } = props
   const inputRef = useRef()
+  //const [previewClick, setPreviewClick] = useState(false) // Preview button
+  //const [exitClicked, setExitClicked] = useState(false) // Exit button for SMIL Player preview
   const [small, setSmall] = useState(false) // if small -> molecule, if !small -> full size
   const [textDurationVisible, setTextDurationVisible] = useState(false) // Shows text duration modifier or not
   const [mediaVisible, setMediaVisible] = useState({ 0: false, 1: false, 2: false, 3: false }) // laziest possible way to see if media is visible. Obv. Not generalizable
@@ -179,9 +181,9 @@ function ChatForm (props) {
       <FormContainer color={!small ? 'lightNeutral' : 'transparent'} borderRadius={20} {...rest}>
         {!small &&
           <>
-            <LeftButtonTop variant='savedMMS' color='lightNeutral' data-tip='Set Text Duration Information' onClick={() => setTextDurationVisible(!textDurationVisible)} />
+            <LeftButtonMiddle variant='savedMMS' color='lightNeutral' data-tip='Set Text Duration Information' onClick={() => setTextDurationVisible(!textDurationVisible)} />
             {/* <LeftButtonMiddle variant='save' color='lightNeutral' /> */}
-            <LeftButtonMiddle variant='eyeglass' color='lightNeutral' data-tip='See a Preview' onClick={() => console.log('@TODO: Add Preview')} />
+            {/*<LeftButtonMiddle variant='eyeglass' color='lightNeutral' data-tip='See a Preview' onClick={() => console.log('@TODO: Add Preview')} /> */}
             {textDurationVisible &&
               <TextDurPopup
                 listener={({ begin, end, dur }) => { durationListener('text', begin, end, dur) }}
