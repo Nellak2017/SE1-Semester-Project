@@ -19,6 +19,12 @@ import NestedExitButton from '../../Molecules/NestedExitButton/NestedExitButton'
 import Movie from '../../../../public/movie.jpg'
 import Audio from '../../../../public/audio-transparent.jpg'
 import TextDurPopup from '../../Molecules/TextDurPopup/TextDurPopup'
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 /*
 // @TODO: Left Side Listeners: Remove. Add 2 sub-buttons to the chat input. 1st = preview, 2nd = alter duration of text
@@ -78,6 +84,27 @@ function ChatForm (props) {
     else if (str?.includes('audio')) return aud
     else if (str?.includes('image')) return img
   }
+  //const inputEl = useRef(null)
+  const [value, setValue] = useState(0);
+  const storage = getStorage();
+  
+
+  async function uploadFile() {
+    try{
+      // get file
+    var file = formik.values.fileChooser[0]
+
+    // create a storage ref
+    const storageRef = ref(storage, "user_uploads")
+
+    // upload file
+    const task = await uploadBytes(storageRef, file)
+    
+    } catch (e) {
+      console.log(e);
+    }
+    
+}
   // Input: file , formik.values
   // Output: true|false --> If true then it is valid, if false then invalid
   // This is called when the user tries to input a file, if it is not valid, you can't even input it. But if you can, then the validate catches it.
@@ -98,6 +125,8 @@ function ChatForm (props) {
 
       // Make a BLOB Object of form {video:BLOB, audio: BLOB, img: BLOB}
       const BLOBObj = valuesToBLOBObj(values.fileChooser, formBLOBs)
+
+      uploadFile();
       // POST BLOBS to Server Location (await on src object)
       // ---- await srcObj = ...Firebase POST function at server location for BLOBS
       // Add src to mediaJSON (when we get the src object)

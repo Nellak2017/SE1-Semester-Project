@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import ChatPage from '../components/Templates/ChatPage'
 import Message from '../components/Atoms/Message/Message'
 import ChatForm from '../components/Organisms/ChatForm/ChatForm'
-
+import { initFirebase } from '../../firebaseConfig'
 const userName = 'Connor Keenum'
 
 const messages = [
@@ -55,6 +55,7 @@ const cardInfo = [
   }
 ]
 
+initFirebase()
 export default function Home () {
   return (
     <StrictMode>
