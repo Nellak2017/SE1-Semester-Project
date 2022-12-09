@@ -5,20 +5,41 @@ import ChatForm from '../components/Organisms/ChatForm/ChatForm'
 import { initFirebase } from '../../firebaseConfig'
 const userName = 'Connor Keenum'
 
-const messages = [
-  <Message key='msg1' variant='received' type='text'>The trailer just launched! </Message>,
-  <Message key='msg2' variant='sent' type='text'>No, I think that's next week.</Message>,
-  <Message key='msg3' variant='received' type='text'>Explain this.</Message>,
-  <Message key='msg4' variant='received' type='smil' />,
+const brownFoxSMIL = '<smil>' +
+  '<body>' +
+  '<par>' +
+  '<text src="The quick brown fox jumped over the lazy dog."/>' +
+  '</par>' +
+  '</body>' +
+  '</smil>'
 
-  <Message key='msg5' variant='sent' type='text'>They launched early !!?</Message>,
-  <Message key='msg6' variant='received' type='smil' />,
-  <Message key='msg7' variant='sent' type='text'>They launched early !!?</Message>,
-  <Message key='msg8' variant='received' type='smil' />,
-  <Message key='msg9' variant='sent' type='text'>They launched early !!?</Message>,
-  <Message key='msg10' variant='received' type='smil' />,
-  <Message key='msg11' variant='sent' type='text'>They launched early !!?</Message>,
-  <Message key='msg12' variant='received' type='smil' />
+const testSMIL = '<smil>' +
+  '<body>' +
+  '<par>' +
+  '<text src="The Quick Brown Fox Jumped Over the Lazy Dog." dur="10s"/>' +
+  '<audio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" begin="5s" end="6s"/>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="0s" end="5s"/>' +
+  '<img src="static/media/public/woman-in-field.jpg" begin="5s" end="10s"/>' +
+  '</par>' +
+  '<video src="https://www.w3schools.com/html/mov_bbb.mp4" begin="1s"/>' +
+  '</body>' +
+  '</smil>'
+
+
+const messages = [
+  {variant:'received', message: brownFoxSMIL},
+  {variant:'sent', message: brownFoxSMIL},
+  {variant:'received', message: brownFoxSMIL},
+  {variant:'received', message: testSMIL},
+
+  {variant:'sent', message: brownFoxSMIL},
+  {variant:'received', message: testSMIL},
+  {variant:'sent', message: brownFoxSMIL},
+  {variant:'received', message: testSMIL},
+  {variant:'sent', message: brownFoxSMIL},
+  {variant:'received', message: testSMIL},
+  {variant:'sent', message: brownFoxSMIL},
+  {variant:'received', message: testSMIL},
 
 ]
 

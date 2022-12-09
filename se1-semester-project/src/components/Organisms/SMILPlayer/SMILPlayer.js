@@ -15,7 +15,8 @@ import {
   VideoContainer,
   CenterContainer,
   MediaContainer,
-  ControlBtnsContainer
+  ControlBtnsContainer,
+  BlackBackground
 } from './SMILPlayer.elements'
 import ExitButton from '../../Atoms/ExitButton/ExitButton'
 import IconButton from '../../Atoms/IconButton/IconButton'
@@ -36,7 +37,7 @@ output:
  SMILPlayer that plays media contained in json or smil
 */
 // @TODO: For all functions calling Helpers, surround with Try-Catch
-function SMILPlayer (props) {
+function SMILPlayer(props) {
   const { json, smil, exitBtnCallback } = props
   const fps = 10
   const intervalRef = useRef() // Allows us to stop the clock when we need to
@@ -335,25 +336,27 @@ function SMILPlayer (props) {
   return (
     <>
       <div style={{ display: 'none' }}>{incorrectMediaArr !== null && incorrectMediaArr.map(el => el)}</div>
-      <SMILPlayerParentStyled>
-        <ExitBtnContainer onClick={exitBtnCallback}><ExitButton size='s' /></ExitBtnContainer>
-        <VideoContainer onClick={mediaPlaying ? onClickPause : onClickPlay}>
-          <CenterContainer>
-            {correctMediaArr !== null && correctMediaArr.map((el, i) => { return <MediaContainer key={`Media[${i}]`}>{el}</MediaContainer> })}
-          </CenterContainer>
-        </VideoContainer>
-        <ControlBtnsContainer>
-          <IconButton onClick={onClickDecrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
-            <IoIosRewind />
-          </IconButton>
-          <IconButton onClick={mediaPlaying ? onClickPause : onClickPlay} variant='mediaControllerOutline' size='xl' outlineSize='m'>
-            {mediaPlaying ? <IoIosPause /> : <IoIosPlay />}
-          </IconButton>
-          <IconButton onClick={onClickIncrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
-            <IoIosFastforward />
-          </IconButton>
-        </ControlBtnsContainer>
-      </SMILPlayerParentStyled>
+      <BlackBackground>
+        <SMILPlayerParentStyled>
+          <ExitBtnContainer onClick={exitBtnCallback}><ExitButton size='s' /></ExitBtnContainer>
+          <VideoContainer onClick={mediaPlaying ? onClickPause : onClickPlay}>
+            <CenterContainer>
+              {correctMediaArr !== null && correctMediaArr.map((el, i) => { return <MediaContainer key={`Media[${i}]`}>{el}</MediaContainer> })}
+            </CenterContainer>
+          </VideoContainer>
+          <ControlBtnsContainer>
+            <IconButton onClick={onClickDecrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
+              <IoIosRewind />
+            </IconButton>
+            <IconButton onClick={mediaPlaying ? onClickPause : onClickPlay} variant='mediaControllerOutline' size='xl' outlineSize='m'>
+              {mediaPlaying ? <IoIosPause /> : <IoIosPlay />}
+            </IconButton>
+            <IconButton onClick={onClickIncrementTag} variant='mediaControllerOutline' size='l' outlineSize='m'>
+              <IoIosFastforward />
+            </IconButton>
+          </ControlBtnsContainer>
+        </SMILPlayerParentStyled>
+      </BlackBackground>
     </>
   )
 }

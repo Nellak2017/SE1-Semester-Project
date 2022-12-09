@@ -1,10 +1,23 @@
 import styled from 'styled-components'
 import Container from '../../Atoms/Container/Container'
 
+export const BlackBackground = styled.div`
+	position: fixed;
+	z-index: 3;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	background-color: #00000050;
+`
+
 export const SMILPlayerParentStyled = styled(Container)`
+	position: fixed;
+	top: 10%;
+	left: 10%;
+
 	padding: 0;
 	margin: 0;
-	z-index: 0;
+	z-index: 1000;
 	display: inline-flex;
 	flex-direction: column;
 	row-gap: 0;

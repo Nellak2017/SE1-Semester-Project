@@ -6,6 +6,7 @@ export default {
   argTypes: {
   }
 }
+
 const Template = args => <VideoSlider {...args} />
 
 export const videoSliderShowCase = Template.bind({})
