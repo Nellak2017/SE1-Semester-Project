@@ -695,3 +695,67 @@ export const maxJsonTiming = (jsonTimings) => {
 }
 
 // ---------------------------------------
+
+// Form Functions
+/*
+ ________ ________  ________  _____ ______           ________ ___  ___  ________   ________ _________  ___  ________  ________   ________
+|\  _____\\   __  \|\   __  \|\   _ \  _   \        |\  _____\\  \|\  \|\   ___  \|\   ____\\___   ___\\  \|\   __  \|\   ___  \|\   ____\
+\ \  \__/\ \  \|\  \ \  \|\  \ \  \\\__\ \  \       \ \  \__/\ \  \\\  \ \  \\ \  \ \  \___\|___ \  \_\ \  \ \  \|\  \ \  \\ \  \ \  \___|_
+ \ \   __\\ \  \\\  \ \   _  _\ \  \\|__| \  \       \ \   __\\ \  \\\  \ \  \\ \  \ \  \       \ \  \ \ \  \ \  \\\  \ \  \\ \  \ \_____  \
+  \ \  \_| \ \  \\\  \ \  \\  \\ \  \    \ \  \       \ \  \_| \ \  \\\  \ \  \\ \  \ \  \____   \ \  \ \ \  \ \  \\\  \ \  \\ \  \|____|\  \
+   \ \__\   \ \_______\ \__\\ _\\ \__\    \ \__\       \ \__\   \ \_______\ \__\\ \__\ \_______\  \ \__\ \ \__\ \_______\ \__\\ \__\____\_\  \
+    \|__|    \|_______|\|__|\|__|\|__|     \|__|        \|__|    \|_______|\|__| \|__|\|_______|   \|__|  \|__|\|_______|\|__| \|__|\_________\
+                                                                                                                                   \|_________|
+*/
+
+// input: src object {video: src|'', audio: src|'', img: src|''}
+// output: json (not smil compatible) {text: ..., video: {...src}, audio: {...src}, img: {...src} }
+export const addSrcToJSON = (srcObj, jsonForm) => {
+  const ret = JSON.parse(JSON.stringify(jsonForm))
+  for (const key of Object.keys(srcObj)) {
+    ret[key].src = srcObj[key].src
+  }
+  return ret
+}
+
+// input: json form obj {text: ..., video: {...src}, audio: {...src}, img: {...src} }
+// output: json smil compatible {smil: body: par: {text: ..., video: {...src}, audio: {...src}, img: {...src} }}
+// Since the form is simplified we support 2 of 4 cases. Either 1 media or multiple in a par. No grouping allowed.
+export const formToJSON = (jsonForm) => {
+  const ret = {
+    smil: {
+      body: {
+        par: {
+
+        }
+      }
+    }
+  }
+  // Do basic validation here... like text, isarray,..
+  if (typeof jsonForm === 'undefined' || jsonForm === null || (isNaN(jsonForm) && typeof jsonForm === 'number')) throw new Error(`Expected jsonForm to be an Object got:\n${jsonForm}\nundefined: ${typeof jsonForm === 'undefined'}\nnull: ${jsonForm === null}\nisNaN: ${isNaN(jsonForm) && typeof jsonForm !== 'number'}`)
+  if (Array.isArray(jsonForm)) throw new Error('Expected jsonForm to be an Object like: {text: {...}, video: {...}, ...}\nGot: Array')
+  if (Object.keys(jsonForm).length > 4) throw new Error(`Expected jsonForm to be of length 4 or less\nGot Length: ${Object.keys(jsonForm).length}`)
+
+  // CASE 1:
+  if (Object.keys(jsonForm).length === 1) {
+    // If it is 1 thing, then it is just that, no par
+    const tagName = Object.keys(jsonForm)[0]
+    // simply add an _attributes and call it a day
+    ret.smil.body.par[tagName] = { _attributes: jsonForm[tagName] }
+    return ret
+  }
+
+  // CASE 2:
+  // If it is more than 1 thing, then it is a par
+  else if (Object.keys(jsonForm).length > 1 && Object.keys(jsonForm).length <= 4) {
+    const copy = JSON.parse(JSON.stringify(jsonForm))
+    for (const key of Object.keys(copy)) {
+      const initial = copy[key]
+      copy[key] = { _attributes: initial }
+    }
+    ret.smil.body.par = copy
+    return ret
+  }
+}
+
+// ---------------------------------------

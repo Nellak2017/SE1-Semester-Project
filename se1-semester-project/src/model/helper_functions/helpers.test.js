@@ -14,7 +14,9 @@ import {
   mediaFactory,
   JSONtoMedia,
   JSONplusLens,
-  maxJsonTiming
+  maxJsonTiming,
+  addSrcToJSON,
+  formToJSON
 } from './helpers'
 import Media from '../../components/Molecules/Media/Media'
 
@@ -1091,5 +1093,104 @@ describe('maxJsonTiming Tests', () => {
     expect(maxJsonTiming(test1)).toBeCloseTo(16)
     expect(maxJsonTiming(test2)).toBeCloseTo(160)
     expect(maxJsonTiming(test2)).toBeCloseTo(160)
+  })
+})
+
+describe('add source to Json Tests', () => {
+  const exSrcObj = {
+    img: { src: '1234' },
+    audio: { src: '5678' },
+    video: { src: '910111213' }
+  }
+
+  const formJSON = {
+    text: {
+      src: 'Example Text',
+      begin: '0s',
+      end: '2s',
+      dur: ''
+    },
+    img: {
+      src: '',
+      begin: '0s',
+      end: '3s',
+      dur: ''
+    },
+    audio: {
+      src: '',
+      begin: '0s',
+      end: '',
+      dur: ''
+    },
+    video: {
+      src: '',
+      begin: '0s',
+      end: '',
+      dur: ''
+    }
+  }
+
+  const expectedJSON = {
+    text: { src: 'Example Text', begin: '0s', end: '2s', dur: '' },
+    img: { src: '1234', begin: '0s', end: '3s', dur: '' },
+    audio: { src: '5678', begin: '0s', end: '', dur: '' },
+    video: { src: '910111213', begin: '0s', end: '', dur: '' }
+  }
+
+  test('expect valid results on valid inputs', () => {
+    expect(addSrcToJSON(exSrcObj, formJSON)).toEqual(expectedJSON)
+  })
+})
+
+describe('form to json tests', () => {
+  const formOne = {
+    img: { src: '1234', begin: '0s', end: '3s', dur: '' }
+  }
+  const formFour = {
+    text: { src: 'Example Text', begin: '0s', end: '2s', dur: '' },
+    img: { src: '1234', begin: '0s', end: '3s', dur: '' },
+    audio: { src: '5678', begin: '0s', end: '', dur: '' },
+    video: { src: '910111213', begin: '0s', end: '', dur: '' }
+  }
+
+  const expectedOne = {
+    smil: {
+      body: {
+        par: {
+          img: { _attributes: { src: '1234', begin: '0s', end: '3s', dur: '' } }
+        }
+      }
+    }
+  }
+
+  const expectedFour = {
+    smil: {
+      body: {
+        par: {
+          text: { _attributes: { src: 'Example Text', begin: '0s', end: '2s', dur: '' } },
+          img: { _attributes: { src: '1234', begin: '0s', end: '3s', dur: '' } },
+          audio: { _attributes: { src: '5678', begin: '0s', end: '', dur: '' } },
+          video: { _attributes: { src: '910111213', begin: '0s', end: '', dur: '' } }
+        }
+      }
+    }
+  }
+
+  test('expect form to json to have valid results on valid inputs', () => {
+    expect(formToJSON(formOne)).toEqual(expectedOne)
+    expect(formToJSON(formFour)).toEqual(expectedFour)
+  })
+
+  test('expect form to json to throw errors on invalid inputs', () => {
+    expect(() => formToJSON(undefined)).toThrow(Error)
+    expect(() => formToJSON(NaN)).toThrow(Error)
+    expect(() => formToJSON(null)).toThrow(Error)
+    expect(() => formToJSON([])).toThrow(Error)
+    expect(() => formToJSON({ text: {}, body: {}, img: {}, video: {}, audio: {} })).toThrow(Error)
+  })
+
+  test('expect form to json to be smil compatible', () => {
+    expect(() => JSONtoSMIL(formToJSON(formOne))).not.toThrow(Error)
+    expect(() => JSONtoSMIL(formToJSON(formFour))).not.toThrow(Error)
   })
 })

@@ -7,6 +7,7 @@ import {
   LeftButtonTop,
   MediaBox
 } from './ChatForm.elements'
+import { addSrcToJSON, formToJSON, JSONtoSMIL } from '../../../model/helper_functions/helpers'
 import { useState, useRef } from 'react'
 import { useFormik } from 'formik'
 import axios from 'axios'
@@ -31,25 +32,25 @@ import TextDurPopup from '../../Molecules/TextDurPopup/TextDurPopup'
 const formJSON = {
   text: {
     src: '',
-    begin: '',
+    begin: '0s',
     end: '',
     dur: ''
   },
   img: {
     src: '',
-    begin: '',
+    begin: '0s',
     end: '',
     dur: ''
   },
   audio: {
     src: '',
-    begin: '',
+    begin: '0s',
     end: '',
     dur: ''
   },
   video: {
     src: '',
-    begin: '',
+    begin: '0s',
     end: '',
     dur: ''
   }
@@ -69,10 +70,9 @@ function ChatForm (props) {
   const [mediaVisible, setMediaVisible] = useState({ 0: false, 1: false, 2: false, 3: false }) // laziest possible way to see if media is visible. Obv. Not generalizable
   const [textInput, setTextInput] = useState('') // stores the 2 chatinputs as 1 here.
   const [mediaJSON, setMediaJSON] = useState(formJSON) // Holds JSON for Form. Used for turning into SMIL and sending to Server
-  const [mediaBLOBs, setMediaBLOBs] = useState(formBLOBs) // Holds actual Media BLOB data. Which is the file itself
   const onClickChangeSmall = () => { setSmall(!small) }
   const handleInputPress = () => { inputRef.current.click() } // Presses the File Input whenever you press the NestedButton
-  const handleTextChange = (e) => { setTextInput(e.target.value) } // Not sure how to syncronize 2 input forms in formik
+  const handleTextChange = (e) => { setTextInput(e.target.value); setMediaJSON(rest => ({ ...rest, text: { ...rest.text, src: e.target.value } })) }
   const determineMediaType = (str, aud, video, img) => { // input your audio, video placeholders, and also your image too
     if (str?.includes('video')) return video
     else if (str?.includes('audio')) return aud
@@ -92,10 +92,30 @@ function ChatForm (props) {
       fileChooser: []
     },
     onSubmit: (values) => {
-      // usually e.preventDefault() here
-      console.log(values)
+      // console.log(values.fileChooser)
       console.log('form submitted')
+      // console.log(valuesToBLOBObj(values.fileChooser, formBLOBs))
 
+      // Make a BLOB Object of form {video:BLOB, audio: BLOB, img: BLOB}
+      const BLOBObj = valuesToBLOBObj(values.fileChooser, formBLOBs)
+      // POST BLOBS to Server Location (await on src object)
+      // ---- await srcObj = ...Firebase POST function at server location for BLOBS
+      // Add src to mediaJSON (when we get the src object)
+      // ---- const srcAddedJSON = addSrcToJSON(srcObj, mediaJSON)
+      // JSON to SMIL
+      // ---- const SMIL = JSONtoSMIL(srcAddedJSON)
+      // Log SMIL to Console (To prove that it is indeed SMIL)
+      // ---- console.log(SMIL)
+      // POST SMIL to Firebase
+      // ---- ...Firebase POST function at server location for SMIL
+      // Reset Form to base state
+      setSmall(true)
+      setTextDurationVisible(false)
+      setMediaVisible({ 0: false, 1: false, 2: false, 3: false })
+      setTextInput('')
+      setMediaJSON(formJSON)
+
+      // OLD LOGIC:
       // 0. Get the Message ID (and chatroom ID?) for the particular message being sent, call them mid and cid
       // 1. Get the src for all the media that are being submitted(based on mid and cid), add src info to each in the mediaJSON
       // 2. (The duration infos are already set by the form below), Loop thru fileChooser and assign to mediaBLOBs
@@ -120,7 +140,7 @@ function ChatForm (props) {
 
   const durationListener = (FileType, begin, end, dur) => { // Handles Setting Durations for Media Inputs and Text Input
     // If the begin, end, dur are empty, then set to ''
-    if (typeof begin === 'undefined' || begin === null || isNaN(begin)) begin = ''
+    if (typeof begin === 'undefined' || begin === null || isNaN(begin)) begin = '0s'
     if (typeof end === 'undefined' || end === null || isNaN(end)) end = ''
     if (typeof dur === 'undefined' || dur === null || isNaN(dur)) begin = ''
 
@@ -129,16 +149,29 @@ function ChatForm (props) {
       let file = 'Nothing'
       if (FileType?.includes('audio')) file = 'audio'
       else if (FileType?.includes('video')) file = 'video'
-      else if (FileType?.includes('image')) file = 'image'
+      else if (FileType?.includes('image')) file = 'img'
       else if (FileType?.includes('text')) file = 'text'
 
-      begin = begin >= 0 && begin <= 999999 ? begin + 's' : ''
+      begin = begin >= 0 && begin <= 999999 ? begin + 's' : '0s'
       end = end > 0 && end <= 999999 ? end + 's' : ''
       dur = dur > 0 && dur <= 999999 ? dur + 's' : ''
 
       setMediaJSON(rest => ({ ...rest, [file]: { ...rest[file], begin, end, dur } }))
     }
   }
+  const valuesToBLOBObj = (values, initialFormBlobs) => { // converts the formik values.filechooser into the BLOB object form to be posted
+    const ret = JSON.parse(JSON.stringify(initialFormBlobs))
+    for (const file of values) {
+      if (file.type.includes('audio')) {
+        ret.audio = file
+      } else if (file.type.includes('video')) {
+        ret.video = file
+      } else if (file.type.includes('image')) {
+        ret.img = file
+      }
+    }
+    return ret
+  } // NOTE: Careful using this function, it has no safety rails!
 
   return (
     <>

@@ -9,14 +9,14 @@ import MessageContainer from '../Organisms/MessageContainer/MessageContainer'
 // @TODO: Convert messsages from a list of components to a list of data objects
 // @TODO: Figure out what to do better with chatForm
 // @TODO: Make mobile design (Optional)
-// @TODO: Messages should start from the BOTTOM not from the top!
+// NOTE: Rightbar container removed for brevity
 function ChatPage (props) {
   const { userName, messages, chatForm, cardInfo, cardListeners, ...rest } = props
   return (
-    <RightBarContainer {...rest}>
+    <div style={{ display: 'flex' }}>
       <SearchSideBar cardInfo={cardInfo} listeners={cardListeners} userName={userName} />
       <MessageContainer userName={userName} messages={messages} chatForm={chatForm} />
-    </RightBarContainer>
+    </div>
   )
 }
 
